@@ -82,21 +82,29 @@ public class BuildMojo
     private String urlScm;
 
     /**
+     * The username that is used when connecting to the SCM system.
+     *
      * @parameter expression="${username}"
      */
     private String username;
 
     /**
+     * The password that is used when connecting to the SCM system.
+     *
      * @parameter expression="${password}"
      */
     private String password;
 
     /**
      * @parameter expression="${tag}"
+     * @todo This doesn't seem to be used. Can it be removed?
      */
     private String tag;
 
     /**
+     * The tag base directory in subversion, you must define it if you don't
+     * use the standard svn layout (branches/tags/trunk).
+     *
      * @parameter expression="${tagBase}"
      */
     private String tagBase;
@@ -110,12 +118,14 @@ public class BuildMojo
 
     /**
      * You can rename the buildNumber property name to another property name if desired.
+     *
      * @parameter expression="${maven.buildNumber.buildNumberPropertyName}" default-value="buildNumber"
      */
     private String buildNumberPropertyName;
 
     /**
      * You can rename the timestamp property name to another property name if desired.
+     * 
      * @parameter expression="${maven.buildNumber.timestampPropertyName}" default-value="timestamp"
      */
     private String timestampPropertyName;
@@ -123,7 +133,7 @@ public class BuildMojo
     /**
      * If this is made true, we check for modified files, and if there are any, we fail the build. Note that this
      * used to be inverted (skipCheck), but needed to be changed to allow releases to work. This corresponds to
-     * 'svn status'
+     * 'svn status'.
      *
      * @parameter expression="${maven.buildNumber.doCheck}"  default-value="false"
      */
@@ -132,7 +142,7 @@ public class BuildMojo
     /**
      * If this is made true, then the revision will be updated to the latest in the repo, otherwise it will
      * remain what it is locally. Note that this used to be inverted (skipUpdate), but needed to be changed to
-     * allow releases to work. This corresponds to 'svn update'
+     * allow releases to work. This corresponds to 'svn update'.
      *
      * Note that these expressions (doCheck, doUpdate, etc) are the first thing evaluated. If there is no matching
      * expression, we get the default-value. If there is (ie -Dmaven.buildNumber.doCheck=false), we get that value.
@@ -145,7 +155,7 @@ public class BuildMojo
     private boolean doUpdate;
 
     /**
-     * Specify a message as specified by java.text.MessageFormat
+     * Specify a message as specified by java.text.MessageFormat.
      *
      * @parameter
      */
@@ -153,7 +163,8 @@ public class BuildMojo
 
     /**
      * Specify the corresponding items for the format message, as specified by java.text.MessageFormat. Special
-     * item values are "timestamp" and "buildNumber/d*"
+     * item values are "timestamp" and "buildNumber/d*".
+     * 
      * @parameter
      */
     private List items;
