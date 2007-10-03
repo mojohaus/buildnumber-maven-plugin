@@ -47,7 +47,7 @@ import java.io.InputStreamReader;
  * Command to get info from svn.
  *
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
- * @version $Id: SvnInfoCommand.java,v 1.0 Feb 8, 2006 10:45:30 AM woodj Exp $
+ * @version $Id$
  */
 public class SvnInfoCommand
     extends AbstractCommand

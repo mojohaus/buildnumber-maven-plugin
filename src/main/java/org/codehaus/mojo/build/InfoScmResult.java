@@ -44,7 +44,7 @@ import java.io.StringReader;
  * Created by IntelliJ IDEA.
  *
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
- * @version $Id: InfoScmResult.java,v 1.0 Feb 8, 2006 10:59:25 AM woodj Exp $
+ * @version $Id$
  */
 public class InfoScmResult
     extends ScmResult

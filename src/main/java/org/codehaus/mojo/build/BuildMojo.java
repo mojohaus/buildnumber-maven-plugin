@@ -61,7 +61,7 @@ import java.util.*;
  * number in your pom with ${buildNumber}. You can also access ${timestamp}.
  *
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
- * @version $Id: BuildMojo.java,v 1.0 Feb 7, 2006 11:43:08 AM woodj Exp $
+ * @version $Id$
  * @goal create
  * @requiresProject
  * @description create a timestamp and a build number from scm or an integer sequence

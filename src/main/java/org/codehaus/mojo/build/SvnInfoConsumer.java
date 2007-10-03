@@ -35,7 +35,7 @@ import java.util.Map;
  * Parse the info command from svn.
  *
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
- * @version $Id: SvnInfoConsumer.java,v 1.0 Feb 8, 2006 11:06:16 AM woodj Exp $
+ * @version $Id$
  */
 public class SvnInfoConsumer
     implements StreamConsumer
