@@ -1,171 +1,172 @@
  ------
- How to Use - Maven Build Number Plugin
+ Usage
  ------
 
-How to Use the Maven Build Number Plugin
+Usage
 
  This plugin works in one of 3 ways: with an SCM, with a sequential build number, or with a timestamp.
 
  No matter which method you choose, you must include it in your pom:
 
 +------------------------------------------+
-<build>
-  <plugins>
-    <plugin>
-      <groupId>org.codehaus.mojo</groupId>
-      <artifactId>buildnumber-maven-plugin</artifactId>
-      <executions>
-        <execution>
-          <phase>validate</phase>        
-          <goals>
-            <goal>create</goal>
-          </goals>
-        </execution>
-      </executions>
-      <configuration>
-        <doCheck>true</doCheck>
-        <doUpdate>true</doUpdate>
-      </configuration>
-    </plugin>
-  </plugins>
-</build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doCheck>true</doCheck>
+          <doUpdate>true</doUpdate>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 +------------------------------------------+
 
  This will cause the create goal of the buildNumber plugin to be executed during the compile phase. It will first
  check to see if you have locally modified files, and will fail if there are any. You can suppress this
- behaviour with -Dmaven.buildNumber.doCheck=false (or remove/change the configuration info).
+ behaviour with <<<-Dmaven.buildNumber.doCheck=false>>> (or remove/change the configuration info).
 
  The buildNumber plugin will then update your local repository. This is done because 'svn info' grabs the revision out of your
  local repository, and is not necessarily the same as the revision in the remote repository. You should
  probably deal with these changes before creating a build in any case. Again, this behaviour can be suppressed
- with -Dmaven.buildNumber.doUpdate=false.
+ with <<<-Dmaven.buildNumber.doUpdate=false>>>.
 
  You need to do something with the revision provided by the plugin. The revision number is available using
- $\{buildNumber\} in your pom. For example:
+ <<<$\{buildNumber\}>>> in your pom. For example:
 
 +------------------------------------------+
-<build>
-     <finalName>${project.artifactId}-${project.version}-r${buildNumber}</finalName>
-</build>
+  <build>
+    <finalName>${project.artifactId}-${project.version}-r${buildNumber}</finalName>
+  </build>
 +------------------------------------------+
 
  or to place in the manifest (META-INF/MANIFEST.mf) of your jar:
 
 +------------------------------------------+
-<build>
-  ...
-  <pluginManagement>
+  <build>
+    ...
+    <pluginManagement>
       <plugins>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-jar-plugin</artifactId>
-              <version>2.1</version>
-          </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.1</version>
+        </plugin>
       </plugins>
-  </pluginManagement>
-  ...
-  <plugins>
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-jar-plugin</artifactId>
-      <configuration>
-        <archive>
-          <manifest>
-            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-          </manifest>
-          <manifestEntries>
-            <Implementation-Build>${buildNumber}</Implementation-Build>
-          </manifestEntries>
-        </archive>
-      </configuration>
-    </plugin>
-  </plugins>
-</build>
+    </pluginManagement>
+    ...
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+            <manifestEntries>
+              <Implementation-Build>${buildNumber}</Implementation-Build>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 +------------------------------------------+
 
  or war:
 
 +------------------------------------------+
-<build>
-  ...
-  <plugins>
-    <plugin>
-      <artifactId>maven-war-plugin</artifactId>
-      <version>2.0.2</version>
-      <configuration>
-        <manifest>
-          <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-        </manifest>
-        <archive>
-          <manifestEntries>
-            <Implementation-Build>${buildNumber}</Implementation-Build>
-          </manifestEntries>
-        </archive>
-      </configuration>
-    </plugin>
-  </plugins>
-</build>
+  <build>
+    ...
+    <plugins>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <manifest>
+            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+          </manifest>
+          <archive>
+            <manifestEntries>
+              <Implementation-Build>${buildNumber}</Implementation-Build>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 +------------------------------------------+
 
- NB. Older version of the jar and war plugin don't require the manifest/addDefaultImplementationEntries element, and in fact will fail
+ <<Note:>> Older version of the jar and war plugin don't require the
+ manifest/addDefaultImplementationEntries element, and in fact will fail
  if present. The new versions require this element.
 
  You can also configure the plugin to be more flexible.
 
 +------------------------------------------+
-<build>
-  <plugins>
-    <plugin>
-      <groupId>org.codehaus.mojo</groupId>
-      <artifactId>buildnumber-maven-plugin</artifactId>
-      <configuration>
-        <format>At {1,time} on {1,date}, there was {2} on planet {0,number,integer}.</format>
-        <items>
-          <item implementation="java.lang.Integer">7</item>
-          <item>timestamp</item>
-          <item>a disturbance in the Force</item>
-        </items>
-      </configuration>
-      <executions>
-        <execution>
-          <phase>validate</phase>
-          <goals>
-            <goal>create</goal>
-          </goals>
-        </execution>
-      </executions>
-    </plugin>
-  </plugins>
-</build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <configuration>
+          <format>At {1,time} on {1,date}, there was {2} on planet {0,number,integer}.</format>
+          <items>
+            <item implementation="java.lang.Integer">7</item>
+            <item>timestamp</item>
+            <item>a disturbance in the Force</item>
+          </items>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 +------------------------------------------+
 
  Other more useful configurations might be:
 
 +------------------------------------------+
-<configuration>
-  <format>{0,number}.{1,number}.{2,number}</format>
-  <items>
-    <item>buildNumber0</item>
-    <item>buildNumber1</item>
-    <item>buildNumber2</item>
-  </items>
-</configuration>
+        <configuration>
+          <format>{0,number}.{1,number}.{2,number}</format>
+          <items>
+            <item>buildNumber0</item>
+            <item>buildNumber1</item>
+            <item>buildNumber2</item>
+          </items>
+        </configuration>
 +------------------------------------------+
 
  or:
 
 +------------------------------------------+
-<configuration>
-  <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
-  <items>
-    <item>timestamp</item>
-  </items>
-</configuration>
+        <configuration>
+          <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
+          <items>
+            <item>timestamp</item>
+          </items>
+        </configuration>
 +------------------------------------------+
 
  The plugin simply uses the
  {{{http://java.sun.com/j2se/1.4.2/docs/api/java/text/MessageFormat.html} MessageFormat class}}
- to produce $\{buildNumber\}, and thus the above configurations would produce:
+ to produce <<<$\{buildNumber\}>>>, and thus the above configurations would produce:
 
 +------------------------------------------+
 At 12:30 PM on Jul 3, 2053, there was a disturbance in the Force on planet 7.
