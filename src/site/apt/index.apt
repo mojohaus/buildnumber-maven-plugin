@@ -1,8 +1,8 @@
  ------
- Introduction - Maven Build Number Plugin
+ Introduction
  ------
 
-Introduction.
+Introduction
 
  This mojo is designed to get a unique build number for each time you build your project. So while your
  version may remain constant at 1.0-SNAPSHOT for many iterations until release, you will have a build
@@ -23,7 +23,6 @@ Introduction.
   
   * {{{create-mojo.html}buildnumber:create}}: Create a build number.
   
-  
   []
   
 
@@ -32,7 +31,7 @@ Introduction.
   Instructions on how to use the Build Number Maven Plugin can be found {{{usage.html}here}}.  
  
    
-* Examples
+~~ * Examples
 
   
  
