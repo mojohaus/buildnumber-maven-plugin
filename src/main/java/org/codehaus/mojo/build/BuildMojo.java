@@ -1,3 +1,5 @@
+package org.codehaus.mojo.build;
+
 /**
  * The MIT License
  *
@@ -23,8 +25,6 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.codehaus.mojo.build;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -39,8 +39,9 @@ import org.apache.maven.scm.log.ScmLogDispatcher;
 import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.manager.ScmManager;
 import org.apache.maven.scm.provider.ScmProviderRepository;
-import org.apache.maven.scm.provider.svn.repository.SvnScmProviderRepository;
+import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.svn.command.update.SvnUpdateScmResult;
+import org.apache.maven.scm.provider.svn.repository.SvnScmProviderRepository;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -49,7 +50,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * This mojo is designed to give you a build number. So when you might make 100 builds of version
@@ -206,13 +211,13 @@ public class BuildMojo
         this.basedir = basedir;
     }
 
-    public void setDoCheck( boolean doCheck)
+    public void setDoCheck( boolean doCheck )
     {
-        String doCheckSystemProperty = System.getProperty("maven.buildNumber.doCheck");
-        if (doCheckSystemProperty != null)
+        String doCheckSystemProperty = System.getProperty( "maven.buildNumber.doCheck" );
+        if ( doCheckSystemProperty != null )
         {
             // well, this gets the final say
-            this.doCheck = Boolean.valueOf(doCheckSystemProperty).booleanValue();
+            this.doCheck = Boolean.valueOf( doCheckSystemProperty ).booleanValue();
         }
         else
         {
@@ -220,13 +225,13 @@ public class BuildMojo
         }
     }
 
-    public void setDoUpdate( boolean doUpdate)
+    public void setDoUpdate( boolean doUpdate )
     {
-        String doUpdateSystemProperty = System.getProperty("maven.buildNumber.doUpdate");
-        if (doUpdateSystemProperty != null)
+        String doUpdateSystemProperty = System.getProperty( "maven.buildNumber.doUpdate" );
+        if ( doUpdateSystemProperty != null )
         {
             // well, this gets the final say
-            this.doUpdate = Boolean.valueOf(doUpdateSystemProperty).booleanValue();
+            this.doUpdate = Boolean.valueOf( doUpdateSystemProperty ).booleanValue();
         }
         else
         {
@@ -234,12 +239,12 @@ public class BuildMojo
         }
     }
 
-    void setFormat(String format)
+    void setFormat( String format )
     {
         this.format = format;
     }
 
-    void setItems(List items)
+    void setItems( List items )
     {
         this.items = items;
     }
@@ -248,33 +253,37 @@ public class BuildMojo
         throws MojoExecutionException, MojoFailureException
     {
         Date now = Calendar.getInstance().getTime();
-        if (format != null)
+        if ( format != null )
         {
             // needs to be an array
             // look for special values
             Object[] itemAry = new Object[items.size()];
-            for (int i = 0; i < items.size(); i++)
+            for ( int i = 0; i < items.size(); i++ )
             {
-                Object item = items.get(i);
-                if (item instanceof String)
+                Object item = items.get( i );
+                if ( item instanceof String )
                 {
                     String s = (String) item;
-                    if (s.equals("timestamp")) {
+                    if ( s.equals( "timestamp" ) )
+                    {
                         itemAry[i] = now;
                     }
-                    else if (s.startsWith( "buildNumber" ))
+                    else if ( s.startsWith( "buildNumber" ) )
                     {
                         // check for properties file
                         File propertiesFile = new File( basedir, "buildNumber.properties" );
 
                         // create if not exists
-                        if (!propertiesFile.exists())
+                        if ( !propertiesFile.exists() )
                         {
                             try
                             {
                                 propertiesFile.createNewFile();
-                            } catch (IOException e) {
-                                throw new MojoExecutionException( "Couldn't create properties file: " + propertiesFile, e );
+                            }
+                            catch ( IOException e )
+                            {
+                                throw new MojoExecutionException( "Couldn't create properties file: "
+                                    + propertiesFile, e );
                             }
                         }
 
@@ -283,53 +292,58 @@ public class BuildMojo
                         try
                         {
                             // get the number for the buildNumber specified
-                            properties.load( new FileInputStream( propertiesFile ));
+                            properties.load( new FileInputStream( propertiesFile ) );
                             buildNumberString = properties.getProperty( s );
-                            if ( buildNumberString == null ) {
+                            if ( buildNumberString == null )
+                            {
                                 buildNumberString = "0";
                             }
                             int buildNumber = Integer.valueOf( buildNumberString ).intValue();
 
                             // store the increment
-                            properties.setProperty( s, String.valueOf( ++buildNumber ));
-                            properties.store(new FileOutputStream( propertiesFile ), "maven.buildNumber.plugin properties file");
+                            properties.setProperty( s, String.valueOf( ++buildNumber ) );
+                            properties.store( new FileOutputStream( propertiesFile ),
+                                              "maven.buildNumber.plugin properties file" );
 
                             // use in the message (format)
-                            itemAry[i] = new Integer(buildNumber);
+                            itemAry[i] = new Integer( buildNumber );
                         }
-                        catch ( NumberFormatException e)
+                        catch ( NumberFormatException e )
                         {
-                            throw new MojoExecutionException( "Couldn't parse buildNumber in properties file to an Integer: " + buildNumberString);
+                            throw new MojoExecutionException(
+                                "Couldn't parse buildNumber in properties file to an Integer: " + buildNumberString );
                         }
                         catch ( IOException e )
                         {
                             throw new MojoExecutionException( "Couldn't load properties file: " + propertiesFile, e );
                         }
                     }
-                    else {
+                    else
+                    {
                         itemAry[i] = item;
                     }
                 }
-                else {
+                else
+                {
                     itemAry[i] = item;
                 }
             }
 
-            revision = MessageFormat.format(format, itemAry);
+            revision = MessageFormat.format( format, itemAry );
         }
         else
         {
-            if ( doCheck)
+            if ( doCheck )
             {
                 // we fail if there are local mods
                 checkForLocalModifications();
             }
             else
             {
-                getLog().info("Checking for local modifications: skipped.");
+                getLog().info( "Checking for local modifications: skipped." );
             }
 
-            if ( doUpdate)
+            if ( doUpdate )
             {
                 // we update your local repo
                 // even after you commit, your revision stays the same until you update, thus this action
@@ -346,7 +360,7 @@ public class BuildMojo
             }
             else
             {
-                getLog().info("Updating project files from SCM: skipped.");
+                getLog().info( "Updating project files from SCM: skipped." );
             }
 
             revision = getRevision();
@@ -354,10 +368,11 @@ public class BuildMojo
 
         if ( project != null )
         {
-            String timestamp = String.valueOf(now.getTime());
-            getLog().info( MessageFormat.format( "Storing buildNumber: {0} at timestamp: {1}", new Object[] { revision, timestamp} ) );
-            project.getProperties().put(buildNumberPropertyName, revision );
-            project.getProperties().put(timestampPropertyName, timestamp);
+            String timestamp = String.valueOf( now.getTime() );
+            getLog().info( MessageFormat.format( "Storing buildNumber: {0} at timestamp: {1}",
+                                                 new Object[] { revision, timestamp} ) );
+            project.getProperties().put( buildNumberPropertyName, revision );
+            project.getProperties().put( timestampPropertyName, timestamp );
         }
     }
 
@@ -391,7 +406,8 @@ public class BuildMojo
                 message.append( "\n" );
             }
 
-            throw new MojoExecutionException( "Cannot create the build number because you have local modifications : \n" + message );
+            throw new MojoExecutionException( "Cannot create the build number because you have local modifications : \n"
+                + message );
         }
 
     }
@@ -403,7 +419,11 @@ public class BuildMojo
         {
             ScmRepository repository = getScmRepository();
 
-            UpdateScmResult result = scmManager.getProviderByRepository( repository ).update( repository, new ScmFileSet( new File( basedir.getAbsolutePath() ) ), null );
+            ScmProvider scmProvider = scmManager.getProviderByRepository( repository );
+
+            UpdateScmResult result = scmProvider.update( repository,
+                                                         new ScmFileSet( new File( basedir.getAbsolutePath() ) ),
+                                                         null );
 
             checkResult( result );
 
@@ -430,7 +450,10 @@ public class BuildMojo
 
         ScmRepository repository = getScmRepository();
 
-        StatusScmResult result = scmManager.getProviderByRepository( repository ).status( repository, new ScmFileSet( new File( basedir.getAbsolutePath() ) ) );
+        ScmProvider scmProvider = scmManager.getProviderByRepository( repository );
+
+        StatusScmResult result = scmProvider.status( repository,
+                                                     new ScmFileSet( new File( basedir.getAbsolutePath() ) ) );
 
         checkResult( result );
 
@@ -448,7 +471,10 @@ public class BuildMojo
         throws MojoExecutionException
     {
 
-        if (format != null) return revision;
+        if ( format != null )
+        {
+            return revision;
+        }
 
         try
         {
@@ -462,7 +488,8 @@ public class BuildMojo
         }
         catch ( ScmException e )
         {
-            throw new MojoExecutionException( "Cannot get the revision information from the scm repository : \n" + e.getLocalizedMessage(), e );
+            throw new MojoExecutionException( "Cannot get the revision information from the scm repository : \n"
+                + e.getLocalizedMessage(), e );
 
         }
 

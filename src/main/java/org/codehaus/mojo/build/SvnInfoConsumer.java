@@ -1,3 +1,5 @@
+package org.codehaus.mojo.build;
+
 /**
  * The MIT License
  *
@@ -23,13 +25,8 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.codehaus.mojo.build;
-
 import org.apache.maven.scm.log.ScmLogger;
 import org.codehaus.plexus.util.cli.StreamConsumer;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Parse the info command from svn.

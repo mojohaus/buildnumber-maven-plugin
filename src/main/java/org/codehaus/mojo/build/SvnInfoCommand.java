@@ -1,3 +1,5 @@
+package org.codehaus.mojo.build;
+
 /**
  * The MIT License
  *
@@ -22,8 +24,6 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
-package org.codehaus.mojo.build;
 
 import org.apache.maven.scm.CommandParameters;
 import org.apache.maven.scm.ScmException;
@@ -58,10 +58,13 @@ public class SvnInfoCommand
         throws ScmException
     {
         Commandline cl = null;
-        try {
+        try
+        {
             cl = createCommandline( (SvnScmProviderRepository) repo, fileSet.getBasedir() );
-        } catch (Exception e) {
-            throw new ScmException("Error while executing command.", e);
+        }
+        catch ( Exception e )
+        {
+            throw new ScmException( "Error while executing command.", e );
         }
 
         CommandLineUtils.StringStreamConsumer stderr = new CommandLineUtils.StringStreamConsumer();
@@ -80,7 +83,8 @@ public class SvnInfoCommand
 
             BufferedReader br = new BufferedReader( new InputStreamReader( process.getInputStream() ) );
             String line;
-            while (( line = br.readLine() ) != null ) {
+            while ( ( line = br.readLine() ) != null )
+            {
                 stdin.consumeLine( line );
             }
 
@@ -99,10 +103,11 @@ public class SvnInfoCommand
         }
         catch ( IOException e )
         {
-            throw new ScmException("Error while executing command.", e);
-        } catch (InterruptedException e)
+            throw new ScmException( "Error while executing command.", e );
+        }
+        catch ( InterruptedException e )
         {
-            throw new ScmException("Error while executing command.", e);
+            throw new ScmException( "Error while executing command.", e );
         }
 
         if ( process != null && process.exitValue() != 0 )
@@ -122,14 +127,16 @@ public class SvnInfoCommand
     // ----------------------------------------------------------------------
 
 
-    private static Commandline createCommandline( SvnScmProviderRepository repository, File workingDirectory ) throws Exception {
+    private static Commandline createCommandline( SvnScmProviderRepository repository, File workingDirectory )
+        throws Exception
+    {
         Commandline cl = SvnCommandLineUtils.getBaseSvnCommandLine( workingDirectory, repository );
 
         // for tests
-        String svnexe = System.getProperty("pathToSvnExecutable");
-        if (svnexe != null)
+        String svnexe = System.getProperty( "pathToSvnExecutable" );
+        if ( svnexe != null )
         {
-            cl.setExecutable(svnexe);
+            cl.setExecutable( svnexe );
         }
 
         cl.createArgument().setValue( "info" );
@@ -137,7 +144,8 @@ public class SvnInfoCommand
         return cl;
     }
 
-    protected ScmResult executeCommand( ScmProviderRepository scmProviderRepository, ScmFileSet scmFileSet, CommandParameters commandParameters )
+    protected ScmResult executeCommand( ScmProviderRepository scmProviderRepository, ScmFileSet scmFileSet,
+                                        CommandParameters commandParameters )
         throws ScmException
     {
         return executeInfoCommand( scmProviderRepository, scmFileSet );

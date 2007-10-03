@@ -1,3 +1,5 @@
+package org.codehaus.mojo.build;
+
 /**
  * The MIT License
  *
@@ -23,22 +25,17 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.codehaus.mojo.build;
-
-import org.apache.maven.scm.ScmResult;
 import org.apache.maven.scm.ScmException;
+import org.apache.maven.scm.ScmResult;
+import org.codehaus.plexus.util.StringInputStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
-import org.codehaus.plexus.util.StringInputStream;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.util.Map;
-import java.io.InputStream;
 import java.io.IOException;
-import java.io.StringReader;
 
 /**
  * Created by IntelliJ IDEA.
@@ -73,23 +70,31 @@ public class InfoScmResult
      * @return                  the int svn rev, as a string
      * @throws ScmException    if we couldn't parse the 'svn --xml info' result
      */
-    public String getRevision() throws ScmException {
-        try {
+    public String getRevision() throws ScmException
+    {
+        try
+        {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
 
-            Document document = builder.parse(new StringInputStream(getCommandOutput()));
+            Document document = builder.parse( new StringInputStream( getCommandOutput() ) );
 
-            Node entryNode = document.getDocumentElement().getElementsByTagName("entry").item(0);
-            Node node = entryNode.getAttributes().getNamedItem("revision");
+            Node entryNode = document.getDocumentElement().getElementsByTagName( "entry" ).item( 0 );
+            Node node = entryNode.getAttributes().getNamedItem( "revision" );
 
             return node.getNodeValue();
-        } catch (ParserConfigurationException e) {
-            throw new ScmException("Couldn't locate xml parser.", e);
-        } catch (SAXException e) {
-            throw new ScmException("Couldn't parse XML.", e);
-        } catch (IOException e) {
-            throw new ScmException("Couldn't parse XML.", e);
+        }
+        catch ( ParserConfigurationException e )
+        {
+            throw new ScmException( "Couldn't locate xml parser.", e );
+        }
+        catch ( SAXException e )
+        {
+            throw new ScmException( "Couldn't parse XML.", e );
+        }
+        catch ( IOException e )
+        {
+            throw new ScmException( "Couldn't parse XML.", e );
         }
 
     }
