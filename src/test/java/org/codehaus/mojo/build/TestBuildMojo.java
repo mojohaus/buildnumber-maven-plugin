@@ -1,3 +1,5 @@
+package org.codehaus.mojo.build;
+
 /**
  * The MIT License
  *
@@ -23,23 +25,19 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.codehaus.mojo.build;
-
-import java.net.URL;
-import java.io.File;
-import java.io.InputStream;
-import java.util.Arrays;
-
-import org.apache.maven.scm.manager.ScmManager;
-import org.apache.maven.scm.repository.ScmRepository;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.PlexusTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Locale;
 
 public class TestBuildMojo
         extends PlexusTestCase
@@ -64,7 +62,11 @@ public class TestBuildMojo
         mojo.setFormat("At {1,time} on {1,date}, there was {2} on planet {0,number,integer}.");
         mojo.setItems(Arrays.asList(new Object[] {new Integer(7), "timestamp", "a disturbance in the Force"}));
 
-        try {
+        Locale currentLocale = Locale.getDefault();
+        try
+        {
+            Locale.setDefault( Locale.US );
+
             mojo.execute();
 
             String rev = mojo.getRevision();
@@ -78,7 +80,10 @@ public class TestBuildMojo
         } catch (MojoFailureException e) {
             fail(e.toString());
         }
-
+        finally
+        {
+            Locale.setDefault( currentLocale );
+        }
     }
 
     public void testSequenceFormat()
