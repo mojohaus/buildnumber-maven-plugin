@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<info>
+    <entry kind="dir" path="." revision="78">
+        <url>http://apollo.ucalgary.ca:8800/gdir/trunk</url>
+        <repository>
+            <root>http://apollo.ucalgary.ca:8800/gdir</root>
+            <uuid>480ea15e-1a36-0410-90fc-99b9ce627977</uuid>
+        </repository>
+        <wc-info>
+            <schedule>normal</schedule>
+        </wc-info>
+        <commit revision="65">
+            <author>woodj</author>
+            <date>2007-09-06T19:18:06.472781Z</date>
+        </commit>
+    </entry>
+</info>
