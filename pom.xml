@@ -5,8 +5,8 @@
 
     <parent>
         <groupId>org.codehaus.mojo</groupId>
-        <artifactId>mojo-sandbox</artifactId>
-        <version>4</version>
+        <artifactId>mojo</artifactId>
+        <version>16</version>
     </parent>
 
     <groupId>org.codehaus.mojo</groupId>
@@ -18,7 +18,7 @@
     <licenses>
         <license>
             <name>The MIT License</name>
-            <url>http://commons.ucalgary.ca/projects/licenses/mit-license.txt</url>
+            <url>LICENSE.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -57,37 +57,37 @@
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-api</artifactId>
-            <version>1.0-beta-3</version>
+            <version>${maven.scm.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-manager-plexus</artifactId>
-            <version>1.0-beta-3</version>
+            <version>${maven.scm.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-svnexe</artifactId>
-            <version>1.0-beta-3</version>
+            <version>${maven.scm.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-cvsexe</artifactId>
-            <version>1.0-beta-3</version>
+            <version>${maven.scm.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-starteam</artifactId>
-            <version>1.0-beta-3</version>
+            <version>${maven.scm.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-clearcase</artifactId>
-            <version>1.0-beta-3</version>
+            <version>${maven.scm.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-perforce</artifactId>
-            <version>1.0-beta-3</version>
+            <version>${maven.scm.version}</version>
         </dependency>
 
     </dependencies>
@@ -162,6 +162,10 @@
             </plugin>
         </plugins>
     </build>
+    
+    <properties>
+      <maven.scm.version>1.0-beta-3</maven.scm.version>
+    </properties>
 
 
 </project>
