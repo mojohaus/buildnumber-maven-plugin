@@ -86,6 +86,7 @@ public class BuildMojo
      * The username that is used when connecting to the SCM system.
      *
      * @parameter expression="${username}"
+     * @since 1.0-beta-1
      */
     private String username;
 
@@ -93,14 +94,9 @@ public class BuildMojo
      * The password that is used when connecting to the SCM system.
      *
      * @parameter expression="${password}"
+     * @since 1.0-beta-1
      */
     private String password;
-
-    /**
-     * @parameter expression="${tag}"
-     * @todo This doesn't seem to be used. Can it be removed?
-     */
-    private String tag;
 
     /**
      * The tag base directory in subversion, you must define it if you don't
@@ -112,7 +108,6 @@ public class BuildMojo
 
     /**
      * @parameter expression="${basedir}"
-     * @required
      * @readonly
      */
     private File basedir;
@@ -121,6 +116,7 @@ public class BuildMojo
      * You can rename the buildNumber property name to another property name if desired.
      *
      * @parameter expression="${maven.buildNumber.buildNumberPropertyName}" default-value="buildNumber"
+     * @since 1.0-beta-1
      */
     private String buildNumberPropertyName;
 
@@ -128,6 +124,7 @@ public class BuildMojo
      * You can rename the timestamp property name to another property name if desired.
      * 
      * @parameter expression="${maven.buildNumber.timestampPropertyName}" default-value="timestamp"
+     * @since 1.0-beta-1
      */
     private String timestampPropertyName;
 
@@ -137,6 +134,7 @@ public class BuildMojo
      * 'svn status'.
      *
      * @parameter expression="${maven.buildNumber.doCheck}"  default-value="false"
+     * @since 1.0-beta-1
      */
     private boolean doCheck;
 
@@ -152,6 +150,7 @@ public class BuildMojo
      * reverses that behaviour, such that the command line parameters get the last say.
      *
      * @parameter expression="${maven.buildNumber.doUpdate}"  default-value="false"
+     * @since 1.0-beta-1
      */
     private boolean doUpdate;
 
@@ -159,6 +158,7 @@ public class BuildMojo
      * Specify a message as specified by java.text.MessageFormat.
      *
      * @parameter
+     * @since 1.0-beta-1
      */
     private String format;
 
@@ -178,6 +178,7 @@ public class BuildMojo
      * item values are "timestamp" and "buildNumber/d*".
      * 
      * @parameter
+     * @since 1.0-beta-1
      */
     private List items;
 
@@ -194,9 +195,9 @@ public class BuildMojo
      * Apply this java.text.MessageFormat to the timestamp only (as opposed to the <code>format</code> parameter).
      * 
      * @parameter
+     * @since 1.0-beta-2
      */
     private String timestampFormat;
-    
     
     /**
      * @component
@@ -234,11 +235,6 @@ public class BuildMojo
     public void setPassword( String password )
     {
         this.password = password;
-    }
-
-    public void setTag( String tag )
-    {
-        this.tag = tag;
     }
 
     public void setTagBase( String tagBase )
