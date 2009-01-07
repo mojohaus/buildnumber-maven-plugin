@@ -111,6 +111,8 @@ public class BuildMojo
      */
     private File scmDirectory;
 
+
+
     /**
      * You can rename the buildNumber property name to another property name if desired.
      * 
@@ -210,6 +212,14 @@ public class BuildMojo
     private String timestampFormat;
 
     /**
+     * Setting this value allows the build to continue even in the event of an SCM failure.  The value set will be
+     * used as the revision string in the event of a failure to retrieve the revision it from the SCM.
+     * 
+     * @parameter
+     */
+    private String revisionOnScmFailure;
+    
+    /**
      * @component
      */
     private ScmManager scmManager;
@@ -226,78 +236,6 @@ public class BuildMojo
 
     private String revision;
 
-    public void setScmManager( ScmManager scmManager )
-    {
-        this.scmManager = scmManager;
-    }
-
-    public void setUrlScm( String urlScm )
-    {
-        this.urlScm = urlScm;
-    }
-
-    public void setUsername( String username )
-    {
-        this.username = username;
-    }
-
-    public void setPassword( String password )
-    {
-        this.password = password;
-    }
-
-    public void setTagBase( String tagBase )
-    {
-        this.tagBase = tagBase;
-    }
-
-    public void setDoCheck( boolean doCheck )
-    {
-        String doCheckSystemProperty = System.getProperty( "maven.buildNumber.doCheck" );
-        if ( doCheckSystemProperty != null )
-        {
-            // well, this gets the final say
-            this.doCheck = Boolean.valueOf( doCheckSystemProperty ).booleanValue();
-        }
-        else
-        {
-            this.doCheck = doCheck;
-        }
-    }
-
-    public void setDoUpdate( boolean doUpdate )
-    {
-        String doUpdateSystemProperty = System.getProperty( "maven.buildNumber.doUpdate" );
-        if ( doUpdateSystemProperty != null )
-        {
-            // well, this gets the final say
-            this.doUpdate = Boolean.valueOf( doUpdateSystemProperty ).booleanValue();
-        }
-        else
-        {
-            this.doUpdate = doUpdate;
-        }
-    }
-
-    void setFormat( String format )
-    {
-        this.format = format;
-    }
-
-    void setLocale( String locale )
-    {
-        this.locale = locale;
-    }
-
-    void setItems( List items )
-    {
-        this.items = items;
-    }
-
-    public void setBuildNumberPropertiesFileLocation( File buildNumberPropertiesFileLocation )
-    {
-        this.buildNumberPropertiesFileLocation = buildNumberPropertiesFileLocation;
-    }
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -573,6 +511,16 @@ public class BuildMojo
         }
         catch ( ScmException e )
         {
+            if ( !StringUtils.isEmpty( revisionOnScmFailure ) ) {
+                getLog().warn("Cannot get the revision information from the scm repository, proceeding with " +
+                        "revision of " + revisionOnScmFailure + " : \n" + e.getLocalizedMessage());
+                
+                setDoCheck(false);
+                setDoUpdate(false);
+                
+                return revisionOnScmFailure;
+            }
+            
             throw new MojoExecutionException( "Cannot get the revision information from the scm repository : \n"
                 + e.getLocalizedMessage(), e );
 
@@ -669,4 +617,89 @@ public class BuildMojo
         }
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // setters to help with test
+    public void setScmManager( ScmManager scmManager )
+    {
+        this.scmManager = scmManager;
+    }
+
+    public void setUrlScm( String urlScm )
+    {
+        this.urlScm = urlScm;
+    }
+
+    public void setUsername( String username )
+    {
+        this.username = username;
+    }
+
+    public void setPassword( String password )
+    {
+        this.password = password;
+    }
+
+    public void setTagBase( String tagBase )
+    {
+        this.tagBase = tagBase;
+    }
+
+    public void setDoCheck( boolean doCheck )
+    {
+        String doCheckSystemProperty = System.getProperty( "maven.buildNumber.doCheck" );
+        if ( doCheckSystemProperty != null )
+        {
+            // well, this gets the final say
+            this.doCheck = Boolean.valueOf( doCheckSystemProperty ).booleanValue();
+        }
+        else
+        {
+            this.doCheck = doCheck;
+        }
+    }
+
+    public void setDoUpdate( boolean doUpdate )
+    {
+        String doUpdateSystemProperty = System.getProperty( "maven.buildNumber.doUpdate" );
+        if ( doUpdateSystemProperty != null )
+        {
+            // well, this gets the final say
+            this.doUpdate = Boolean.valueOf( doUpdateSystemProperty ).booleanValue();
+        }
+        else
+        {
+            this.doUpdate = doUpdate;
+        }
+    }
+
+    void setFormat( String format )
+    {
+        this.format = format;
+    }
+
+    void setLocale( String locale )
+    {
+        this.locale = locale;
+    }
+
+    void setItems( List items )
+    {
+        this.items = items;
+    }
+
+    public void setBuildNumberPropertiesFileLocation( File buildNumberPropertiesFileLocation )
+    {
+        this.buildNumberPropertiesFileLocation = buildNumberPropertiesFileLocation;
+    }
+
+    public void setScmDirectory( File scmDirectory )
+    {
+        this.scmDirectory = scmDirectory;
+    }
+
+    public void setRevisionOnScmFailure( String revisionOnScmFailure )
+    {
+        this.revisionOnScmFailure = revisionOnScmFailure;
+    }
+        
 }

@@ -74,12 +74,18 @@ public class InfoScmResult
     public String getRevision( boolean commitRevision )
         throws ScmException
     {
+        return getRevision( getCommandOutput(), commitRevision );
+    }
+
+    public static String getRevision( String scmCommandOutput, boolean commitRevision )
+        throws ScmException
+    {
         try
         {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
 
-            Document document = builder.parse( new StringInputStream( getCommandOutput() ) );
+            Document document = builder.parse( new StringInputStream( scmCommandOutput ) );
 
             Element entryElement = (Element) document.getDocumentElement().getElementsByTagName( "entry" ).item( 0 );
 
@@ -112,4 +118,5 @@ public class InfoScmResult
         }
 
     }
+
 }

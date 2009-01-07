@@ -38,6 +38,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -163,5 +164,24 @@ public class TestBuildMojo
 
     }
 
+    public void testGetLastCommitRevision()
+        throws Exception
+    {
+        File inputFile = new File( getBasedir(), "src/test/resources/svnOutput-1.xml" );
+        String svnString = FileUtils.fileRead( inputFile );
+        assertEquals("65", InfoScmResult.getRevision( svnString, true ) );
+    }
+    
+    public void testRevisionOnScmFailure()
+        throws Exception
+    {
+        BuildMojo mojo = new BuildMojo();
+        mojo.setScmDirectory( new File( getBasedir(), "target" ) );
+        mojo.setRevisionOnScmFailure( "NOREVISION" );
+        
+        mojo.execute();
+
+        assertEquals( "NOREVISION", mojo.getRevision() );
+    }
 
 }
