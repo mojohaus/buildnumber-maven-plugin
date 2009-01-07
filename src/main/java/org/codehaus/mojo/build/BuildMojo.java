@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -162,6 +163,17 @@ public class BuildMojo
     private String format;
 
     /**
+     * The locale used for date and time formatting. The locale name
+     * should be in the format defined in {@link Locale#toString()}.
+     * The default locale is the platform default returned by
+     * {@link Locale#getDefault()}.
+     *
+     * @parameter expression="${maven.buildNumber.locale}"
+     * @since 1.0-beta-2
+     */
+    private String locale;
+
+    /**
      * Specify the corresponding items for the format message, as specified by java.text.MessageFormat. Special
      * item values are "timestamp" and "buildNumber/d*".
      * 
@@ -174,7 +186,7 @@ public class BuildMojo
      * whether to retrieve the revision for the last commit, or the last revision of the repository.
      *
      * @parameter expression="${maven.buildNumber.useLastCommittedRevision}" default-value="false"
-     * @required
+     * @since 1.0-beta-2
      */
     private boolean useLastCommittedRevision;
     /**
@@ -263,6 +275,11 @@ public class BuildMojo
         this.format = format;
     }
 
+    void setLocale( String locale )
+    {
+        this.locale = locale;
+    }
+
     void setItems( List items )
     {
         this.items = items;
@@ -348,7 +365,7 @@ public class BuildMojo
                 }
             }
 
-            revision = MessageFormat.format( format, itemAry );
+            revision = format( itemAry );
         }
         else
         {
@@ -395,6 +412,35 @@ public class BuildMojo
         }
     }
 
+    /**
+     * Formats the given argument using the configured format template
+     * and locale.
+     *
+     * @param arguments arguments to be formatted
+     @ @return formatted result
+     */
+    private String format( Object[] arguments )
+    {
+        Locale l = Locale.getDefault();
+        if ( locale != null ) 
+        {
+            String[] parts = locale.split( "_", 3 );
+            if ( parts.length <= 1 ) 
+            {
+                l = new Locale( locale );
+            } 
+            else if ( parts.length == 2 ) 
+            {
+                l = new Locale( parts[0], parts[1] );
+            } 
+            else 
+            {
+                l = new Locale( parts[0], parts[1], parts[2] );
+            }
+        }
+
+        return new MessageFormat( format, l ).format( arguments );
+    }
 
     private void checkForLocalModifications()
         throws MojoExecutionException

@@ -1,0 +1,81 @@
+Index: src/main/java/org/codehaus/mojo/build/BuildMojo.java
+===================================================================
+--- src/main/java/org/codehaus/mojo/build/BuildMojo.java	(revision 8337)
++++ src/main/java/org/codehaus/mojo/build/BuildMojo.java	(working copy)
+@@ -169,7 +169,16 @@
+      */
+     private List items;
+ 
++
+     /**
++     * whether to retrieve the revision for the last commit, or the last
++     * revision of the repository.
++     *
++     * @parameter expression="${maven.buildNumber.commitRevision}" default-value="false"
++     * @required
++     */
++    private boolean commitRevision;
++    /**
+      * @component
+      */
+     private ScmManager scmManager;
+@@ -495,7 +504,7 @@
+ 
+             checkResult( result );
+ 
+-            return result.getRevision();
++            return result.getRevision( commitRevision );
+         }
+         catch ( ScmException e )
+         {
+Index: src/main/java/org/codehaus/mojo/build/InfoScmResult.java
+===================================================================
+--- src/main/java/org/codehaus/mojo/build/InfoScmResult.java	(revision 8337)
++++ src/main/java/org/codehaus/mojo/build/InfoScmResult.java	(working copy)
+@@ -29,7 +29,9 @@
+ import org.apache.maven.scm.ScmResult;
+ import org.codehaus.plexus.util.StringInputStream;
+ import org.w3c.dom.Document;
++import org.w3c.dom.Element;
+ import org.w3c.dom.Node;
++import org.w3c.dom.NodeList;
+ import org.xml.sax.SAXException;
+ 
+ import javax.xml.parsers.DocumentBuilder;
+@@ -67,10 +69,12 @@
+ 
+     /**
+      * Get the revision number from svn.
+-     * @return                  the int svn rev, as a string
++     * @param commitRevision   whether to retrieve the revision for the
++     *             last commit, or the last revision of the repository.
++     * @return                 the int svn rev, as a string
+      * @throws ScmException    if we couldn't parse the 'svn --xml info' result
+      */
+-    public String getRevision() throws ScmException
++    public String getRevision(boolean commitRevision) throws ScmException
+     {
+         try
+         {
+@@ -79,9 +83,19 @@
+ 
+             Document document = builder.parse( new StringInputStream( getCommandOutput() ) );
+ 
+-            Node entryNode = document.getDocumentElement().getElementsByTagName( "entry" ).item( 0 );
+-            Node node = entryNode.getAttributes().getNamedItem( "revision" );
++            Element entryElement = (Element) document.getDocumentElement().getElementsByTagName( "entry" ).item( 0 );
++            
++            Node revisionNode = entryElement;
+ 
++            if(commitRevision) {
++                NodeList commitNodes = entryElement.getElementsByTagName( "commit" );
++                if(commitNodes != null && commitNodes.getLength() != 0) {
++                    revisionNode = commitNodes.item( 0 );
++                }
++            }
++
++            Node node = revisionNode.getAttributes().getNamedItem( "revision" );
++
+             return node.getNodeValue();
+         }
+         catch ( ParserConfigurationException e )

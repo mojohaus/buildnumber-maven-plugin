@@ -36,27 +36,31 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.DateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Locale;
 
 public class TestBuildMojo
         extends PlexusTestCase
 {
 
+    private File baseDir;
+
     protected void setUp()
         throws Exception
     {
         super.setUp();
+
+        URL url = Thread.currentThread().getContextClassLoader().getResource("svnOutput-1.xml");
+        baseDir = new File(url.getPath()).getParentFile().getParentFile().getParentFile();
+
+        assertTrue("Can't get the correct base dir: " + baseDir, new File(baseDir, "pom.xml").exists());
     }
 
 
     public void testMessageFormat()
     {
-        URL url = Thread.currentThread().getContextClassLoader().getResource("svnOutput-1.xml");
-        File baseDir = new File(url.getPath()).getParentFile().getParentFile().getParentFile();
-
-        assertTrue("Can't get the correct base dir: " + baseDir, new File(baseDir, "pom.xml").exists());
-
         BuildMojo mojo = new BuildMojo();
         mojo.setBasedir(baseDir);
         mojo.setFormat("At {1,time} on {1,date}, there was {2} on planet {0,number,integer}.");
@@ -86,13 +90,36 @@ public class TestBuildMojo
         }
     }
 
+    /**
+     * Test that dates are correctly formatted for different locales.
+     */
+    public void testLocale() throws Exception
+    {
+        Date date = new Date( 0 ); // the epoch
+        BuildMojo mojo = new BuildMojo();
+
+        mojo.setFormat( "{0,date}" );
+        mojo.setItems( Arrays.asList( new Object[] { date }) );
+
+        mojo.execute();
+        assertEquals( DateFormat.getDateInstance(DateFormat.DEFAULT).format(date),
+                      mojo.getRevision() );
+
+        mojo.setLocale( "en" );
+        mojo.execute();
+        assertEquals( "Jan 1, 1970", mojo.getRevision() );
+
+        mojo.setLocale( "fi" );
+        mojo.execute();
+        assertEquals( "1.1.1970", mojo.getRevision() );
+
+        mojo.setLocale( "de" );
+        mojo.execute();
+        assertEquals( "01.01.1970", mojo.getRevision() );
+    }
+
     public void testSequenceFormat()
     {
-        URL url = Thread.currentThread().getContextClassLoader().getResource( "svnOutput-1.xml" );
-        File baseDir = new File( url.getPath() ).getParentFile().getParentFile().getParentFile();
-
-        assertTrue( "Can't get the correct base dir: " + baseDir, new File( baseDir, "pom.xml" ).exists() );
-
         BuildMojo mojo = new BuildMojo();
         mojo.setBasedir( baseDir );
         mojo.setFormat( "{0,number}.{1,number}.{2,number}" );
