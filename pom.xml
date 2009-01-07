@@ -19,6 +19,13 @@
     <maven>2.0.6</maven>
   </prerequisites>
   
+  
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin</developerConnection>
+    <url>http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin</url>
+  </scm>
+  
   <licenses>
     <license>
       <name>The MIT License</name>
@@ -117,6 +124,7 @@
           <configuration>
             <systemProperties>
               <property>
+                <!-- to handle time sentisive test -->
                 <name>user.timezone</name>
                 <value>UTC</value>
               </property>
