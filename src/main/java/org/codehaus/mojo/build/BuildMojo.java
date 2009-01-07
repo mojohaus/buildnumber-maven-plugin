@@ -216,6 +216,7 @@ public class BuildMojo
      * used as the revision string in the event of a failure to retrieve the revision it from the SCM.
      * 
      * @parameter
+     * @since 1.0-beta-2
      */
     private String revisionOnScmFailure;
     
