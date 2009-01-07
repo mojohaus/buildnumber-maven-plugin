@@ -103,15 +103,16 @@ public class BuildMojo
      * use the standard svn layout (branches/tags/trunk).
      *
      * @parameter expression="${tagBase}"
+     * @since 1.0-beta-1
      */
     private String tagBase;
 
     /**
-     * @parameter expression="${basedir}"
-     * @readonly
+     * Local directory to be used to issue SCM actions
+     * @parameter expression="${maven.buildNumber.scmDirectory}" default-value="${basedir}
+     * @since 1.0-beta-
      */
-    private File basedir;
-
+    private File scmDirectory; 
     /**
      * You can rename the buildNumber property name to another property name if desired.
      *
@@ -156,11 +157,30 @@ public class BuildMojo
 
     /**
      * Specify a message as specified by java.text.MessageFormat.
+     * This triggers "items" configuration to be read
      *
      * @parameter
      * @since 1.0-beta-1
      */
     private String format;
+
+    
+    /**
+     * Properties file to be created when "format" is not null and item has "buildNumber". See Usage for details
+     *
+     * @parameter default-value="${basedir}/buildNumber.properties";
+     * @since 1.0-beta-1
+     */
+    private File buildNumberPropertiesFileLocation;
+    
+    /**
+     * Specify the corresponding items for the format message, as specified by java.text.MessageFormat. Special
+     * item values are "timestamp" and "buildNumber/d*".
+     * 
+     * @parameter
+     * @since 1.0-beta-1
+     */
+    private List items;
 
     /**
      * The locale used for date and time formatting. The locale name
@@ -172,16 +192,6 @@ public class BuildMojo
      * @since 1.0-beta-2
      */
     private String locale;
-
-    /**
-     * Specify the corresponding items for the format message, as specified by java.text.MessageFormat. Special
-     * item values are "timestamp" and "buildNumber/d*".
-     * 
-     * @parameter
-     * @since 1.0-beta-1
-     */
-    private List items;
-
 
     /**
      * whether to retrieve the revision for the last commit, or the last revision of the repository.
@@ -241,10 +251,6 @@ public class BuildMojo
         this.tagBase = tagBase;
     }
 
-    public void setBasedir( File basedir )
-    {
-        this.basedir = basedir;
-    }
 
     public void setDoCheck( boolean doCheck )
     {
@@ -289,6 +295,11 @@ public class BuildMojo
         this.items = items;
     }
 
+    public void setBuildNumberPropertiesFileLocation( File buildNumberPropertiesFileLocation )
+    {
+        this.buildNumberPropertiesFileLocation = buildNumberPropertiesFileLocation;
+    }
+    
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -311,8 +322,8 @@ public class BuildMojo
                     else if ( s.startsWith( "buildNumber" ) )
                     {
                         // check for properties file
-                        File propertiesFile = new File( basedir, "buildNumber.properties" );
-
+                        File propertiesFile = this.buildNumberPropertiesFileLocation;
+                        
                         // create if not exists
                         if ( !propertiesFile.exists() )
                         {
@@ -496,7 +507,7 @@ public class BuildMojo
             ScmProvider scmProvider = scmManager.getProviderByRepository( repository );
 
             UpdateScmResult result = scmProvider.update( repository,
-                                                         new ScmFileSet( new File( basedir.getAbsolutePath() ) ),
+                                                         new ScmFileSet( new File( scmDirectory.getAbsolutePath() ) ),
                                                          "" );
 
             checkResult( result );
@@ -527,7 +538,7 @@ public class BuildMojo
         ScmProvider scmProvider = scmManager.getProviderByRepository( repository );
 
         StatusScmResult result = scmProvider.status( repository,
-                                                     new ScmFileSet( new File( basedir.getAbsolutePath() ) ) );
+                                                     new ScmFileSet( new File( scmDirectory.getAbsolutePath() ) ) );
 
         checkResult( result );
 
@@ -554,7 +565,7 @@ public class BuildMojo
         {
             ScmRepository repository = getScmRepository();
 
-            InfoScmResult result = info( repository, new ScmFileSet( new File( basedir.getAbsolutePath() ) ) );
+            InfoScmResult result = info( repository, new ScmFileSet( new File( scmDirectory.getAbsolutePath() ) ) );
 
             checkResult( result );
 

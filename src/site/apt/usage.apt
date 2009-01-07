@@ -187,7 +187,7 @@ At 12:30 PM on Jul 3, 2053, there was a disturbance in the Force on planet 7.
  respectively.
 
  When you specify the special items of "buildNumber\\d*" or "timestamp", then some magic is performed. For each unique
- buildNumber, a properties file will be created (or read if it exists) which holds an integer, starting
+ buildNumber, a properties file ( see {{{./create-mojo.html#buildNumberPropertiesFileLocation}buildNumberPropertiesFileLocation}} ) will be created (or read if it exists) which holds an integer, starting
  at 1. That number will be incremented on each access. Of course, the given example is somewhat non-sensical, since it
  will increment all 3 numbers on each build, but it shows the type of flexibility available. For each timestamp, you
  simply get the current date and time.

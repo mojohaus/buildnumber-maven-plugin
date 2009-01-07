@@ -25,44 +25,36 @@ package org.codehaus.mojo.build;
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import java.io.File;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.PlexusTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
-import java.text.DateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Locale;
-
 public class TestBuildMojo
         extends PlexusTestCase
 {
-
-    private File baseDir;
 
     protected void setUp()
         throws Exception
     {
         super.setUp();
-
-        URL url = Thread.currentThread().getContextClassLoader().getResource("svnOutput-1.xml");
-        baseDir = new File(url.getPath()).getParentFile().getParentFile().getParentFile();
-
-        assertTrue("Can't get the correct base dir: " + baseDir, new File(baseDir, "pom.xml").exists());
     }
 
 
     public void testMessageFormat()
     {
         BuildMojo mojo = new BuildMojo();
-        mojo.setBasedir(baseDir);
         mojo.setFormat("At {1,time} on {1,date}, there was {2} on planet {0,number,integer}.");
         mojo.setItems(Arrays.asList(new Object[] {new Integer(7), "timestamp", "a disturbance in the Force"}));
 
@@ -121,12 +113,15 @@ public class TestBuildMojo
     public void testSequenceFormat()
     {
         BuildMojo mojo = new BuildMojo();
-        mojo.setBasedir( baseDir );
+        mojo.setBuildNumberPropertiesFileLocation( new File( getBasedir(), "target/buildNumber.properties" ) );
         mojo.setFormat( "{0,number}.{1,number}.{2,number}" );
         mojo.setItems( Arrays.asList( new Object[]{"buildNumber0", "buildNumber1", "buildNumber2"} ) );
 
         try
         {
+            File file = new File( getBasedir(), "target/buildNumber.properties");
+            file.delete();
+            
             mojo.execute();
 
             String rev = mojo.getRevision();
@@ -135,7 +130,6 @@ public class TestBuildMojo
 
             assertTrue( "Format didn't match.", rev.matches( "(\\d+\\.?){3}" ) );
 
-            File file = new File(baseDir, "buildNumber.properties");
             assertTrue( file.exists() );
 
             // for tests, we don't want this hanging around
