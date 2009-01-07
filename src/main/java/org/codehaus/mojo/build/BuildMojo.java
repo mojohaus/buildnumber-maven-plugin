@@ -169,6 +169,14 @@ public class BuildMojo
      */
     private List items;
 
+
+    /**
+     * whether to retrieve the revision for the last commit, or the last revision of the repository.
+     *
+     * @parameter expression="${maven.buildNumber.useLastCommittedRevision}" default-value="false"
+     * @required
+     */
+    private boolean useLastCommittedRevision;
     /**
      * @component
      */
@@ -495,7 +503,7 @@ public class BuildMojo
 
             checkResult( result );
 
-            return result.getRevision();
+            return result.getRevision( useLastCommittedRevision );
         }
         catch ( ScmException e )
         {

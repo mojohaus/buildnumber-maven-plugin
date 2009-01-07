@@ -29,7 +29,9 @@ import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmResult;
 import org.codehaus.plexus.util.StringInputStream;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -67,10 +69,13 @@ public class InfoScmResult
 
     /**
      * Get the revision number from svn.
-     * @return                  the int svn rev, as a string
+     * @param commitRevision   whether to retrieve the revision for the
+     *             last commit, or the last revision of the repository.
+     * @return                 the int svn rev, as a string
      * @throws ScmException    if we couldn't parse the 'svn --xml info' result
      */
-    public String getRevision() throws ScmException
+    public String getRevision( boolean commitRevision ) 
+        throws ScmException
     {
         try
         {
@@ -79,8 +84,20 @@ public class InfoScmResult
 
             Document document = builder.parse( new StringInputStream( getCommandOutput() ) );
 
-            Node entryNode = document.getDocumentElement().getElementsByTagName( "entry" ).item( 0 );
-            Node node = entryNode.getAttributes().getNamedItem( "revision" );
+            Element entryElement = (Element) document.getDocumentElement().getElementsByTagName( "entry" ).item( 0 );
+            
+            Node revisionNode = entryElement;
+
+            if( commitRevision ) 
+            {
+                NodeList commitNodes = entryElement.getElementsByTagName( "commit" );
+                if( commitNodes != null && commitNodes.getLength() != 0 ) 
+                {
+                    revisionNode = commitNodes.item( 0 );
+                }
+            }
+
+            Node node = revisionNode.getAttributes().getNamedItem( "revision" );
 
             return node.getNodeValue();
         }
