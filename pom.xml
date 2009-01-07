@@ -20,10 +20,15 @@
   </prerequisites>
   
   
+  <description>
+     This plugin is designed to give you a build number. So when you might make 100 builds of version
+     1.0-SNAPSHOT, you can differentiate between them all.
+  </description>
+  
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin</developerConnection>
-    <url>http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin</url>
+    <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/buildnumber-maven-plugin</url>
   </scm>
   
   <licenses>
