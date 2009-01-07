@@ -2,27 +2,23 @@ package org.codehaus.mojo.build;
 
 /**
  * The MIT License
- *
+ * 
  * Copyright (c) 2005 Learning Commons, University of Calgary
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 import org.apache.maven.scm.ScmException;
@@ -41,7 +37,7 @@ import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
- *
+ * 
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
  * @version $Id$
  */
@@ -56,11 +52,11 @@ public class InfoScmResult
 
     /**
      * Available if we need to error.
-     *
-     * @param commandLine       the line that produced this output
-     * @param providerMessage   any result/error message
-     * @param commandOutput     the actual output of the command
-     * @param success           did it fail?
+     * 
+     * @param commandLine the line that produced this output
+     * @param providerMessage any result/error message
+     * @param commandOutput the actual output of the command
+     * @param success did it fail?
      */
     public InfoScmResult( String commandLine, String providerMessage, String commandOutput, boolean success )
     {
@@ -69,12 +65,13 @@ public class InfoScmResult
 
     /**
      * Get the revision number from svn.
-     * @param commitRevision   whether to retrieve the revision for the
-     *             last commit, or the last revision of the repository.
-     * @return                 the int svn rev, as a string
-     * @throws ScmException    if we couldn't parse the 'svn --xml info' result
+     * 
+     * @param commitRevision whether to retrieve the revision for the last commit, or the last
+     *            revision of the repository.
+     * @return the int svn rev, as a string
+     * @throws ScmException if we couldn't parse the 'svn --xml info' result
      */
-    public String getRevision( boolean commitRevision ) 
+    public String getRevision( boolean commitRevision )
         throws ScmException
     {
         try
@@ -85,13 +82,13 @@ public class InfoScmResult
             Document document = builder.parse( new StringInputStream( getCommandOutput() ) );
 
             Element entryElement = (Element) document.getDocumentElement().getElementsByTagName( "entry" ).item( 0 );
-            
+
             Node revisionNode = entryElement;
 
-            if( commitRevision ) 
+            if ( commitRevision )
             {
                 NodeList commitNodes = entryElement.getElementsByTagName( "commit" );
-                if( commitNodes != null && commitNodes.getLength() != 0 ) 
+                if ( commitNodes != null && commitNodes.getLength() != 0 )
                 {
                     revisionNode = commitNodes.item( 0 );
                 }
@@ -116,4 +113,3 @@ public class InfoScmResult
 
     }
 }
-
