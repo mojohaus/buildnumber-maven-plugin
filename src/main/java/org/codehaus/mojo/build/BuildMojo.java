@@ -189,6 +189,15 @@ public class BuildMojo
      * @since 1.0-beta-2
      */
     private boolean useLastCommittedRevision;
+    
+    /**
+     * Apply this java.text.MessageFormat to the timestamp only (as opposed to the <code>format</code> parameter).
+     * 
+     * @parameter
+     */
+    private String timestampFormat;
+    
+    
     /**
      * @component
      */
@@ -405,6 +414,11 @@ public class BuildMojo
         if ( project != null )
         {
             String timestamp = String.valueOf( now.getTime() );
+            if (timestampFormat != null)
+            {
+            	timestamp = MessageFormat.format( timestampFormat, new Object[] { now } );
+            }
+
             getLog().info( MessageFormat.format( "Storing buildNumber: {0} at timestamp: {1}",
                                                  new Object[] { revision, timestamp} ) );
             project.getProperties().put( buildNumberPropertyName, revision );
