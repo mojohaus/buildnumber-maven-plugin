@@ -13,7 +13,7 @@
   <artifactId>buildnumber-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>Build Number Maven Plugin</name>
-  <version>1.0-beta-2</version>
+  <version>1.0-beta-3-SNAPSHOT</version>
 
   <prerequisites>
     <maven>2.0.6</maven>
@@ -26,9 +26,9 @@
   </description>
   
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/mojo/tags/buildnumber-maven-plugin-1.0-beta-2</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/tags/buildnumber-maven-plugin-1.0-beta-2</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/mojo/tags/buildnumber-maven-plugin-1.0-beta-2</url>
+    <connection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/buildnumber-maven-plugin</url>
   </scm>
   
   <licenses>
