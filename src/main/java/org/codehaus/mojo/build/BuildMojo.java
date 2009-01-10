@@ -43,13 +43,15 @@ import org.apache.maven.scm.ScmFileSet;
 import org.apache.maven.scm.ScmResult;
 import org.apache.maven.scm.command.status.StatusScmResult;
 import org.apache.maven.scm.command.update.UpdateScmResult;
+import org.apache.maven.scm.command.update.UpdateScmResultWithRevision;
 import org.apache.maven.scm.log.ScmLogDispatcher;
 import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.manager.ScmManager;
 import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.ScmProviderRepository;
-import org.apache.maven.scm.provider.svn.command.update.SvnUpdateScmResult;
-import org.apache.maven.scm.provider.svn.repository.SvnScmProviderRepository;
+import org.apache.maven.scm.provider.svn.AbstractSvnScmProvider;
+import org.apache.maven.scm.provider.svn.command.info.SvnInfoItem;
+import org.apache.maven.scm.provider.svn.command.info.SvnInfoScmResult;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -93,15 +95,6 @@ public class BuildMojo
      * @since 1.0-beta-1
      */
     private String password;
-
-    /**
-     * The tag base directory in subversion, you must define it if you don't use the standard svn
-     * layout (branches/tags/trunk).
-     * 
-     * @parameter expression="${tagBase}"
-     * @since 1.0-beta-1
-     */
-    private String tagBase;
 
     /**
      * Local directory to be used to issue SCM actions
@@ -448,13 +441,13 @@ public class BuildMojo
             ScmProvider scmProvider = scmManager.getProviderByRepository( repository );
 
             UpdateScmResult result = scmProvider.update( repository, new ScmFileSet( new File( scmDirectory
-                .getAbsolutePath() ) ), "" );
+                .getAbsolutePath() ) ) );
 
             checkResult( result );
 
-            if ( result instanceof SvnUpdateScmResult )
+            if ( scmProvider instanceof AbstractSvnScmProvider )
             {
-                String revision = ( (SvnUpdateScmResult) result ).getRevision();
+                String revision = ( (UpdateScmResultWithRevision) result ).getRevision();
                 getLog().info( "Got a revision during update: " + revision );
                 this.revision = revision;
             }
@@ -504,11 +497,18 @@ public class BuildMojo
         {
             ScmRepository repository = getScmRepository();
 
-            InfoScmResult result = info( repository, new ScmFileSet( new File( scmDirectory.getAbsolutePath() ) ) );
+            SvnInfoScmResult scmResult = info( repository, new ScmFileSet( new File( scmDirectory.getAbsolutePath() ) ) );
 
-            checkResult( result );
+            checkResult( scmResult );
 
-            return result.getRevision( useLastCommittedRevision );
+            SvnInfoItem info = (SvnInfoItem) scmResult.getInfoItems().get( 0 );
+            
+            if ( useLastCommittedRevision )
+            {
+                return info.getLastChangedRevision();
+            }
+            
+            return info.getRevision();
         }
         catch ( ScmException e )
         {
@@ -539,14 +539,16 @@ public class BuildMojo
      * @todo this should be rolled into org.apache.maven.scm.provider.ScmProvider and
      *       org.apache.maven.scm.provider.svn.SvnScmProvider
      */
-    public InfoScmResult info( ScmRepository repository, ScmFileSet fileSet )
+    public SvnInfoScmResult  info( ScmRepository repository, ScmFileSet fileSet )
         throws ScmException
     {
-        SvnInfoCommand command = new SvnInfoCommand();
+        org.apache.maven.scm.provider.svn.svnexe.command.info.SvnInfoCommand command = new org.apache.maven.scm.provider.svn.svnexe.command.info.SvnInfoCommand();
 
         command.setLogger( getLogger() );
+        
+        
 
-        return (InfoScmResult) command.execute( repository.getProviderRepository(), fileSet, null );
+        return  (SvnInfoScmResult )command.execute( repository.getProviderRepository(), fileSet, null );
     }
 
     /**
@@ -567,34 +569,18 @@ public class BuildMojo
     {
         ScmRepository repository;
 
-        try
+        repository = scmManager.makeScmRepository( urlScm );
+
+        ScmProviderRepository scmRepo = repository.getProviderRepository();
+
+        if ( !StringUtils.isEmpty( username ) )
         {
-            repository = scmManager.makeScmRepository( urlScm );
-
-            ScmProviderRepository scmRepo = repository.getProviderRepository();
-
-            if ( !StringUtils.isEmpty( username ) )
-            {
-                scmRepo.setUser( username );
-            }
-            if ( !StringUtils.isEmpty( password ) )
-            {
-                scmRepo.setPassword( password );
-            }
-
-            if ( repository.getProvider().equals( "svn" ) )
-            {
-                SvnScmProviderRepository svnRepo = (SvnScmProviderRepository) repository.getProviderRepository();
-
-                if ( tagBase != null && tagBase.length() > 0 )
-                {
-                    svnRepo.setTagBase( tagBase );
-                }
-            }
+            scmRepo.setUser( username );
         }
-        catch ( Exception e )
+        
+        if ( !StringUtils.isEmpty( password ) )
         {
-            throw new ScmException( "Can't load the scm provider.", e );
+            scmRepo.setPassword( password );
         }
 
         return repository;
@@ -638,11 +624,6 @@ public class BuildMojo
     public void setPassword( String password )
     {
         this.password = password;
-    }
-
-    public void setTagBase( String tagBase )
-    {
-        this.tagBase = tagBase;
     }
 
     public void setDoCheck( boolean doCheck )
