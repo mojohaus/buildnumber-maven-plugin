@@ -440,8 +440,7 @@ public class BuildMojo
 
             ScmProvider scmProvider = scmManager.getProviderByRepository( repository );
 
-            UpdateScmResult result = scmProvider.update( repository, new ScmFileSet( new File( scmDirectory
-                .getAbsolutePath() ) ) );
+            UpdateScmResult result = scmProvider.update( repository, new ScmFileSet( scmDirectory ) );
 
             checkResult( result );
 
@@ -469,8 +468,7 @@ public class BuildMojo
 
         ScmProvider scmProvider = scmManager.getProviderByRepository( repository );
 
-        StatusScmResult result = scmProvider.status( repository, new ScmFileSet( new File( scmDirectory
-            .getAbsolutePath() ) ) );
+        StatusScmResult result = scmProvider.status( repository, new ScmFileSet( scmDirectory ) );
 
         checkResult( result );
 
@@ -497,7 +495,7 @@ public class BuildMojo
         {
             ScmRepository repository = getScmRepository();
 
-            SvnInfoScmResult scmResult = info( repository, new ScmFileSet( new File( scmDirectory.getAbsolutePath() ) ) );
+            SvnInfoScmResult scmResult = info( repository, new ScmFileSet( scmDirectory ) );
 
             checkResult( scmResult );
 

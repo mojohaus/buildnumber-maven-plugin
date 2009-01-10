@@ -20,6 +20,7 @@
   <version>${testing.version}</version>
   <packaging>pom</packaging>
 
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -31,6 +32,9 @@
   </dependencies>
 
   <build>
+  
+    <defaultGoal>verify</defaultGoal>
+    
     <pluginManagement>
       <plugins>
         <plugin>

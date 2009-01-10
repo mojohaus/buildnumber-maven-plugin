@@ -11,12 +11,12 @@
   </parent>
 
   <groupId>org.codehaus.mojo.it</groupId>
-  <artifactId>buildnumber-maven-plugin-example-1</artifactId>
+  <artifactId>buildnumber-maven-plugin-norevision-it</artifactId>
   
   <packaging>pom</packaging>
 
   <scm>
-    <developerConnection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin/src/it/example-1
+    <developerConnection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin/src/it/novivision-it
     </developerConnection>
   </scm>
 
@@ -28,19 +28,29 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.0-beta-2-SNAPSHOT</version>
         <executions>
           <execution>
-            <id>simple</id>
+            <id>scm-failure</id>
             <phase>package</phase>
             <goals>
               <goal>create</goal>
             </goals>
             <configuration>
-              <scmDirectory>../..</scmDirectory>
+              <scmDirectory>${project.build.directory}</scmDirectory> //this directory is not a svn local directory
+              <revisionOnScmFailure>NOREVISION</revisionOnScmFailure>
+            </configuration>
+          </execution>
+          <execution>
+            <id>no-scm-failure</id>
+            <phase>package</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+            <configuration>
               <useLastCommittedRevision>true</useLastCommittedRevision>
             </configuration>
           </execution>
+          
         </executions>
       </plugin>
     </plugins>
