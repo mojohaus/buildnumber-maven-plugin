@@ -13,7 +13,7 @@
   <groupId>org.codehaus.mojo.it</groupId>
   <artifactId>buildnumber-maven-plugin-basic-it</artifactId>
   
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
   <scm>
     <developerConnection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin/src/it/basic-it
@@ -30,18 +30,48 @@
         <artifactId>buildnumber-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>simple</id>
-            <phase>package</phase>
+            <id>useLastCommittedRevision</id>
+            <phase>test</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+            <configuration>
+              <useLastCommittedRevision>true</useLastCommittedRevision>
+            </configuration>
+          </execution>
+          
+          <execution>
+            <id>timestampFormat</id>
+            <phase>test</phase>
             <goals>
               <goal>create</goal>
             </goals>
             <configuration>
               <scmDirectory>../..</scmDirectory>
               <useLastCommittedRevision>true</useLastCommittedRevision>
+              <timestampFormat>{0,date,yyyy-MM-dd}</timestampFormat>
             </configuration>
           </execution>
         </executions>
       </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+            <manifestEntries>
+              <SCM-Revision>${buildNumber}</SCM-Revision>
+              <Build-Date>${timestamp}</Build-Date>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>      
     </plugins>
     
   </build>
