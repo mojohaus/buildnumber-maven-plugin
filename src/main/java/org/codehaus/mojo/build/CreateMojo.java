@@ -53,6 +53,7 @@ import org.apache.maven.scm.provider.ScmProviderRepository;
 import org.apache.maven.scm.provider.svn.AbstractSvnScmProvider;
 import org.apache.maven.scm.provider.svn.command.info.SvnInfoItem;
 import org.apache.maven.scm.provider.svn.command.info.SvnInfoScmResult;
+import org.apache.maven.scm.provider.svn.svnjava.command.info.SvnJavaInfoCommand;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -559,16 +560,18 @@ public class CreateMojo
      * @todo this should be rolled into org.apache.maven.scm.provider.ScmProvider and
      *       org.apache.maven.scm.provider.svn.SvnScmProvider
      */
-    public SvnInfoScmResult  info( ScmRepository repository, ScmFileSet fileSet )
+    public SvnInfoScmResult info( ScmRepository repository, ScmFileSet fileSet )
         throws ScmException
     {
-        org.apache.maven.scm.provider.svn.svnexe.command.info.SvnInfoCommand command = new org.apache.maven.scm.provider.svn.svnexe.command.info.SvnInfoCommand();
-
-        command.setLogger( getLogger() );
+        AbstractSvnScmProvider abstractSvnScmProvider = (AbstractSvnScmProvider) scmManager.getProviderByType( "svn" );
+        return abstractSvnScmProvider.info( repository.getProviderRepository(), fileSet, null );
         
-        
+        //org.apache.maven.scm.provider.svn.svnexe.command.info.SvnInfoCommand command =
+        //    new org.apache.maven.scm.provider.svn.svnexe.command.info.SvnInfoCommand();
 
-        return  (SvnInfoScmResult )command.execute( repository.getProviderRepository(), fileSet, null );
+        //command.setLogger( getLogger() );
+
+        //return (SvnInfoScmResult) command.execute( repository.getProviderRepository(), fileSet, null );
     }
 
     /**
