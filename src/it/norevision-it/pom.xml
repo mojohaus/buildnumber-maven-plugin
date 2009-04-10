@@ -3,16 +3,9 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.codehaus.mojo.buildnumber.it</groupId>
-    <artifactId>common</artifactId>
-    <version>${testing.version}</version>
-    <relativePath>../common.xml</relativePath>
-  </parent>
-
   <groupId>org.codehaus.mojo.it</groupId>
   <artifactId>buildnumber-maven-plugin-norevision-it</artifactId>
-  
+  <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <scm>
@@ -28,6 +21,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>@pom.version@</version>
         <executions>
           <execution>
             <id>scm-failure</id>

@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -214,6 +215,12 @@ public class BuildMojo
     private String revisionOnScmFailure;
     
     /**
+     * @parameter
+     * @since 1.0-beta-3
+     */
+    private Map providerImplementations;
+    
+    /**
      * @component
      */
     private ScmManager scmManager;
@@ -234,6 +241,18 @@ public class BuildMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+        if ( providerImplementations != null )
+        {
+            for ( Iterator i = providerImplementations.keySet().iterator(); i.hasNext(); )
+            {
+                String providerType = (String) i.next();
+                String providerImplementation = (String) providerImplementations.get( providerType );
+                getLog().info(
+                               "Change the default '" + providerType + "' provider implementation to '"
+                                   + providerImplementation + "'." );
+                scmManager.setScmProviderImplementation( providerType, providerImplementation );
+            }
+        }
         Date now = Calendar.getInstance().getTime();
         if ( format != null )
         {
@@ -362,7 +381,10 @@ public class BuildMojo
                            MessageFormat.format( "Storing buildNumber: {0} at timestamp: {1}", new Object[] {
                                revision,
                                timestamp } ) );
-            project.getProperties().put( buildNumberPropertyName, revision );
+            if ( revision != null )
+            {
+                project.getProperties().put( buildNumberPropertyName, revision );
+            }
             project.getProperties().put( timestampPropertyName, timestamp );
         }
     }
