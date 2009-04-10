@@ -71,7 +71,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @requiresProject
  * @description create a timestamp and a build number from scm or an integer sequence
  */
-public class BuildMojo
+public class CreateMojo
     extends AbstractMojo
 {
 

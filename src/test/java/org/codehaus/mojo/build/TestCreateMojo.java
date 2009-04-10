@@ -29,7 +29,7 @@ import java.util.Locale;
 
 import org.codehaus.plexus.PlexusTestCase;
 
-public class TestBuildMojo
+public class TestCreateMojo
     extends PlexusTestCase
 {
 
@@ -45,7 +45,7 @@ public class TestBuildMojo
     public void testMessageFormat()
         throws Exception
     {
-        BuildMojo mojo = new BuildMojo();
+        CreateMojo mojo = new CreateMojo();
         mojo.setFormat( "At {1,time} on {1,date}, there was {2} on planet {0,number,integer}." );
         mojo.setItems( Arrays.asList( new Object[] { new Integer( 7 ), "timestamp", "a disturbance in the Force" } ) );
 
@@ -79,7 +79,7 @@ public class TestBuildMojo
         throws Exception
     {
         Date date = new Date( 0 ); // the epoch
-        BuildMojo mojo = new BuildMojo();
+        CreateMojo mojo = new CreateMojo();
 
         mojo.setFormat( "{0,date}" );
         mojo.setItems( Arrays.asList( new Object[] { date } ) );
@@ -103,7 +103,7 @@ public class TestBuildMojo
     public void testSequenceFormat()
         throws Exception
     {
-        BuildMojo mojo = new BuildMojo();
+        CreateMojo mojo = new CreateMojo();
         mojo.setBuildNumberPropertiesFileLocation( new File( getBasedir(), "target/buildNumber.properties" ) );
         mojo.setFormat( "{0,number}.{1,number}.{2,number}" );
         mojo.setItems( Arrays.asList( new Object[] { "buildNumber0", "buildNumber1", "buildNumber2" } ) );
