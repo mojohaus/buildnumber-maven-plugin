@@ -49,7 +49,9 @@
               <goal>create</goal>
             </goals>
             <configuration>
-              <scmDirectory>../..</scmDirectory>
+              <providerImplementations>
+                <svn>javasvn</svn>
+              </providerImplementations>            
               <useLastCommittedRevision>true</useLastCommittedRevision>
               <timestampFormat>{0,date,yyyy-MM-dd}</timestampFormat>
             </configuration>

@@ -40,7 +40,6 @@
               <goal>create</goal>
             </goals>
             <configuration>
-              <scmDirectory>../..</scmDirectory>
               <useLastCommittedRevision>true</useLastCommittedRevision>
               <timestampFormat>{0,date,yyyy-MM-dd}</timestampFormat>
             </configuration>
