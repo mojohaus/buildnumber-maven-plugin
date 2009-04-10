@@ -1,0 +1,39 @@
+ ------
+ Using svnjava
+ ------
+ 
+ ---
+ April 10, 2005
+ ---
+ 
+Using svnjava provider
+
+  If you need to execute the plugin on machine without any svn in the path you can configure 
+  the mojo to use the svnjava provider.
+  
++--
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>1.0-beta-3</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doCheck>true</doCheck>
+          <doUpdate>true</doUpdate>
+          <providerImplementations>
+            <svn>javasvn</svn>
+          </providerImplementations>          
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
++--
