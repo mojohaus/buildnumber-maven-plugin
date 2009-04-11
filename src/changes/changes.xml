@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document>
+<document xmlns="http://maven.apache.org/changes/1.0.0" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+
   <properties>
     <title>Maven Build Number Plugin Changes Report</title>
     <author email="woodj@ucalgary.ca">Julian Wood</author>
   </properties>
   <body>
-    <release version="0.9.6" date="2007-09-10" desc="Some long-requested features.">
+    <release version="0.9.6" date="2007-09-10" description="Some long-requested features.">
       <action dev="woodj" type="add" issue="1062">
         Retrieve revision number using xml format, which should make it work on
         international systems.
@@ -21,19 +24,19 @@
       </action>
     </release>
 
-    <release version="0.9.5" date="2007-04-27" desc="Inverted commandline parameter behaviour.">
+    <release version="0.9.5" date="2007-04-27" description="Inverted commandline parameter behaviour.">
       <action dev="woodj" type="update">
         We now let commandline params such as -Dmaven.buildNumber.doCheck=false take precedent over the config.
       </action>
     </release>
 
-    <release version="0.9.4" date="2007-01-08" desc="Decouple phase">
+    <release version="0.9.4" date="2007-01-08" description="Decouple phase">
       <action dev="woodj" type="update">
         Decoupled the buildnumber from a particular phase. Must now be specified.
       </action>
     </release>
 
-    <release version="0.9.3" date="2007-01-03" desc="First Release">
+    <release version="0.9.3" date="2007-01-03" description="First Release">
       <action dev="woodj" type="update">
         Update dependencies to released versions.
       </action>
@@ -46,21 +49,21 @@
       </action>
     </release>
 
-    <release version="0.9.2-SNAPSHOT" date="2006-03-06" desc="Minor Cleanup">
+    <release version="0.9.2-SNAPSHOT" date="2006-03-06" description="Minor Cleanup">
       <action dev="woodj" type="update">
         Added ability to use a timestamp or a sequential build number.
       </action>
     </release>
 
 
-    <release version="0.9.-SNAPSHOT" date="2006-02-16" desc="Minor Cleanup">
+    <release version="0.9.-SNAPSHOT" date="2006-02-16" description="Minor Cleanup">
       <action dev="woodj" type="update">
         Made some additions to the pom so that the snapshot dependencies can be
         downloaded automatically.
       </action>
     </release>
 
-    <release version="0.9-SNAPSHOT" date="2006-02-13" desc="Initial Release">
+    <release version="0.9-SNAPSHOT" date="2006-02-13" description="Initial Release">
       <action dev="woodj" type="add">
         First release of the plugin.
       </action>
