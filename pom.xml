@@ -38,6 +38,8 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  
+  
 
   <developers>
     <developer>
@@ -130,6 +132,13 @@
       </plugins>
     </pluginManagement>
     
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>2.1</version>
+      </plugin>
+    </plugins>
   </build>
       
     
