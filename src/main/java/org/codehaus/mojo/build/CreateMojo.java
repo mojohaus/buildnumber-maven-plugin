@@ -34,6 +34,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -251,6 +252,14 @@ public class CreateMojo
      * 
      */
     private boolean getRevisionOnlyOnce;
+    
+    
+    /**
+     * @parameter expression="${session}"
+     * @readonly
+     * @required
+     */
+    protected MavenSession session;       
 
     private ScmLogDispatcher logger;
 
@@ -371,28 +380,33 @@ public class CreateMojo
             {
                 getLog().info( "Checking for local modifications: skipped." );
             }
-
-            if ( doUpdate )
+            if ( session.getSettings().isOffline() )
             {
-                // we update your local repo
-                // even after you commit, your revision stays the same until you update, thus this
-                // action
-                List changedFiles = update();
-                for ( Iterator i = changedFiles.iterator(); i.hasNext(); )
-                {
-                    ScmFile file = (ScmFile) i.next();
-                    getLog().info( "Updated: " + file );
-                }
-                if ( changedFiles.size() == 0 )
-                {
-                    getLog().info( "No files needed updating." );
-                }
+                getLog().info( "maven is executed in offline mode, Updating project files from SCM: skipped." );
             }
             else
             {
-                getLog().info( "Updating project files from SCM: skipped." );
+                if ( doUpdate )
+                {
+                    // we update your local repo
+                    // even after you commit, your revision stays the same until you update, thus this
+                    // action
+                    List changedFiles = update();
+                    for ( Iterator i = changedFiles.iterator(); i.hasNext(); )
+                    {
+                        ScmFile file = (ScmFile) i.next();
+                        getLog().info( "Updated: " + file );
+                    }
+                    if ( changedFiles.size() == 0 )
+                    {
+                        getLog().info( "No files needed updating." );
+                    }
+                }
+                else
+                {
+                    getLog().info( "Updating project files from SCM: skipped." );
+                }
             }
-
             revision = getRevision();
         }
 
