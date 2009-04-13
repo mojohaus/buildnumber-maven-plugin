@@ -10,9 +10,10 @@
   <body>
     <release version="1.0-beta-3" date="in trunk">
       <action issue="MOJO-1336">The name of the BuildMojo class should be changed to match the goal name.</action>
-      <action issue="MOJO-1334">add a parameter to change scm implementation</action>
-      <action issue="MOJO-1287">Reuse maven scm api to get svn info</action>
-      <action issue="MOJO-1285">Remove tagBase configuration</action>
+      <action issue="MOJO-1334">add a parameter to change scm implementation.</action>
+      <action issue="MOJO-1287">Reuse maven scm api to get svn info.</action>
+      <action issue="MOJO-1285">Remove tagBase configuration.</action>
+      <action issue="MOJO-1163">Skip scm update when maven run in offline mode.</action>
     </release>
     <release version="0.9.6" date="2007-09-10" description="Some long-requested features.">
       <action dev="woodj" type="add" issue="1062">
