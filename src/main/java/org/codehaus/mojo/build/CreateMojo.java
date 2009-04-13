@@ -233,6 +233,25 @@ public class CreateMojo
      */
     private MavenProject project;
 
+    /**
+     * Contains the full list of projects in the reactor.
+     *
+     * @parameter expression="${reactorProjects}"
+     * @readonly
+     * @since 1.0-beta-3
+     */
+    private List reactorProjects;
+    
+    /**
+     * If set to true, will get the scm revision once for all modules of a multi-module project 
+     * instead of fetching once for each module.
+     * 
+     * @parameter default-value="false"
+     * @since 1.0-beta-3
+     * 
+     */
+    private boolean getRevisionOnlyOnce;
+
     private ScmLogDispatcher logger;
 
     private String revision;
@@ -335,6 +354,14 @@ public class CreateMojo
         }
         else
         {
+            // Check if the plugin has already run.
+            revision = project.getProperties().getProperty( this.buildNumberPropertyName );
+            if ( this.getRevisionOnlyOnce && revision != null)
+            {
+                getLog().debug( "Revision available from previous execution" );
+                return;
+            }
+                
             if ( doCheck )
             {
                 // we fail if there are local mods
@@ -386,6 +413,18 @@ public class CreateMojo
                 project.getProperties().put( buildNumberPropertyName, revision );
             }
             project.getProperties().put( timestampPropertyName, timestamp );
+            
+            // Add the revision and timestamp properties to each project in the reactor
+            if ( getRevisionOnlyOnce && reactorProjects != null )
+            {
+                Iterator projIter = reactorProjects.iterator();
+                while ( projIter.hasNext() )
+                {
+                    MavenProject nextProj = (MavenProject) projIter.next();
+                    nextProj.getProperties().put( this.buildNumberPropertyName, revision );
+                    nextProj.getProperties().put( this.timestampPropertyName, timestamp );
+                }
+            }
         }
     }
 
