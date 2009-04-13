@@ -571,13 +571,15 @@ public class CreateMojo
         }
         catch ( ScmException e )
         {
-            if ( !StringUtils.isEmpty( revisionOnScmFailure ) ) {
-                getLog().warn("Cannot get the revision information from the scm repository, proceeding with " +
-                        "revision of " + revisionOnScmFailure + " : \n" + e.getLocalizedMessage());
-                
-                setDoCheck(false);
-                setDoUpdate(false);
-                
+            if ( !StringUtils.isEmpty( revisionOnScmFailure ) )
+            {
+                getLog().warn(
+                               "Cannot get the revision information from the scm repository, proceeding with "
+                                   + "revision of " + revisionOnScmFailure + " : \n" + e.getLocalizedMessage() );
+
+                setDoCheck( false );
+                setDoUpdate( false );
+
                 return revisionOnScmFailure;
             }
             
