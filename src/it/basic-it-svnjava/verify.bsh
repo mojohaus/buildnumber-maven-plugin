@@ -44,12 +44,15 @@ try
     JarFile jar = new JarFile( artifact );
     
     Attributes manifest = jar.getManifest().getMainAttributes();
-   
-    if ( manifest.get( new Attributes.Name( "SCM-Revision" ) ) == null )
+    
+    String scmRev = manifest.get( new Attributes.Name( "SCM-Revision" ) );
+    if ( scmRev == null || scmRev.length() < 1 )
     {
-        System.err.println( "No manifest entry SCM-Revision" );
+        System.err.println( "No or empty manifest entry SCM-Revision" );
         return false;    
     }  
+    // assert we can parse it as long
+    Long.parseLong( scmRev ); 
     
     
 }
