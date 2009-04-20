@@ -32,7 +32,7 @@ Usage
   </build>
 +------------------------------------------+
 
- This will cause the create goal of the buildNumber plugin to be executed during the compile phase. It will first
+ This will cause the create goal of the buildNumber plugin to be executed during the validate phase. It will first
  check to see if you have locally modified files, and will fail if there are any. You can suppress this
  behaviour with <<<-Dmaven.buildNumber.doCheck=false>>> (or remove/change the configuration info).
 
