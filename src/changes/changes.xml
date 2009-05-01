@@ -8,7 +8,7 @@
     <author email="woodj@ucalgary.ca">Julian Wood</author>
   </properties>
   <body>
-    <release version="1.0-beta-3" date="in trunk">
+    <release version="1.0-beta-3" date="2009-05-01">
       <action issue="MOJO-1336" type="update">The name of the BuildMojo class should be changed to match the goal name.</action>
       <action issue="MOJO-1334" type="add">add a parameter to change scm implementation.</action>
       <action issue="MOJO-1287" type="update">Reuse maven scm api to get svn info.</action>
