@@ -288,6 +288,11 @@ public class CreateMojo
         Date now = Calendar.getInstance().getTime();
         if ( format != null )
         {
+            if ( items == null )
+            {
+                throw new MojoExecutionException(
+                                                  " if you set a format, you must provide at least one item, please check documentation " );
+            }
             // needs to be an array
             // look for special values
             Object[] itemAry = new Object[items.size()];
