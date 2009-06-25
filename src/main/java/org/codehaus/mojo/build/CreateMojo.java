@@ -77,6 +77,8 @@ public class CreateMojo
     extends AbstractMojo
 {
 
+    public final String DEFAULT_BRANCH_NAME = "UNKNOWN_BRANCH";
+    
     /**
      * @parameter expression="${project.scm.developerConnection}"
      * @readonly
@@ -590,7 +592,12 @@ public class CreateMojo
         {
             ScmRepository repository = getScmRepository();
             SvnInfoScmResult scmResult = info( repository, new ScmFileSet( scmDirectory ) );
-            checkResult( scmResult );
+            if ( ! scmResult.isSuccess() )
+            {
+                getLog().debug( "Cannot get the branch information from the scm repository : " +
+                                scmResult.getCommandOutput() );
+                return DEFAULT_BRANCH_NAME;
+            }
             SvnInfoItem info = (SvnInfoItem) scmResult.getInfoItems().get( 0 );
             scmUrl = info.getURL();
         }
