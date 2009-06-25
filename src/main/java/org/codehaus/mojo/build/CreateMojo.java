@@ -460,6 +460,7 @@ public class CreateMojo
                     MavenProject nextProj = (MavenProject) projIter.next();
                     nextProj.getProperties().put( this.buildNumberPropertyName, revision );
                     nextProj.getProperties().put( this.timestampPropertyName, timestamp );
+                    nextProj.getProperties().put(  this.scmBranchPropertyName, scmBranch );
                 }
             }
         }
