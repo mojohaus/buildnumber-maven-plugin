@@ -126,4 +126,14 @@ public class TestCreateMojo
 
     }
 
+    public void testFilterBranchFromScmUrl()
+    {
+    	CreateMojo mojo = new CreateMojo();
+    	String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/trunk";
+    	assertEquals("trunk", mojo.filterBranchFromScmUrl(scmUrlTrunk));
+    	String scmUrlBranch = "https://mifos.dev.java.net/svn/mifos/branches/v1.2.x";
+    	assertEquals("branches/v1.2.x", mojo.filterBranchFromScmUrl(scmUrlBranch));
+    	String scmUrlTag = "https://mifos.dev.java.net/svn/mifos/tags/v1.2.1";
+    	assertEquals("tags/v1.2.1", mojo.filterBranchFromScmUrl(scmUrlTag));
+    }
 }

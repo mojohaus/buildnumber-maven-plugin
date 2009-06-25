@@ -100,6 +100,9 @@ Usage
   </build>
 +------------------------------------------+
 
+ The <<<$\{scmBranch\}>>> property is also populated to provide 
+ the SCM branch.
+
  <<Note:>> Older version of the jar and war plugin don't require the
  manifest/addDefaultImplementationEntries element, and in fact will fail
  if present. The new versions require this element.

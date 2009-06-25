@@ -64,7 +64,8 @@ import org.codehaus.plexus.util.StringUtils;
  * make sure that you have checked everything into scm, before issuing the build number. That
  * behaviour can be suppressed, and then the latest local build number is used. Build numbers are
  * not reflected in your artifact's filename (automatically), but can be added to the metadata. You
- * can access the build number in your pom with ${buildNumber}. You can also access ${timestamp}.
+ * can access the build number in your pom with ${buildNumber}. You can also access ${timestamp} and
+ * the scm branch of the build (if applicable) in ${buildScmBranch}
  * 
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
  * @version $Id$
@@ -256,6 +257,15 @@ public class CreateMojo
      * 
      */
     private boolean getRevisionOnlyOnce;
+
+    /**
+     * You can rename the buildScmBranch property name to another property name if desired.
+     * 
+     * @parameter expression="${maven.buildNumber.scmBranchPropertyName}"
+     *            default-value="scmBranch"
+     * @since 1.0-beta-4
+     */
+    private String scmBranchPropertyName;
     
     
     /**
@@ -437,6 +447,10 @@ public class CreateMojo
             }
             project.getProperties().put( timestampPropertyName, timestamp );
             
+            String scmBranch = getScmBranch();
+            getLog().info("Storing buildScmBranch: " + scmBranch);
+            project.getProperties().put( scmBranchPropertyName, scmBranch );
+
             // Add the revision and timestamp properties to each project in the reactor
             if ( getRevisionOnlyOnce && reactorProjects != null )
             {
@@ -558,6 +572,48 @@ public class CreateMojo
 
         return result.getChangedFiles();
 
+    }
+
+    /**
+     * Get the branch info for this revision from the repository. For svn, it is in svn info.
+     * 
+     * @return
+     * @throws MojoExecutionException
+     * @throws MojoExecutionException
+     */
+    public String getScmBranch()
+        throws MojoExecutionException
+    {
+        String scmUrl;
+        try
+        {
+            ScmRepository repository = getScmRepository();
+            SvnInfoScmResult scmResult = info( repository, new ScmFileSet( scmDirectory ) );
+            checkResult( scmResult );
+            SvnInfoItem info = (SvnInfoItem) scmResult.getInfoItems().get( 0 );
+            scmUrl = info.getURL();
+        }
+        catch ( ScmException e )
+        {
+            throw new MojoExecutionException( "Cannot get the branch information from the scm repository : \n" +
+                e.getLocalizedMessage(), e );
+        }
+
+        return filterBranchFromScmUrl( scmUrl );
+    }
+
+    protected String filterBranchFromScmUrl( String scmUrl )
+    {
+        String scmBranch = "UNKNOWN";
+        if ( scmUrl.indexOf( "/trunk" ) != -1 )
+        {
+            scmBranch = "trunk";
+        }
+        else if ( ( scmUrl.indexOf( "/branches" ) != -1 ) || scmUrl.indexOf( "/tags" ) != -1 )
+        {
+            scmBranch = scmUrl.replaceFirst( ".*((branches|tags)[^/]*).*?", "$1" );
+        }
+        return scmBranch;
     }
 
     /**
