@@ -225,5 +225,18 @@
       </plugin>
     </plugins>
   </reporting>
+  
+  <repositories>
+    <repository>
+      <id>maven.glassfish.org</id>
+      <url>http://maven.glassfish.org/content/groups/public</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
 </project>
