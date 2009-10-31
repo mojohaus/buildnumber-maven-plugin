@@ -134,7 +134,7 @@
     <dependency>
       <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
       <artifactId>maven-scm-provider-svnjava</artifactId>
-      <version>1.7-SNAPSHOT</version>
+      <version>1.7</version>
       <exclusions>
         <exclusion>
           <groupId>org.tmatesoft.svnkit</groupId>
@@ -279,19 +279,5 @@
       </plugin>
     </plugins>
   </reporting>
-
-  <repositories>
-    <repository>
-      <id>codehaus.snapshots</id>
-      <url>http://oss.sonatype.org/content/repositories/googlecode-snapshots/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
-  
   
 </project>
