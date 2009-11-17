@@ -8,7 +8,11 @@
     <author email="woodj@ucalgary.ca">Julian Wood</author>
   </properties>
   <body>
-    <release version="1.0-beta-4" date="in trunk">
+    <release version="1.0-beta-4" date="in trunk" description="Compatibility and cleanups">
+      <action issue="MOJO-1432" type="update">Add support for Mercurial</action>
+      <action issue="MOJO-1379" type="add">provide scm branch identifier in pom for finer-grained build differentiation</action>
+      <action issue="MOJO-1414" type="update">Upgrade to last scm svnjava provider (to upgrade to SVNkit 1.3.0 in order to support svn 1.6)</action>
+      <action issue="MOJO-1449" type="fix">1.0-beta-3 on maven central has a transitive dependency that cannot be resolved in maven central.</action>
     </release>
     <release version="1.0-beta-3" date="2009-05-01">
       <action issue="MOJO-1336" type="update">The name of the BuildMojo class should be changed to match the goal name.</action>
