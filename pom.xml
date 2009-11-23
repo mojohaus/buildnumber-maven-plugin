@@ -15,6 +15,8 @@
   <name>Build Number Maven Plugin</name>
   <version>1.0-beta-4-SNAPSHOT</version>
 
+  <inceptionYear>2007</inceptionYear>
+
   <prerequisites>
     <maven>2.0.6</maven>
   </prerequisites>
