@@ -84,6 +84,13 @@ public class CreateMojo
      * @readonly
      */
     private String urlScm;
+    
+    /**
+     * @parameter expression="${project.scm.connection}"
+     * @since 1.0-beta-5
+     * @readonly
+     */
+    private String readUrlScm;    
 
     /**
      * The username that is used when connecting to the SCM system.
@@ -719,7 +726,7 @@ public class CreateMojo
     {
         ScmRepository repository;
 
-        repository = scmManager.makeScmRepository( urlScm );
+        repository = scmManager.makeScmRepository( StringUtils.isBlank( urlScm ) ? readUrlScm : urlScm  );
 
         ScmProviderRepository scmRepo = repository.getProviderRepository();
 
