@@ -241,6 +241,49 @@
         </plugins>
       </build>
     </profile>
+    
+    <profile>
+      <id>devlocal</id>
+      <build>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>buildnumber-maven-plugin</artifactId>
+          <version>${project.version}</version>
+          <executions>
+            <execution>
+              <id>useLastCommittedRevision</id>
+              <phase>compile</phase>
+              <goals>
+                <goal>create</goal>
+              </goals>
+              <configuration>
+                <providerImplementations>
+                  <svn>javasvn</svn>
+                </providerImplementations>
+                <useLastCommittedRevision>true</useLastCommittedRevision>
+                <doUpdate>true</doUpdate>
+              </configuration>
+            </execution>
+            <execution>
+              <id>timestampFormat</id>
+              <phase>test</phase>
+              <goals>
+                <goal>create</goal>
+              </goals>
+              <configuration>
+                <providerImplementations>
+                  <svn>javasvn</svn>
+                </providerImplementations>            
+                <useLastCommittedRevision>true</useLastCommittedRevision>
+                <timestampFormat>{0,date,yyyy-MM-dd}</timestampFormat>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>      
+      </plugins>      
+      </build>
+    </profile>
 
   </profiles>
   

@@ -563,7 +563,7 @@ public class CreateMojo
         }
         catch ( ScmException e )
         {
-            throw new MojoExecutionException( "Couldn't update project.", e );
+            throw new MojoExecutionException( "Couldn't update project. " + e.getMessage(), e );
         }
 
     }
