@@ -136,7 +136,7 @@
     <dependency>
       <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
       <artifactId>maven-scm-provider-svnjava</artifactId>
-      <version>1.8</version>
+      <version>1.9</version>
       <exclusions>
         <exclusion>
           <groupId>org.tmatesoft.svnkit</groupId>
