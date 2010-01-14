@@ -335,6 +335,10 @@ public class CreateMojo
                         {
                             try
                             {
+                                if (!propertiesFile.getParentFile().exists())
+                                {
+                                    propertiesFile.getParentFile().mkdirs();
+                                }
                                 propertiesFile.createNewFile();
                             }
                             catch ( IOException e )
