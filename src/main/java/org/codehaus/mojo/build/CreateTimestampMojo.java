@@ -45,20 +45,6 @@ public class CreateTimestampMojo
 {
 
     /**
-     * You can rename the timestamp property name to another property name if desired.
-     * 
-     * @parameter expression="${maven.buildNumber.timestampPropertyName}" default-value="timestamp"
-     */
-    private String timestampPropertyName;
-
-    /**
-     * Apply this java.text.SimpleDateFormat to the timestamp.
-     * 
-     * @parameter default-value=""
-     */
-    private String timestampFormat;
-
-    /**
      * The maven project.
      * 
      * @parameter expression="${project}"
@@ -73,6 +59,20 @@ public class CreateTimestampMojo
      * @readonly
      */
     private List reactorProjects;
+
+    /**
+     * You can rename the timestamp property name to another property name if desired.
+     * 
+     * @parameter expression="${maven.buildNumber.timestampPropertyName}" default-value="timestamp"
+     */
+    private String timestampPropertyName;
+    
+    /**
+     * Apply this java.text.SimpleDateFormat to the timestamp.
+     * 
+     * @parameter expression="${maven.buildNumber.timestampFormat}" default-value=""
+     */
+    private String timestampFormat;
 
     public void execute()
     {
