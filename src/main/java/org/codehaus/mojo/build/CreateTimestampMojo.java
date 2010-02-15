@@ -104,7 +104,7 @@ public class CreateTimestampMojo
         while ( projIter.hasNext() )
         {
             MavenProject nextProj = (MavenProject) projIter.next();
-            nextProj.getProperties().put( this.timestampPropertyName, timestampString );
+            nextProj.getProperties().setProperty( this.timestampPropertyName, timestampString );
         }
         
     }
