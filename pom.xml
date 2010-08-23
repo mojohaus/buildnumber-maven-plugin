@@ -58,7 +58,7 @@
 
     
   <properties>
-    <maven.scm.version>1.3</maven.scm.version>
+    <maven.scm.version>1.4</maven.scm.version>
     <maven.api.version>2.0.6</maven.api.version>
   </properties>
 
@@ -136,7 +136,7 @@
     <dependency>
       <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
       <artifactId>maven-scm-provider-svnjava</artifactId>
-      <version>1.10</version>
+      <version>1.11</version>
       <exclusions>
         <exclusion>
           <groupId>org.tmatesoft.svnkit</groupId>
