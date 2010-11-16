@@ -17,6 +17,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>@pom.version@</version>
         <executions>
           <execution>
             <id>useLastCommittedRevision</id>
