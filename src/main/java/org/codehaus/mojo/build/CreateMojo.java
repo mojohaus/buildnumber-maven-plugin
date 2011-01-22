@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -54,6 +55,7 @@ import org.apache.maven.scm.provider.ScmProviderRepository;
 import org.apache.maven.scm.provider.svn.AbstractSvnScmProvider;
 import org.apache.maven.scm.provider.svn.command.info.SvnInfoItem;
 import org.apache.maven.scm.provider.svn.command.info.SvnInfoScmResult;
+import org.apache.maven.scm.provider.svn.repository.SvnScmProviderRepository;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -609,6 +611,16 @@ public class CreateMojo
                                 scmResult.getCommandOutput() );
                 return DEFAULT_BRANCH_NAME;
             }
+            if (scmResult.getInfoItems().isEmpty())
+            {
+                if (!StringUtils.isEmpty( revisionOnScmFailure ))
+                {
+                    setDoCheck( false );
+                    setDoUpdate( false );
+
+                    return DEFAULT_BRANCH_NAME;                    
+                }
+            }
             SvnInfoItem info = (SvnInfoItem) scmResult.getInfoItems().get( 0 );
             scmUrl = info.getURL();
         }
@@ -668,7 +680,11 @@ public class CreateMojo
             SvnInfoScmResult scmResult = info( repository, new ScmFileSet( scmDirectory ) );
 
             checkResult( scmResult );
-
+            
+            if (scmResult.getInfoItems().isEmpty()) 
+            {
+                return (!StringUtils.isEmpty( revisionOnScmFailure )) ? revisionOnScmFailure : null;
+            }
             SvnInfoItem info = (SvnInfoItem) scmResult.getInfoItems().get( 0 );
             
             if ( useLastCommittedRevision )
@@ -712,8 +728,13 @@ public class CreateMojo
     public SvnInfoScmResult info( ScmRepository repository, ScmFileSet fileSet )
         throws ScmException
     {
-        AbstractSvnScmProvider abstractSvnScmProvider = (AbstractSvnScmProvider) scmManager.getProviderByType( "svn" );
-        return abstractSvnScmProvider.info( repository.getProviderRepository(), fileSet, null );
+        
+        if (repository.getProviderRepository() instanceof SvnScmProviderRepository)
+        {
+            AbstractSvnScmProvider abstractSvnScmProvider = (AbstractSvnScmProvider) scmManager.getProviderByType( "svn" ); 
+            return abstractSvnScmProvider.info( repository.getProviderRepository(), fileSet, null );
+        }
+        return new SvnInfoScmResult( null, null, null, true);
         
         //org.apache.maven.scm.provider.svn.svnexe.command.info.SvnInfoCommand command =
         //    new org.apache.maven.scm.provider.svn.svnexe.command.info.SvnInfoCommand();
@@ -764,13 +785,13 @@ public class CreateMojo
         if ( !result.isSuccess() )
         {
             // TODO: improve error handling
-            System.err.println( "Provider message:" );
+            getLog().error( "Provider message:" );
 
-            System.err.println( result.getProviderMessage() );
+            getLog().error( result.getProviderMessage() );
 
-            System.err.println( "Command output:" );
+            getLog().error( "Command output:" );
 
-            System.err.println( result.getCommandOutput() );
+            getLog().error( result.getCommandOutput() );
 
             throw new ScmException( "Error!" );
         }
