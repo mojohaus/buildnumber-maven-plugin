@@ -54,6 +54,14 @@
         <role>Programmer</role>
       </roles>
     </developer>
+    <developer>
+      <id>olamy</id>
+      <name>Olivier Lamy</name>
+      <email>olamy@apache.org</email>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
   </developers>
 
     

@@ -614,6 +614,17 @@ public class CreateMojo
         }
         catch ( ScmException e )
         {
+        	 if ( !StringUtils.isEmpty( revisionOnScmFailure ) )
+             {
+                 getLog().warn(
+                                "Cannot get the branch information from the scm repository, proceeding with "
+                                    + DEFAULT_BRANCH_NAME+ " : \n" + e.getLocalizedMessage() );
+
+                 setDoCheck( false );
+                 setDoUpdate( false );
+
+                 return DEFAULT_BRANCH_NAME;
+             }
             throw new MojoExecutionException( "Cannot get the branch information from the scm repository : \n" +
                 e.getLocalizedMessage(), e );
         }
