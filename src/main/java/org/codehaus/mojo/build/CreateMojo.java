@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.maven.execution.MavenSession;
@@ -55,7 +56,6 @@ import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.manager.ScmManager;
 import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.ScmProviderRepository;
-import org.apache.maven.scm.provider.svn.AbstractSvnScmProvider;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -235,7 +235,7 @@ public class CreateMojo
      * @parameter
      * @since 1.0-beta-3
      */
-    private Map providerImplementations;
+    private Map<String, String> providerImplementations;
     
     /**
      * @component
@@ -296,10 +296,10 @@ public class CreateMojo
     {
         if ( providerImplementations != null )
         {
-            for ( Iterator i = providerImplementations.keySet().iterator(); i.hasNext(); )
+            for ( Entry<String, String> entry : providerImplementations.entrySet() )
             {
-                String providerType = (String) i.next();
-                String providerImplementation = (String) providerImplementations.get( providerType );
+                String providerType = entry.getKey();
+                String providerImplementation = entry.getValue();
                 getLog().info(
                                "Change the default '" + providerType + "' provider implementation to '"
                                    + providerImplementation + "'." );
@@ -425,10 +425,9 @@ public class CreateMojo
                     // we update your local repo
                     // even after you commit, your revision stays the same until you update, thus this
                     // action
-                    List changedFiles = update();
-                    for ( Iterator i = changedFiles.iterator(); i.hasNext(); )
+                    List<ScmFile> changedFiles = update();
+                    for ( ScmFile file : changedFiles )
                     {
-                        ScmFile file = (ScmFile) i.next();
                         getLog().info( "Updated: " + file );
                     }
                     if ( changedFiles.size() == 0 )
@@ -514,7 +513,7 @@ public class CreateMojo
     {
         getLog().info( "Verifying there are no local modifications ..." );
 
-        List changedFiles;
+        List<ScmFile> changedFiles;
 
         try
         {
@@ -527,15 +526,15 @@ public class CreateMojo
 
         if ( !changedFiles.isEmpty() )
         {
-            StringBuffer message = new StringBuffer();
+            StringBuilder message = new StringBuilder();
 
-            for ( Iterator i = changedFiles.iterator(); i.hasNext(); )
+            String ls = System.getProperty( "line.separator" );
+            
+            for ( ScmFile file : changedFiles )
             {
-                ScmFile file = (ScmFile) i.next();
-
                 message.append( file.toString() );
 
-                message.append( "\n" );
+                message.append( ls );
             }
 
             throw new MojoExecutionException(
