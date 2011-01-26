@@ -657,11 +657,12 @@ public class CreateMojo
     protected String filterBranchFromScmUrl( String scmUrl )
     {
         String scmBranch = "UNKNOWN";
-        if ( scmUrl.indexOf( "/trunk" ) != -1 )
+        
+        if ( StringUtils.contains( scmUrl, "/trunk" ) )
         {
             scmBranch = "trunk";
         }
-        else if ( ( scmUrl.indexOf( "/branches" ) != -1 ) || scmUrl.indexOf( "/tags" ) != -1 )
+        else if ( StringUtils.contains( scmUrl, "/branches" ) || StringUtils.contains( scmUrl, "/tags" ) )
         {
             scmBranch = scmUrl.replaceFirst( ".*((branches|tags)[^/]*).*?", "$1" );
         }
