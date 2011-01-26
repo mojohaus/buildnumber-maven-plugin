@@ -14,7 +14,7 @@ Usage
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.0-beta-3</version>
+        <version>${project.version}</version>
         <executions>
           <execution>
             <phase>validate</phase>
@@ -115,7 +115,7 @@ Usage
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.0-beta-3</version>
+        <version>${project.version}</version>
         <configuration>
           <format>At {1,time} on {1,date}, there was {2} on planet {0,number,integer}.</format>
           <items>
