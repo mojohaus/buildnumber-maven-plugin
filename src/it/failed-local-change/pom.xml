@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.codehaus.mojo.it</groupId>
+  <artifactId>buildnumber-maven-plugin-basic-it</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <scm>
+    <developerConnection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin/src/it/basic-it</developerConnection>
+  </scm>
+
+  <build>
+
+    <defaultGoal>package</defaultGoal>
+
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>@pom.version@</version>
+        <configuration>
+          <doCheck>true</doCheck>
+          <doUpdate>false</doUpdate>        
+        </configuration>
+      </plugin>
+    </plugins>
+    
+  </build>
+
+</project>
