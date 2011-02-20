@@ -85,7 +85,7 @@ public class HgChangeSetMojo
             if ( previousChangeSet == null || previousChangeSetDate == null )
             {
                 String changeSet = getChangeSet();
-                String changeSetDate = getChangeSetDate( getRevision() );
+                String changeSetDate = getChangeSetDate();
                 getLog().info( "Setting Mercurial Changeset: " + changeSet );
                 getLog().info( "Setting Mercurial Changeset Date: " + changeSetDate );
                 setChangeSetProperty( changeSet );
@@ -107,12 +107,12 @@ public class HgChangeSetMojo
         return consumer.getOutput();
     }
 
-    protected String getChangeSetDate( int revision )
+    protected String getChangeSetDate()
         throws ScmException, MojoExecutionException
     {
         HgOutputConsumer consumer = new HgOutputConsumer( logger );
         ScmResult result =
-            HgUtils.execute( consumer, logger, scmDirectory, new String[] { "log", "-r", String.valueOf( revision ),
+            HgUtils.execute( consumer, logger, scmDirectory, new String[] { "log", "-r", ".",
                 "--template", "\"{date|isodate}\"" } );
         checkResult( result );
         return consumer.getOutput();
@@ -131,18 +131,6 @@ public class HgChangeSetMojo
     protected String getProperty( String property )
     {
         return project.getProperties().getProperty( property );
-    }
-
-    protected int getRevision()
-        throws ScmException, MojoExecutionException
-    {
-        HgOutputConsumer consumer = new HgOutputConsumer( logger );
-        ScmResult result = HgUtils.execute( consumer, logger, scmDirectory, new String[] { "id", "-n" } );
-        checkResult( result );
-        String output = consumer.getOutput();
-        output = StringUtils.chompLast( output, "+" ); // Remove trailing 'dirty'
-        // flag
-        return Integer.parseInt( output );
     }
 
     private void setChangeSetDateProperty( String changeSetDate )
