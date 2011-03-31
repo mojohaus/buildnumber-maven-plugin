@@ -66,7 +66,7 @@
 
     
   <properties>
-    <maven.scm.version>1.5-SNAPSHOT</maven.scm.version>
+    <maven.scm.version>1.5</maven.scm.version>
     <maven.compiler.source>1.5</maven.compiler.source>
     <maven.compiler.target>1.5</maven.compiler.target>    
     <maven.api.version>2.0.6</maven.api.version>
