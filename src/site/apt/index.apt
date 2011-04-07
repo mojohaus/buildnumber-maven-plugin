@@ -1,6 +1,10 @@
  ------
  Introduction
  ------
+ Olivier Lamy
+ ------
+ 2011-04-07
+ ------
 
 Introduction
 
@@ -16,7 +20,8 @@ Introduction
  if desired.
 
  Optionally, you can configure this mojo to produce a revision based on a timestamp, or on a sequence,
- without requiring any interaction with an SCM system. Note that currently, the only supported SCM is subversion.
+ without requiring any interaction with an SCM system.
+ <<Note that currently, supported SCMs are : subversion, git and mercurial.>>
  
  
 * Goals Overview
