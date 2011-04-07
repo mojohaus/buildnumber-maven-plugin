@@ -26,14 +26,14 @@ Introduction
  
 * Goals Overview
   
-  * {{{create-mojo.html}buildnumber:create}}: Create a build number.
+  * {{{./create-mojo.html}buildnumber:create}}: Create a build number.
   
   []
   
 
 * Usage
   
-  Instructions on how to use the Build Number Maven Plugin can be found on the {{{usage.html}usage page}}.
+  Instructions on how to use the Build Number Maven Plugin can be found on the {{{./usage.html}usage page}}.
  
    
 ~~ * Examples
