@@ -32,6 +32,7 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin</developerConnection>
     <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/buildnumber-maven-plugin</url>
   </scm>
+
   
   <licenses>
     <license>
@@ -240,7 +241,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
-        <version>2.1</version>
+        <version>2.4</version>
       </plugin>
     </plugins>
   </build>
@@ -332,24 +333,29 @@
     </profile>
 
   </profiles>
-  
+
   <reporting>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
-        <version>2.1</version>
+        <version>2.4</version>
+        <configuration>
+          <fixVersionIds>16003</fixVersionIds>
+          <component>13030</component>
+          <resolutionIds>Closed</resolutionIds>
+        </configuration>
         <reportSets>
           <reportSet>
             <reports>
-              <report>changes-report</report>
+              <report>jira-report</report>
             </reports>
           </reportSet>
         </reportSets>
       </plugin>
     </plugins>
   </reporting>
-  
+
   <repositories>
     <repository>
       <id>apache.snapshots</id>
