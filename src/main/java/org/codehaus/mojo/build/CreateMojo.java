@@ -21,21 +21,6 @@ package org.codehaus.mojo.build;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -58,6 +43,21 @@ import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.ScmProviderRepository;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.StringUtils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * This mojo is designed to give you a build number. So when you might make 100 builds of version
@@ -613,7 +613,7 @@ public class CreateMojo
     public String getScmBranch()
         throws MojoExecutionException
     {
-        String scmUrl;
+        String scmUrl = null;
         try
         {
             ScmRepository repository = getScmRepository();
@@ -634,8 +634,11 @@ public class CreateMojo
                     return DEFAULT_BRANCH_NAME;
                 }
             }
-            InfoItem info = scmResult.getInfoItems().get( 0 );
-            scmUrl = info.getURL();
+            if (!scmResult.getInfoItems().isEmpty())
+            {
+                InfoItem info = scmResult.getInfoItems().get( 0 );
+                scmUrl = info.getURL();
+            }
         }
         catch ( ScmException e )
         {
