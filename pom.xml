@@ -33,6 +33,11 @@
     <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/buildnumber-maven-plugin</url>
   </scm>
 
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/MBUILDNUM</url>
+  </issueManagement>
+
   
   <licenses>
     <license>
