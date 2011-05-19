@@ -34,7 +34,7 @@ try
         return false;
     }
     
-    File artifact = new File ( target, "MOJO-1668-1.0-SNAPSHOT.jar" );
+    File artifact = new File ( target, "buildnumber-maven-plugin-MOJO-1668-1.0-SNAPSHOT.jar" );
     if ( !artifact.exists() || artifact.isDirectory() )
     {
         System.err.println( "artifact file is missing or a directory." );

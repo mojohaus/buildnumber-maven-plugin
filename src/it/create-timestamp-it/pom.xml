@@ -4,10 +4,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.codehaus.mojo.it</groupId>
-  <artifactId>buildnumber-maven-plugin-timestamp-it</artifactId>
-  <version>1.0</version>
-  
-  <packaging>jar</packaging>
+  <artifactId>buildnumber-maven-plugin-create-timestamp-it</artifactId>
+  <version>1.0-SNAPSHOT</version>
 
   <build>
 

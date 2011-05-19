@@ -34,7 +34,7 @@ try
         return false;
     }
     
-    File artifact = new File ( target, "buildnumber-maven-plugin-basic-it-1.0-SNAPSHOT.jar" );
+    File artifact = new File ( target, "buildnumber-maven-plugin-basic-it-clearcase-scm-1.0-SNAPSHOT.jar" );
     if ( !artifact.exists() || artifact.isDirectory() )
     {
         System.err.println( "artifact file is missing or a directory." );
