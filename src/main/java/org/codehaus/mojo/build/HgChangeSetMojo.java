@@ -36,6 +36,7 @@ import org.codehaus.plexus.util.StringUtils;
  * 
  * @author Tomas Pollak
  * @goal hgchangeset
+ * @phase initialize
  * @requiresProject
  * @since 1.0-beta-4
  */

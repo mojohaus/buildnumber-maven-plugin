@@ -72,6 +72,7 @@ import java.util.Properties;
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
  * @version $Id$
  * @goal create
+ * @phase initialize
  * @requiresProject
  * @description create a timestamp and a build number from scm or an integer sequence
  */

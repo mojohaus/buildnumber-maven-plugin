@@ -21,7 +21,6 @@
         <executions>
           <execution>
             <id>useLastCommittedRevision</id>
-            <phase>test</phase>
             <goals>
               <goal>create-timestamp</goal>
             </goals>

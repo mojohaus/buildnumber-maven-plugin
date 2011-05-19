@@ -36,6 +36,7 @@ import org.apache.maven.project.MavenProject;
  * @author pgier
  * @version $Id$
  * @goal create-timestamp
+ * @phase initialize
  * @since 1.0-beta-5
  * @requiresProject
  * @description create a timestamp property

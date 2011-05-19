@@ -24,7 +24,6 @@
         <executions>
           <execution>
             <id>useLastCommittedRevision</id>
-            <phase>test</phase>
             <goals>
               <goal>create</goal>
             </goals>
@@ -35,7 +34,6 @@
           
           <execution>
             <id>timestampFormat</id>
-            <phase>test</phase>
             <goals>
               <goal>create</goal>
             </goals>
