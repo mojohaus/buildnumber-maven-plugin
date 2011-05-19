@@ -68,7 +68,8 @@ public class CreateTimestampMojo
     private String timestampPropertyName;
     
     /**
-     * Apply this java.text.SimpleDateFormat to the timestamp.
+     * Apply this java.text.SimpleDateFormat to the timestamp. By default, no formatting is done
+     * but the raw number value (milliseconds since January 1, 1970, 00:00:00 GMT) is used.
      * 
      * @parameter expression="${maven.buildNumber.timestampFormat}" default-value=""
      */
