@@ -3,8 +3,6 @@
  ------
  Olivier Lamy
  ------
- 2011-04-07
- ------
 
 Introduction
 
@@ -28,6 +26,10 @@ Introduction
   
   * {{{./create-mojo.html}buildnumber:create}}: Create a build number.
   
+  * {{{./create-timestamp-mojo.html}buildnumber:create-timestamp}}: Create a timestamp.
+
+  * {{{./hgchangeset-mojo.html}buildnumber:hgchangeset}}: Create properties for changeSet and changeSetDate from a Mercurial repository.
+
   []
   
 
