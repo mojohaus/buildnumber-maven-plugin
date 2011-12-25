@@ -767,9 +767,7 @@ public class CreateMojo
     private ScmRepository getScmRepository()
         throws ScmException
     {
-        ScmRepository repository;
-
-        repository = scmManager.makeScmRepository( StringUtils.isBlank( urlScm ) ? readUrlScm : urlScm  );
+        ScmRepository repository = scmManager.makeScmRepository( StringUtils.isBlank( urlScm ) ? readUrlScm : urlScm  );
 
         ScmProviderRepository scmRepo = repository.getProviderRepository();
 
