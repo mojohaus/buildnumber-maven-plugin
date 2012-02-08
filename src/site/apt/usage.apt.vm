@@ -191,3 +191,26 @@ At 12:30 PM on Jul 3, 2053, there was a disturbance in the Force on planet 7.
 
  Here is some additional writeup on {{{http://apollo.ucalgary.ca/tlcprojectswiki/index.php/Public/Project_Versioning_-_Best_Practices#Build_Versioning}
  how to version your projects with this plugin}}. It even details how to access the version number in your code.
+
+
+* Git short revision ID
+
+ 
+ From the version 1.1 you can specify the length for the Git revision. 
+ To enable this feature you have to specify the new tag << <shortRevisionLength> >> in the << <configuration> >> section.
+ For exemple:
+
++------------------------------------------+
+        <configuration>
+           <shortRevisionLength>5</shortRevisionLength>
+       	</configuration>
++------------------------------------------+
+
+ the output of the found git revision will have only 5 characters:
+
++------------------------------------------+
+  instead of b0c1c69be579175e63eeb1c056d607f01ab61e96 you will have only b0c1c
++------------------------------------------+ 
+ 
+ <<Note:>> this feature uses internally the <<git rev-pasre --short>> command and the revision length is set to minimum 4 characters. 
+ So you can't have the revision id shorter then 4 characters. Even if you specify the length between 0 and 4, the plugin will inform you about this situation and the minimum value (4) will be used.
