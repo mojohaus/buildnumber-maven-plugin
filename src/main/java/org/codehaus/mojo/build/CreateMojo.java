@@ -2,18 +2,18 @@ package org.codehaus.mojo.build;
 
 /**
  * The MIT License
- * 
+ *
  * Copyright (c) 2005 Learning Commons, University of Calgary
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the "Software"), to deal in the Software without restriction,
  * including without limitation the rights to use, copy, modify, merge, publish, distribute,
  * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all copies or
  * substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
  * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
  * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
@@ -26,6 +26,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.scm.CommandParameter;
 import org.apache.maven.scm.CommandParameters;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFile;
@@ -41,6 +42,7 @@ import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.manager.ScmManager;
 import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.ScmProviderRepository;
+import org.apache.maven.scm.provider.git.repository.GitScmProviderRepository;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -68,7 +70,7 @@ import java.util.Properties;
  * not reflected in your artifact's filename (automatically), but can be added to the metadata. You
  * can access the build number in your pom with ${buildNumber}. You can also access ${timestamp} and
  * the scm branch of the build (if applicable) in ${buildScmBranch}
- * 
+ *
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
  * @version $Id$
  * @goal create
@@ -81,23 +83,23 @@ public class CreateMojo
 {
 
     public final String DEFAULT_BRANCH_NAME = "UNKNOWN_BRANCH";
-    
+
     /**
      * @parameter expression="${project.scm.developerConnection}"
      * @readonly
      */
     private String urlScm;
-    
+
     /**
      * @parameter expression="${project.scm.connection}"
-     * @since 1.0-beta-5
      * @readonly
+     * @since 1.0-beta-5
      */
-    private String readUrlScm;    
+    private String readUrlScm;
 
     /**
      * The username that is used when connecting to the SCM system.
-     * 
+     *
      * @parameter expression="${username}"
      * @since 1.0-beta-1
      */
@@ -105,7 +107,7 @@ public class CreateMojo
 
     /**
      * The password that is used when connecting to the SCM system.
-     * 
+     *
      * @parameter expression="${password}"
      * @since 1.0-beta-1
      */
@@ -113,26 +115,25 @@ public class CreateMojo
 
     /**
      * Local directory to be used to issue SCM actions
-     * 
+     *
      * @parameter expression="${maven.buildNumber.scmDirectory}" default-value="${basedir}
      * @since 1.0-beta-
      */
     private File scmDirectory;
 
 
-
     /**
      * You can rename the buildNumber property name to another property name if desired.
-     * 
+     *
      * @parameter expression="${maven.buildNumber.buildNumberPropertyName}"
-     *            default-value="buildNumber"
+     * default-value="buildNumber"
      * @since 1.0-beta-1
      */
     private String buildNumberPropertyName;
 
     /**
      * You can rename the timestamp property name to another property name if desired.
-     * 
+     *
      * @parameter expression="${maven.buildNumber.timestampPropertyName}" default-value="timestamp"
      * @since 1.0-beta-1
      */
@@ -142,7 +143,7 @@ public class CreateMojo
      * If this is made true, we check for modified files, and if there are any, we fail the build.
      * Note that this used to be inverted (skipCheck), but needed to be changed to allow releases to
      * work. This corresponds to 'svn status'.
-     * 
+     *
      * @parameter expression="${maven.buildNumber.doCheck}" default-value="false"
      * @since 1.0-beta-1
      */
@@ -152,14 +153,14 @@ public class CreateMojo
      * If this is made true, then the revision will be updated to the latest in the repo, otherwise
      * it will remain what it is locally. Note that this used to be inverted (skipUpdate), but
      * needed to be changed to allow releases to work. This corresponds to 'svn update'.
-     * 
+     * <p/>
      * Note that these expressions (doCheck, doUpdate, etc) are the first thing evaluated. If there
      * is no matching expression, we get the default-value. If there is (ie
      * -Dmaven.buildNumber.doCheck=false), we get that value. The configuration, however, gets the
      * last say, through use of the getters/setters below. So if <doCheck>true</doCheck>, then
      * normally that's the final value of the param in question. However, this mojo reverses that
      * behaviour, such that the command line parameters get the last say.
-     * 
+     *
      * @parameter expression="${maven.buildNumber.doUpdate}" default-value="false"
      * @since 1.0-beta-1
      */
@@ -168,7 +169,7 @@ public class CreateMojo
     /**
      * Specify a message as specified by java.text.MessageFormat. This triggers "items"
      * configuration to be read
-     * 
+     *
      * @parameter
      * @since 1.0-beta-1
      */
@@ -177,7 +178,7 @@ public class CreateMojo
     /**
      * Properties file to be created when "format" is not null and item has "buildNumber". See Usage
      * for details
-     * 
+     *
      * @parameter default-value="${basedir}/buildNumber.properties";
      * @since 1.0-beta-2
      */
@@ -186,7 +187,7 @@ public class CreateMojo
     /**
      * Specify the corresponding items for the format message, as specified by
      * java.text.MessageFormat. Special item values are "timestamp" and "buildNumber/d*".
-     * 
+     *
      * @parameter
      * @since 1.0-beta-1
      */
@@ -196,7 +197,7 @@ public class CreateMojo
      * The locale used for date and time formatting. The locale name should be in the format defined
      * in {@link Locale#toString()}. The default locale is the platform default returned by
      * {@link Locale#getDefault()}.
-     * 
+     *
      * @parameter expression="${maven.buildNumber.locale}"
      * @since 1.0-beta-2
      */
@@ -204,7 +205,7 @@ public class CreateMojo
 
     /**
      * whether to retrieve the revision for the last commit, or the last revision of the repository.
-     * 
+     *
      * @parameter expression="${maven.buildNumber.useLastCommittedRevision}" default-value="false"
      * @since 1.0-beta-2
      */
@@ -213,7 +214,7 @@ public class CreateMojo
     /**
      * Apply this java.text.MessageFormat to the timestamp only (as opposed to the
      * <code>format</code> parameter).
-     * 
+     *
      * @parameter
      * @since 1.0-beta-2
      */
@@ -222,22 +223,22 @@ public class CreateMojo
     /**
      * Setting this value allows the build to continue even in the event of an SCM failure.  The value set will be
      * used as the revision string in the event of a failure to retrieve the revision it from the SCM.
-     * 
+     *
      * @parameter
      * @since 1.0-beta-2
      */
     private String revisionOnScmFailure;
-    
+
     /**
      * Selects alternative SCM provider implementations. Each map key denotes the original provider type as given in the
      * SCM URL like "cvs" or "svn", the map value specifies the provider type of the desired implementation to use
      * instead. In other words, this map configures a substitition mapping for SCM providers.
-     * 
+     *
      * @parameter
      * @since 1.0-beta-3
      */
     private Map<String, String> providerImplementations;
-    
+
     /**
      * @component
      */
@@ -245,7 +246,7 @@ public class CreateMojo
 
     /**
      * The maven project.
-     * 
+     *
      * @parameter expression="${project}"
      * @readonly
      */
@@ -259,38 +260,51 @@ public class CreateMojo
      * @since 1.0-beta-3
      */
     private List reactorProjects;
-    
+
     /**
-     * If set to true, will get the scm revision once for all modules of a multi-module project 
+     * If set to true, will get the scm revision once for all modules of a multi-module project
      * instead of fetching once for each module.
-     * 
+     *
      * @parameter default-value="false"
      * @since 1.0-beta-3
-     * 
      */
     private boolean getRevisionOnlyOnce;
 
     /**
      * You can rename the buildScmBranch property name to another property name if desired.
-     * 
+     *
      * @parameter expression="${maven.buildNumber.scmBranchPropertyName}"
-     *            default-value="scmBranch"
+     * default-value="scmBranch"
      * @since 1.0-beta-4
      */
     private String scmBranchPropertyName;
-    
-    
+
+
     /**
      * @parameter expression="${session}"
      * @readonly
      * @required
      */
-    protected MavenSession session;       
+    protected MavenSession session;
 
     private ScmLogDispatcher logger;
 
     private String revision;
 
+    /**
+     * Max length of a revision id (used only for git)
+     *
+     * @parameter default value is null
+     * @readonly
+     * @
+     * @since 1.1
+     */
+    private int shortRevisionLength = DEFAULT_SHORT_REVISION_DISABLED;
+
+    /**
+     * @since 1.1
+     */
+    private static final int DEFAULT_SHORT_REVISION_DISABLED = -1;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -302,8 +316,8 @@ public class CreateMojo
                 String providerType = entry.getKey();
                 String providerImplementation = entry.getValue();
                 getLog().info(
-                               "Change the default '" + providerType + "' provider implementation to '"
-                                   + providerImplementation + "'." );
+                    "Change the default '" + providerType + "' provider implementation to '" + providerImplementation
+                        + "'." );
                 scmManager.setScmProviderImplementation( providerType, providerImplementation );
             }
         }
@@ -313,7 +327,7 @@ public class CreateMojo
             if ( items == null )
             {
                 throw new MojoExecutionException(
-                                                  " if you set a format, you must provide at least one item, please check documentation " );
+                    " if you set a format, you must provide at least one item, please check documentation " );
             }
             // needs to be an array
             // look for special values
@@ -338,7 +352,7 @@ public class CreateMojo
                         {
                             try
                             {
-                                if (!propertiesFile.getParentFile().exists())
+                                if ( !propertiesFile.getParentFile().exists() )
                                 {
                                     propertiesFile.getParentFile().mkdirs();
                                 }
@@ -375,8 +389,7 @@ public class CreateMojo
                         catch ( NumberFormatException e )
                         {
                             throw new MojoExecutionException(
-                                                              "Couldn't parse buildNumber in properties file to an Integer: "
-                                                                  + buildNumberString );
+                                "Couldn't parse buildNumber in properties file to an Integer: " + buildNumberString );
                         }
                         catch ( IOException e )
                         {
@@ -400,12 +413,12 @@ public class CreateMojo
         {
             // Check if the plugin has already run.
             revision = project.getProperties().getProperty( this.buildNumberPropertyName );
-            if ( this.getRevisionOnlyOnce && revision != null)
+            if ( this.getRevisionOnlyOnce && revision != null )
             {
                 getLog().debug( "Revision available from previous execution" );
                 return;
             }
-                
+
             if ( doCheck )
             {
                 // we fail if there are local mods
@@ -449,21 +462,19 @@ public class CreateMojo
             String timestamp = String.valueOf( now.getTime() );
             if ( timestampFormat != null )
             {
-                timestamp = MessageFormat.format( timestampFormat, new Object[] { now } );
+                timestamp = MessageFormat.format( timestampFormat, new Object[]{ now } );
             }
 
-            getLog().info(
-                           MessageFormat.format( "Storing buildNumber: {0} at timestamp: {1}", new Object[] {
-                               revision,
-                               timestamp } ) );
+            getLog().info( MessageFormat.format( "Storing buildNumber: {0} at timestamp: {1}",
+                                                 new Object[]{ revision, timestamp } ) );
             if ( revision != null )
             {
                 project.getProperties().put( buildNumberPropertyName, revision );
             }
             project.getProperties().put( timestampPropertyName, timestamp );
-            
+
             String scmBranch = getScmBranch();
-            getLog().info("Storing buildScmBranch: " + scmBranch);
+            getLog().info( "Storing buildScmBranch: " + scmBranch );
             project.getProperties().put( scmBranchPropertyName, scmBranch );
 
             // Add the revision and timestamp properties to each project in the reactor
@@ -478,7 +489,7 @@ public class CreateMojo
                         nextProj.getProperties().put( this.buildNumberPropertyName, revision );
                     }
                     nextProj.getProperties().put( this.timestampPropertyName, timestamp );
-                    nextProj.getProperties().put(  this.scmBranchPropertyName, scmBranch );
+                    nextProj.getProperties().put( this.scmBranchPropertyName, scmBranch );
                 }
             }
         }
@@ -486,7 +497,7 @@ public class CreateMojo
 
     /**
      * Formats the given argument using the configured format template and locale.
-     * 
+     *
      * @param arguments arguments to be formatted @ @return formatted result
      */
     private String format( Object[] arguments )
@@ -533,7 +544,7 @@ public class CreateMojo
             StringBuilder message = new StringBuilder();
 
             String ls = System.getProperty( "line.separator" );
-            
+
             for ( ScmFile file : changedFiles )
             {
                 message.append( file.toString() );
@@ -542,8 +553,7 @@ public class CreateMojo
             }
 
             throw new MojoExecutionException(
-                                              "Cannot create the build number because you have local modifications : \n"
-                                                  + message );
+                "Cannot create the build number because you have local modifications : \n" + message );
         }
 
     }
@@ -559,12 +569,11 @@ public class CreateMojo
 
             UpdateScmResult result = scmProvider.update( repository, new ScmFileSet( scmDirectory ) );
 
-            
-            if (result == null )
+            if ( result == null )
             {
                 return Collections.emptyList();
-            }            
-            
+            }
+
             checkResult( result );
 
             if ( result instanceof UpdateScmResultWithRevision )
@@ -593,11 +602,11 @@ public class CreateMojo
 
         StatusScmResult result = scmProvider.status( repository, new ScmFileSet( scmDirectory ) );
 
-        if (result == null)
+        if ( result == null )
         {
             return Collections.emptyList();
         }
-        
+
         checkResult( result );
 
         return result.getChangedFiles();
@@ -606,7 +615,7 @@ public class CreateMojo
 
     /**
      * Get the branch info for this revision from the repository. For svn, it is in svn info.
-     * 
+     *
      * @return
      * @throws MojoExecutionException
      * @throws MojoExecutionException
@@ -621,8 +630,9 @@ public class CreateMojo
             InfoScmResult scmResult = info( repository, new ScmFileSet( scmDirectory ) );
             if ( scmResult == null || !scmResult.isSuccess() )
             {
-                getLog().debug( "Cannot get the branch information from the scm repository : "
-                                    + (scmResult == null ? "" : scmResult.getCommandOutput() ) );
+                getLog().debug( "Cannot get the branch information from the scm repository : " + ( scmResult == null
+                    ? ""
+                    : scmResult.getCommandOutput() ) );
                 return DEFAULT_BRANCH_NAME;
             }
             if ( scmResult.getInfoItems().isEmpty() )
@@ -635,7 +645,7 @@ public class CreateMojo
                     return DEFAULT_BRANCH_NAME;
                 }
             }
-            if (!scmResult.getInfoItems().isEmpty())
+            if ( !scmResult.getInfoItems().isEmpty() )
             {
                 InfoItem info = scmResult.getInfoItems().get( 0 );
                 scmUrl = info.getURL();
@@ -643,19 +653,19 @@ public class CreateMojo
         }
         catch ( ScmException e )
         {
-        	 if ( !StringUtils.isEmpty( revisionOnScmFailure ) )
-             {
-                 getLog().warn(
-                                "Cannot get the branch information from the scm repository, proceeding with "
-                                    + DEFAULT_BRANCH_NAME+ " : \n" + e.getLocalizedMessage() );
+            if ( !StringUtils.isEmpty( revisionOnScmFailure ) )
+            {
+                getLog().warn(
+                    "Cannot get the branch information from the scm repository, proceeding with " + DEFAULT_BRANCH_NAME
+                        + " : \n" + e.getLocalizedMessage() );
 
-                 setDoCheck( false );
-                 setDoUpdate( false );
+                setDoCheck( false );
+                setDoUpdate( false );
 
-                 return DEFAULT_BRANCH_NAME;
-             }
-            throw new MojoExecutionException( "Cannot get the branch information from the scm repository : \n" +
-                e.getLocalizedMessage(), e );
+                return DEFAULT_BRANCH_NAME;
+            }
+            throw new MojoExecutionException(
+                "Cannot get the branch information from the scm repository : \n" + e.getLocalizedMessage(), e );
         }
 
         return filterBranchFromScmUrl( scmUrl );
@@ -664,7 +674,7 @@ public class CreateMojo
     protected String filterBranchFromScmUrl( String scmUrl )
     {
         String scmBranch = "UNKNOWN";
-        
+
         if ( StringUtils.contains( scmUrl, "/trunk" ) )
         {
             scmBranch = "trunk";
@@ -678,7 +688,7 @@ public class CreateMojo
 
     /**
      * Get the revision info from the repository. For svn, it is svn info
-     * 
+     *
      * @return
      * @throws MojoExecutionException
      */
@@ -697,21 +707,20 @@ public class CreateMojo
 
             InfoScmResult scmResult = info( repository, new ScmFileSet( scmDirectory ) );
 
-            if (scmResult == null || scmResult.getInfoItems().isEmpty() ) 
+            if ( scmResult == null || scmResult.getInfoItems().isEmpty() )
             {
-                return (!StringUtils.isEmpty( revisionOnScmFailure )) ? revisionOnScmFailure : null;
-            }            
-            
+                return ( !StringUtils.isEmpty( revisionOnScmFailure ) ) ? revisionOnScmFailure : null;
+            }
+
             checkResult( scmResult );
-            
-            
+
             InfoItem info = scmResult.getInfoItems().get( 0 );
-            
+
             if ( useLastCommittedRevision )
             {
                 return info.getLastChangedRevision();
             }
-            
+
             return info.getRevision();
         }
         catch ( ScmException e )
@@ -719,37 +728,54 @@ public class CreateMojo
             if ( !StringUtils.isEmpty( revisionOnScmFailure ) )
             {
                 getLog().warn(
-                               "Cannot get the revision information from the scm repository, proceeding with "
-                                   + "revision of " + revisionOnScmFailure + " : \n" + e.getLocalizedMessage() );
+                    "Cannot get the revision information from the scm repository, proceeding with " + "revision of "
+                        + revisionOnScmFailure + " : \n" + e.getLocalizedMessage() );
 
                 setDoCheck( false );
                 setDoUpdate( false );
 
                 return revisionOnScmFailure;
             }
-            
-            throw new MojoExecutionException( "Cannot get the revision information from the scm repository : \n"
-                + e.getLocalizedMessage(), e );
+
+            throw new MojoExecutionException(
+                "Cannot get the revision information from the scm repository : \n" + e.getLocalizedMessage(), e );
 
         }
 
     }
 
     /**
-     * Get info from svn.
-     * 
+     * Get info from scm.
+     *
      * @param repository
      * @param fileSet
      * @return
      * @throws ScmException
      * @todo this should be rolled into org.apache.maven.scm.provider.ScmProvider and
-     *       org.apache.maven.scm.provider.svn.SvnScmProvider
+     * org.apache.maven.scm.provider.svn.SvnScmProvider
      */
     public InfoScmResult info( ScmRepository repository, ScmFileSet fileSet )
         throws ScmException
     {
-        return scmManager.getProviderByRepository( repository ).info( repository.getProviderRepository(), fileSet, new CommandParameters() );
+        CommandParameters commandParameters = new CommandParameters();
+        //only for Git, we will make a test for shortRevisionLength parameter
+        if ( GitScmProviderRepository.PROTOCOL_GIT.equals(
+            scmManager.getProviderByRepository( repository ).getScmType() )
+            && this.shortRevisionLength != DEFAULT_SHORT_REVISION_DISABLED )
+        {
+            getLog().info( "ShortRevision tag detected. The value is '" + this.shortRevisionLength + "'." );
+            if ( shortRevisionLength >= 0 && shortRevisionLength < 4 )
+            {
+                getLog().warn(
+                    "shortRevision parameter less then 4. ShortRevisionLength is relaying on 'git rev-parese --short=LENGTH' command, accordingly to Git rev-parse specification the LENGTH value is miminum 4. " );
+            }
+            commandParameters.setInt( CommandParameter.SCM_SHORT_REVISION_LENGTH, this.shortRevisionLength );
+        }
+
+        return scmManager.getProviderByRepository( repository ).info( repository.getProviderRepository(), fileSet,
+                                                                      commandParameters );
     }
+
 
     /**
      * @return
@@ -767,7 +793,7 @@ public class CreateMojo
     private ScmRepository getScmRepository()
         throws ScmException
     {
-        ScmRepository repository = scmManager.makeScmRepository( StringUtils.isBlank( urlScm ) ? readUrlScm : urlScm  );
+        ScmRepository repository = scmManager.makeScmRepository( StringUtils.isBlank( urlScm ) ? readUrlScm : urlScm );
 
         ScmProviderRepository scmRepo = repository.getProviderRepository();
 
@@ -775,7 +801,7 @@ public class CreateMojo
         {
             scmRepo.setUser( username );
         }
-        
+
         if ( !StringUtils.isEmpty( password ) )
         {
             scmRepo.setPassword( password );
@@ -881,5 +907,9 @@ public class CreateMojo
     {
         this.revisionOnScmFailure = revisionOnScmFailure;
     }
-        
+
+    public void setShortRevisionLength( int shortRevision )
+    {
+        this.shortRevisionLength = shortRevision;
+    }
 }
