@@ -17,5 +17,5 @@
  * under the License.
  */
  
-def f1 = new File(basedir, 'foo.txt');
+def f1 = new File(basedir, 'thefoo.txt');
 f1.append( "abcdefg" );
