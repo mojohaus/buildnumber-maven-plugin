@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.codehaus.mojo</groupId>
     <artifactId>mojo-parent</artifactId>
-    <version>28</version>
+    <version>29</version>
   </parent>
 
   <groupId>org.codehaus.mojo</groupId>
@@ -201,14 +201,6 @@
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-idea-plugin</artifactId>
-          <configuration>
-            <downloadSources>false</downloadSources>
-            <downloadJavadocs>false</downloadJavadocs>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-invoker-plugin</artifactId>
           <version>1.5</version>
           <configuration>
@@ -238,7 +230,8 @@
               </goals>
             </execution>
           </executions>
-        </plugin>        
+        </plugin>
+
       </plugins>
     </pluginManagement>
     
@@ -247,6 +240,44 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
         <version>2.4</version>
+      </plugin>
+      <!-- svnkit 1.7.x are in maven.tmatesoft.com repository so let's use it -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>mojo-enforcer-rules</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <excludes>
+                    <exclude>org.codehaus.plexus:plexus-component-api</exclude>
+                  </excludes>
+                  <message>The plexus-component-api conflicts with the plexus-container-default used by Maven. You probably added a dependency that is missing the exclusions.</message>
+                </bannedDependencies>
+                <requireNoRepositories>
+                  <banRepositories>false</banRepositories>
+                  <banPluginRepositories>true</banPluginRepositories>
+                  <allowSnapshotRepositories>true</allowSnapshotRepositories>
+                  <allowedPluginRepositories>
+                    <allowedPluginRepository>codehaus-snapshots</allowedPluginRepository>
+                    <allowedPluginRepository>apache.snapshots</allowedPluginRepository>
+                  </allowedPluginRepositories>
+                </requireNoRepositories>
+                <requirePluginVersions>
+                   <message>Best Practice is to always define plugin versions!</message>
+                   <banLatest>true</banLatest>
+                   <banRelease>true</banRelease>
+                </requirePluginVersions>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -278,7 +309,7 @@
                 <goal>integration-test</goal>
               </goals>
               <settingsFile>src/it/settings.xml</settingsFile>
-              <cloneProjectsTo>${project.build.directory}/it-tests</cloneProjectsTo>
+              <cloneProjectsTo>src/it</cloneProjectsTo>
             </configuration>
             <executions>
               <execution>
@@ -380,6 +411,16 @@
       </releases>
       <snapshots>
         <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>maven.tmatesoft.com.releases</id>
+      <url>http://maven.tmatesoft.com/content/repositories/releases</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
       </snapshots>
     </repository>
   </repositories>
