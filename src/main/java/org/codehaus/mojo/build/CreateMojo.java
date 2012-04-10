@@ -295,8 +295,6 @@ public class CreateMojo
      * Max length of a revision id (used only for git)
      *
      * @parameter default value is null
-     * @readonly
-     * @
      * @since 1.1
      */
     private int shortRevisionLength = DEFAULT_SHORT_REVISION_DISABLED;
