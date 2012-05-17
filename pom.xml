@@ -241,44 +241,6 @@
         <artifactId>maven-changes-plugin</artifactId>
         <version>2.4</version>
       </plugin>
-      <!-- svnkit 1.7.x are in maven.tmatesoft.com repository so let's use it -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>mojo-enforcer-rules</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <bannedDependencies>
-                  <excludes>
-                    <exclude>org.codehaus.plexus:plexus-component-api</exclude>
-                  </excludes>
-                  <message>The plexus-component-api conflicts with the plexus-container-default used by Maven. You probably added a dependency that is missing the exclusions.</message>
-                </bannedDependencies>
-                <requireNoRepositories>
-                  <banRepositories>false</banRepositories>
-                  <banPluginRepositories>true</banPluginRepositories>
-                  <allowSnapshotRepositories>true</allowSnapshotRepositories>
-                  <allowedPluginRepositories>
-                    <allowedPluginRepository>codehaus-snapshots</allowedPluginRepository>
-                    <allowedPluginRepository>apache.snapshots</allowedPluginRepository>
-                  </allowedPluginRepositories>
-                </requireNoRepositories>
-                <requirePluginVersions>
-                   <message>Best Practice is to always define plugin versions!</message>
-                   <banLatest>true</banLatest>
-                   <banRelease>true</banRelease>
-                </requirePluginVersions>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   
@@ -392,7 +354,7 @@
     </plugins>
   </reporting>
 
-  <repositories>
+  <!--repositories>
     <repository>
       <id>apache.snapshots</id>
       <url>https://repository.apache.org/content/groups/snapshots-group/</url>
@@ -423,6 +385,6 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-  </repositories>
+  </repositories-->
   
 </project>
