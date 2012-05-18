@@ -91,13 +91,7 @@
                 <dependency>
                   <groupId>org.tmatesoft.svnkit</groupId>
                   <artifactId>svnkit</artifactId>
-                  <version>1.7.4-rc4</version>
-                </dependency>
-                <dependency>
-                  <groupId>de.regnis.q.sequence</groupId>
-                  <artifactId>sequence-library</artifactId>
-                  <version>1.0.0</version>
-                  <scope>compile</scope>
+                  <version>1.7.4-v1</version>
                 </dependency>
               </dependencies>
             </plugin>
