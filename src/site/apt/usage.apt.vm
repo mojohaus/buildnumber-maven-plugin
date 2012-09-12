@@ -46,7 +46,7 @@ Usage
 
 +------------------------------------------+
   <build>
-    <finalName>${project.artifactId}-${project.version}-r${buildNumber}</finalName>
+    <finalName>$\{project.artifactId}-$\{project.version}-r$\{buildNumber}</finalName>
   </build>
 +------------------------------------------+
 
@@ -66,7 +66,7 @@ Usage
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
             </manifest>
             <manifestEntries>
-              <Implementation-Build>${buildNumber}</Implementation-Build>
+              <Implementation-Build>$\{buildNumber}</Implementation-Build>
             </manifestEntries>
           </archive>
         </configuration>
@@ -91,7 +91,7 @@ Usage
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
             </manifest>
             <manifestEntries>
-              <Implementation-Build>${buildNumber}</Implementation-Build>
+              <Implementation-Build>$\{buildNumber}</Implementation-Build>
             </manifestEntries>
           </archive>
         </configuration>
