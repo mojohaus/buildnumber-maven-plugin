@@ -10,6 +10,22 @@
     <build>
         <defaultGoal>package</defaultGoal>
         <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-scm-plugin</artifactId>
+            <version>1.8</version>
+            <executions>
+              <execution>
+                <id>get-checkout</id>
+                <goals><goal>checkout</goal></goals>
+                <phase>generate-resources</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <checkoutDirectory>${project.build.directory}/checkout</checkoutDirectory>
+              <connectionType>developerConnection</connectionType>
+            </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
@@ -21,7 +37,7 @@
                             <goal>write-project-properties</goal>
                         </goals>
                         <configuration>
-                            <outputFile>some.properties</outputFile>
+                            <outputFile>${project.build.directory}/checkout/some.properties</outputFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -36,7 +52,9 @@
                         <goals>
                             <goal>create</goal>
                         </goals>
+                        <phase>compile</phase>
                         <configuration>
+                            <scmDirectory>${project.build.directory}/checkout</scmDirectory>
                             <doCheck>true</doCheck>
                             <doUpdate>false</doUpdate>
                             <useLastCommittedRevision>true</useLastCommittedRevision>
