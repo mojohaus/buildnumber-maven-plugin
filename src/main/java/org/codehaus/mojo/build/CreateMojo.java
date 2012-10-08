@@ -69,7 +69,7 @@ import org.codehaus.plexus.util.StringUtils;
  * behaviour can be suppressed, and then the latest local build number is used. Build numbers are
  * not reflected in your artifact's filename (automatically), but can be added to the metadata. You
  * can access the build number in your pom with ${buildNumber}. You can also access ${timestamp} and
- * the scm branch of the build (if applicable) in ${buildScmBranch}
+ * the scm branch of the build (if applicable) in ${scmBranch}
  * <br>
  * Note that there are several <strong>do</strong> parameters.
  * These parameters (doCheck, doUpdate, etc) are the first thing evaluated. If there
