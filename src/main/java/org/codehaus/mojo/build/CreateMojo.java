@@ -187,7 +187,8 @@ public class CreateMojo
 
     /**
      * Specify the corresponding items for the format message, as specified by
-     * java.text.MessageFormat. Special item values are "scmVersion", "timestamp" and "buildNumber/d*".
+     * java.text.MessageFormat. Special item values are "scmVersion", "timestamp" and "buildNumber[digits]", where [digits] are
+     * optional digits added to the end of the number to select a property.
      *
      * @parameter
      * @since 1.0-beta-1
