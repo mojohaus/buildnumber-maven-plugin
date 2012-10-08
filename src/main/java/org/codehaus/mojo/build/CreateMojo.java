@@ -21,6 +21,21 @@ package org.codehaus.mojo.build;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -45,21 +60,6 @@ import org.apache.maven.scm.provider.ScmProviderRepository;
 import org.apache.maven.scm.provider.git.repository.GitScmProviderRepository;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
 
 /**
  * This mojo is designed to give you a build number. So when you might make 100 builds of version
@@ -186,7 +186,7 @@ public class CreateMojo
 
     /**
      * Specify the corresponding items for the format message, as specified by
-     * java.text.MessageFormat. Special item values are "timestamp" and "buildNumber/d*".
+     * java.text.MessageFormat. Special item values are "scmVersion", "timestamp" and "buildNumber/d*".
      *
      * @parameter
      * @since 1.0-beta-1
@@ -304,6 +304,8 @@ public class CreateMojo
      */
     private static final int DEFAULT_SHORT_REVISION_DISABLED = -1;
 
+    private boolean useScm;
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -339,6 +341,11 @@ public class CreateMojo
                     if ( s.equals( "timestamp" ) )
                     {
                         itemAry[i] = now;
+                    }
+                    else if ( s.startsWith( "scmVersion" ) )
+                    {
+                        useScm = true;
+                        itemAry[i] = getRevision();
                     }
                     else if ( s.startsWith( "buildNumber" ) )
                     {
@@ -694,7 +701,7 @@ public class CreateMojo
         throws MojoExecutionException
     {
 
-        if ( format != null )
+        if ( format != null && !useScm)
         {
             return revision;
         }
