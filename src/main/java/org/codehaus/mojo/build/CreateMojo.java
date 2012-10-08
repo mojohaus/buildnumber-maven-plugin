@@ -70,6 +70,14 @@ import org.codehaus.plexus.util.StringUtils;
  * not reflected in your artifact's filename (automatically), but can be added to the metadata. You
  * can access the build number in your pom with ${buildNumber}. You can also access ${timestamp} and
  * the scm branch of the build (if applicable) in ${buildScmBranch}
+ * <br>
+ * Note that there are several <strong>do</strong> parameters.
+ * These parameters (doCheck, doUpdate, etc) are the first thing evaluated. If there
+ * is no matching expression, we get the default-value. If there is (ie
+ * -Dmaven.buildNumber.doUpdate=false), we get that value.
+ * So if the XML contains <tt>&lt;doCheck&gt;true&lt;/doCheck&gt;</tt>, then
+ * normally that's the final value of the param in question. However, this mojo reverses that
+ * behaviour, such that the command line parameters get the last say.
  *
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
  * @version $Id$
@@ -153,13 +161,6 @@ public class CreateMojo
      * If this is made true, then the revision will be updated to the latest in the repo, otherwise
      * it will remain what it is locally. Note that this used to be inverted (skipUpdate), but
      * needed to be changed to allow releases to work. This corresponds to 'svn update'.
-     * <p/>
-     * Note that these expressions (doCheck, doUpdate, etc) are the first thing evaluated. If there
-     * is no matching expression, we get the default-value. If there is (ie
-     * -Dmaven.buildNumber.doCheck=false), we get that value. The configuration, however, gets the
-     * last say, through use of the getters/setters below. So if <doCheck>true</doCheck>, then
-     * normally that's the final value of the param in question. However, this mojo reverses that
-     * behaviour, such that the command line parameters get the last say.
      *
      * @parameter expression="${maven.buildNumber.doUpdate}" default-value="false"
      * @since 1.0-beta-1
