@@ -708,6 +708,7 @@ public class CreateMojo
         {
             return revision;
         }
+        useScm = false;
 
         try
         {
