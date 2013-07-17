@@ -44,6 +44,14 @@ import org.apache.maven.project.MavenProject;
 public class CreateTimestampMojo
     extends AbstractMojo
 {
+    /**
+     * Whether to skip this execution.
+     *
+     * @parameter expression="${maven.buildNumber.skip}"
+     * default-value="false"
+     * @since 1.3
+     */
+    private boolean skip;
 
     /**
      * The maven project.
@@ -78,6 +86,12 @@ public class CreateTimestampMojo
 
     public void execute()
     {
+        if ( skip )
+        {
+            getLog().info("Skipping execution.");
+            return;
+        }
+
         String timestampString = project.getProperties().getProperty( timestampPropertyName );
         
         // Check if the plugin has already run in the current build.
@@ -111,4 +125,17 @@ public class CreateTimestampMojo
         
     }
      
+    public void setSkip( boolean skip )
+    {
+        String skipSystemProperty = System.getProperty( "maven.buildNumber.skip" );
+        if ( skipSystemProperty != null )
+        {
+            // well, this gets the final say
+            this.skip = Boolean.valueOf( skipSystemProperty ).booleanValue();
+        }
+        else
+        {
+            this.skip = skip;
+        }
+    }
 }

@@ -282,6 +282,14 @@ public class CreateMojo
      */
     private String scmBranchPropertyName;
 
+    /**
+     * Whether to skip this execution.
+     *
+     * @parameter expression="${maven.buildNumber.skip}"
+     * default-value="false"
+     * @since 1.3
+     */
+    private boolean skip;
 
     /**
      * @parameter expression="${session}"
@@ -312,6 +320,12 @@ public class CreateMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+        if ( skip )
+        {
+            getLog().info("Skipping execution.");
+            return;
+        }
+
         if ( providerImplementations != null )
         {
             for ( Entry<String, String> entry : providerImplementations.entrySet() )
@@ -920,5 +934,19 @@ public class CreateMojo
     public void setShortRevisionLength( int shortRevision )
     {
         this.shortRevisionLength = shortRevision;
+    }
+
+    public void setSkip( boolean skip )
+    {
+        String skipSystemProperty = System.getProperty( "maven.buildNumber.skip" );
+        if ( skipSystemProperty != null )
+        {
+            // well, this gets the final say
+            this.skip = Boolean.valueOf( skipSystemProperty ).booleanValue();
+        }
+        else
+        {
+            this.skip = skip;
+        }
     }
 }

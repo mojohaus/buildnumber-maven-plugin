@@ -43,6 +43,14 @@ import org.codehaus.plexus.util.StringUtils;
 public class HgChangeSetMojo
     extends AbstractMojo
 {
+    /**
+     * Whether to skip this execution.
+     *
+     * @parameter expression="${maven.buildNumber.skip}"
+     * default-value="false"
+     * @since 1.3
+     */
+    private boolean skip;
 
     private ScmLogDispatcher logger = new ScmLogDispatcher();
 
@@ -79,6 +87,12 @@ public class HgChangeSetMojo
     public void execute()
         throws MojoExecutionException
     {
+        if ( skip )
+        {
+            getLog().info("Skipping execution.");
+            return;
+        }
+
         try
         {
             String previousChangeSet = getChangeSetProperty();
@@ -149,6 +163,20 @@ public class HgChangeSetMojo
         if ( value != null )
         {
             project.getProperties().put( property, value );
+        }
+    }
+
+    public void setSkip( boolean skip )
+    {
+        String skipSystemProperty = System.getProperty( "maven.buildNumber.skip" );
+        if ( skipSystemProperty != null )
+        {
+            // well, this gets the final say
+            this.skip = Boolean.valueOf( skipSystemProperty ).booleanValue();
+        }
+        else
+        {
+            this.skip = skip;
         }
     }
 
