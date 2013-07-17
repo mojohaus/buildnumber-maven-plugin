@@ -40,6 +40,7 @@ import org.apache.maven.project.MavenProject;
  * @since 1.0-beta-5
  * @requiresProject
  * @description create a timestamp property
+ * @threadSafe
  */
 public class CreateTimestampMojo
     extends AbstractMojo
