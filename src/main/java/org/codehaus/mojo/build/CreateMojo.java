@@ -935,18 +935,4 @@ public class CreateMojo
     {
         this.shortRevisionLength = shortRevision;
     }
-
-    public void setSkip( boolean skip )
-    {
-        String skipSystemProperty = System.getProperty( "maven.buildNumber.skip" );
-        if ( skipSystemProperty != null )
-        {
-            // well, this gets the final say
-            this.skip = Boolean.valueOf( skipSystemProperty ).booleanValue();
-        }
-        else
-        {
-            this.skip = skip;
-        }
-    }
 }

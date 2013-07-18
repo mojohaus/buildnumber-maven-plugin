@@ -48,8 +48,7 @@ public class CreateTimestampMojo
     /**
      * Whether to skip this execution.
      *
-     * @parameter expression="${maven.buildNumber.skip}"
-     * default-value="false"
+     * @parameter expression="${maven.buildNumber.skip}" default-value="false"
      * @since 1.3
      */
     private boolean skip;
@@ -124,19 +123,5 @@ public class CreateTimestampMojo
             nextProj.getProperties().setProperty( this.timestampPropertyName, timestampString );
         }
         
-    }
-     
-    public void setSkip( boolean skip )
-    {
-        String skipSystemProperty = System.getProperty( "maven.buildNumber.skip" );
-        if ( skipSystemProperty != null )
-        {
-            // well, this gets the final say
-            this.skip = Boolean.valueOf( skipSystemProperty ).booleanValue();
-        }
-        else
-        {
-            this.skip = skip;
-        }
     }
 }
