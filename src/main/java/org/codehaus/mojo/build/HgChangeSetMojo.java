@@ -31,8 +31,7 @@ import org.apache.maven.scm.provider.hg.command.HgConsumer;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * Goal which sets project properties for changeSet and changeSetDate from the
- * current Mercurial repository.
+ * Goal which sets project properties for changeSet and changeSetDate from the current Mercurial repository.
  * 
  * @author Tomas Pollak
  * @goal hgchangeset
@@ -45,7 +44,7 @@ public class HgChangeSetMojo
 {
     /**
      * Whether to skip this execution.
-     *
+     * 
      * @parameter expression="${maven.buildNumber.skip}" default-value="false"
      * @since 1.3
      */
@@ -88,7 +87,7 @@ public class HgChangeSetMojo
     {
         if ( skip )
         {
-            getLog().info("Skipping execution.");
+            getLog().info( "Skipping execution." );
             return;
         }
 
@@ -126,8 +125,8 @@ public class HgChangeSetMojo
     {
         HgOutputConsumer consumer = new HgOutputConsumer( logger );
         ScmResult result =
-            HgUtils.execute( consumer, logger, scmDirectory, new String[] { "log", "-r", ".",
-                "--template", "\"{date|isodate}\"" } );
+            HgUtils.execute( consumer, logger, scmDirectory, new String[] { "log", "-r", ".", "--template",
+                "\"{date|isodate}\"" } );
         checkResult( result );
         return consumer.getOutput();
     }
@@ -185,5 +184,5 @@ public class HgChangeSetMojo
         {
             return output;
         }
-    }    
+    }
 }

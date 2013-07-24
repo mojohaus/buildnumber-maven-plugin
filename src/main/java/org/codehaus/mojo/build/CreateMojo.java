@@ -62,23 +62,19 @@ import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * This mojo is designed to give you a build number. So when you might make 100 builds of version
- * 1.0-SNAPSHOT, you can differentiate between them all. The build number is based on the revision
- * number retrieved from scm. It only works with subversion, currently. This mojo can also check to
- * make sure that you have checked everything into scm, before issuing the build number. That
- * behaviour can be suppressed, and then the latest local build number is used. Build numbers are
- * not reflected in your artifact's filename (automatically), but can be added to the metadata. You
- * can access the build number in your pom with ${buildNumber}. You can also access ${timestamp} and
- * the scm branch of the build (if applicable) in ${scmBranch}
- * <br>
- * Note that there are several <strong>do</strong> parameters.
- * These parameters (doCheck, doUpdate, etc) are the first thing evaluated. If there
- * is no matching expression, we get the default-value. If there is (ie
- * -Dmaven.buildNumber.doUpdate=false), we get that value.
- * So if the XML contains <tt>&lt;doCheck&gt;true&lt;/doCheck&gt;</tt>, then
- * normally that's the final value of the param in question. However, this mojo reverses that
- * behaviour, such that the command line parameters get the last say.
- *
+ * This mojo is designed to give you a build number. So when you might make 100 builds of version 1.0-SNAPSHOT, you can
+ * differentiate between them all. The build number is based on the revision number retrieved from scm. It only works
+ * with subversion, currently. This mojo can also check to make sure that you have checked everything into scm, before
+ * issuing the build number. That behaviour can be suppressed, and then the latest local build number is used. Build
+ * numbers are not reflected in your artifact's filename (automatically), but can be added to the metadata. You can
+ * access the build number in your pom with ${buildNumber}. You can also access ${timestamp} and the scm branch of the
+ * build (if applicable) in ${scmBranch} <br>
+ * Note that there are several <strong>do</strong> parameters. These parameters (doCheck, doUpdate, etc) are the first
+ * thing evaluated. If there is no matching expression, we get the default-value. If there is (ie
+ * -Dmaven.buildNumber.doUpdate=false), we get that value. So if the XML contains
+ * <tt>&lt;doCheck&gt;true&lt;/doCheck&gt;</tt>, then normally that's the final value of the param in question. However,
+ * this mojo reverses that behaviour, such that the command line parameters get the last say.
+ * 
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
  * @version $Id$
  * @goal create
@@ -108,7 +104,7 @@ public class CreateMojo
 
     /**
      * The username that is used when connecting to the SCM system.
-     *
+     * 
      * @parameter expression="${username}"
      * @since 1.0-beta-1
      */
@@ -116,7 +112,7 @@ public class CreateMojo
 
     /**
      * The password that is used when connecting to the SCM system.
-     *
+     * 
      * @parameter expression="${password}"
      * @since 1.0-beta-1
      */
@@ -124,83 +120,77 @@ public class CreateMojo
 
     /**
      * Local directory to be used to issue SCM actions
-     *
+     * 
      * @parameter expression="${maven.buildNumber.scmDirectory}" default-value="${basedir}
      * @since 1.0-beta-
      */
     private File scmDirectory;
 
-
     /**
      * You can rename the buildNumber property name to another property name if desired.
-     *
-     * @parameter expression="${maven.buildNumber.buildNumberPropertyName}"
-     * default-value="buildNumber"
+     * 
+     * @parameter expression="${maven.buildNumber.buildNumberPropertyName}" default-value="buildNumber"
      * @since 1.0-beta-1
      */
     private String buildNumberPropertyName;
 
     /**
      * You can rename the timestamp property name to another property name if desired.
-     *
+     * 
      * @parameter expression="${maven.buildNumber.timestampPropertyName}" default-value="timestamp"
      * @since 1.0-beta-1
      */
     private String timestampPropertyName;
 
     /**
-     * If this is made true, we check for modified files, and if there are any, we fail the build.
-     * Note that this used to be inverted (skipCheck), but needed to be changed to allow releases to
-     * work. This corresponds to 'svn status'.
-     *
+     * If this is made true, we check for modified files, and if there are any, we fail the build. Note that this used
+     * to be inverted (skipCheck), but needed to be changed to allow releases to work. This corresponds to 'svn status'.
+     * 
      * @parameter expression="${maven.buildNumber.doCheck}" default-value="false"
      * @since 1.0-beta-1
      */
     private boolean doCheck;
 
     /**
-     * If this is made true, then the revision will be updated to the latest in the repo, otherwise
-     * it will remain what it is locally. Note that this used to be inverted (skipUpdate), but
-     * needed to be changed to allow releases to work. This corresponds to 'svn update'.
-     *
+     * If this is made true, then the revision will be updated to the latest in the repo, otherwise it will remain what
+     * it is locally. Note that this used to be inverted (skipUpdate), but needed to be changed to allow releases to
+     * work. This corresponds to 'svn update'.
+     * 
      * @parameter expression="${maven.buildNumber.doUpdate}" default-value="false"
      * @since 1.0-beta-1
      */
     private boolean doUpdate;
 
     /**
-     * Specify a message as specified by java.text.MessageFormat. This triggers "items"
-     * configuration to be read
-     *
+     * Specify a message as specified by java.text.MessageFormat. This triggers "items" configuration to be read
+     * 
      * @parameter
      * @since 1.0-beta-1
      */
     private String format;
 
     /**
-     * Properties file to be created when "format" is not null and item has "buildNumber". See Usage
-     * for details
-     *
+     * Properties file to be created when "format" is not null and item has "buildNumber". See Usage for details
+     * 
      * @parameter default-value="${basedir}/buildNumber.properties";
      * @since 1.0-beta-2
      */
     private File buildNumberPropertiesFileLocation;
 
     /**
-     * Specify the corresponding items for the format message, as specified by
-     * java.text.MessageFormat. Special item values are "scmVersion", "timestamp" and "buildNumber[digits]", where [digits] are
-     * optional digits added to the end of the number to select a property.
-     *
+     * Specify the corresponding items for the format message, as specified by java.text.MessageFormat. Special item
+     * values are "scmVersion", "timestamp" and "buildNumber[digits]", where [digits] are optional digits added to the
+     * end of the number to select a property.
+     * 
      * @parameter
      * @since 1.0-beta-1
      */
     private List items;
 
     /**
-     * The locale used for date and time formatting. The locale name should be in the format defined
-     * in {@link Locale#toString()}. The default locale is the platform default returned by
-     * {@link Locale#getDefault()}.
-     *
+     * The locale used for date and time formatting. The locale name should be in the format defined in
+     * {@link Locale#toString()}. The default locale is the platform default returned by {@link Locale#getDefault()}.
+     * 
      * @parameter expression="${maven.buildNumber.locale}"
      * @since 1.0-beta-2
      */
@@ -208,25 +198,24 @@ public class CreateMojo
 
     /**
      * whether to retrieve the revision for the last commit, or the last revision of the repository.
-     *
+     * 
      * @parameter expression="${maven.buildNumber.useLastCommittedRevision}" default-value="false"
      * @since 1.0-beta-2
      */
     private boolean useLastCommittedRevision;
 
     /**
-     * Apply this java.text.MessageFormat to the timestamp only (as opposed to the
-     * <code>format</code> parameter).
-     *
+     * Apply this java.text.MessageFormat to the timestamp only (as opposed to the <code>format</code> parameter).
+     * 
      * @parameter
      * @since 1.0-beta-2
      */
     private String timestampFormat;
 
     /**
-     * Setting this value allows the build to continue even in the event of an SCM failure.  The value set will be
-     * used as the revision string in the event of a failure to retrieve the revision it from the SCM.
-     *
+     * Setting this value allows the build to continue even in the event of an SCM failure. The value set will be used
+     * as the revision string in the event of a failure to retrieve the revision it from the SCM.
+     * 
      * @parameter
      * @since 1.0-beta-2
      */
@@ -236,7 +225,7 @@ public class CreateMojo
      * Selects alternative SCM provider implementations. Each map key denotes the original provider type as given in the
      * SCM URL like "cvs" or "svn", the map value specifies the provider type of the desired implementation to use
      * instead. In other words, this map configures a substitition mapping for SCM providers.
-     *
+     * 
      * @parameter
      * @since 1.0-beta-3
      */
@@ -249,7 +238,7 @@ public class CreateMojo
 
     /**
      * The maven project.
-     *
+     * 
      * @parameter expression="${project}"
      * @readonly
      */
@@ -257,7 +246,7 @@ public class CreateMojo
 
     /**
      * Contains the full list of projects in the reactor.
-     *
+     * 
      * @parameter expression="${reactorProjects}"
      * @readonly
      * @since 1.0-beta-3
@@ -265,9 +254,9 @@ public class CreateMojo
     private List reactorProjects;
 
     /**
-     * If set to true, will get the scm revision once for all modules of a multi-module project
-     * instead of fetching once for each module.
-     *
+     * If set to true, will get the scm revision once for all modules of a multi-module project instead of fetching once
+     * for each module.
+     * 
      * @parameter default-value="false"
      * @since 1.0-beta-3
      */
@@ -275,18 +264,16 @@ public class CreateMojo
 
     /**
      * You can rename the buildScmBranch property name to another property name if desired.
-     *
-     * @parameter expression="${maven.buildNumber.scmBranchPropertyName}"
-     * default-value="scmBranch"
+     * 
+     * @parameter expression="${maven.buildNumber.scmBranchPropertyName}" default-value="scmBranch"
      * @since 1.0-beta-4
      */
     private String scmBranchPropertyName;
 
     /**
      * Whether to skip this execution.
-     *
-     * @parameter expression="${maven.buildNumber.skip}"
-     * default-value="false"
+     * 
+     * @parameter expression="${maven.buildNumber.skip}" default-value="false"
      * @since 1.3
      */
     private boolean skip;
@@ -304,7 +291,7 @@ public class CreateMojo
 
     /**
      * Max length of a revision id (used only for git)
-     *
+     * 
      * @parameter default value is null
      * @since 1.1
      */
@@ -322,7 +309,7 @@ public class CreateMojo
     {
         if ( skip )
         {
-            getLog().info("Skipping execution.");
+            getLog().info( "Skipping execution." );
             return;
         }
 
@@ -332,9 +319,8 @@ public class CreateMojo
             {
                 String providerType = entry.getKey();
                 String providerImplementation = entry.getValue();
-                getLog().info(
-                    "Change the default '" + providerType + "' provider implementation to '" + providerImplementation
-                        + "'." );
+                getLog().info( "Change the default '" + providerType + "' provider implementation to '"
+                                   + providerImplementation + "'." );
                 scmManager.setScmProviderImplementation( providerType, providerImplementation );
             }
         }
@@ -344,7 +330,7 @@ public class CreateMojo
             if ( items == null )
             {
                 throw new MojoExecutionException(
-                    " if you set a format, you must provide at least one item, please check documentation " );
+                                                  " if you set a format, you must provide at least one item, please check documentation " );
             }
             // needs to be an array
             // look for special values
@@ -411,7 +397,8 @@ public class CreateMojo
                         catch ( NumberFormatException e )
                         {
                             throw new MojoExecutionException(
-                                "Couldn't parse buildNumber in properties file to an Integer: " + buildNumberString );
+                                                              "Couldn't parse buildNumber in properties file to an Integer: "
+                                                                  + buildNumberString );
                         }
                         catch ( IOException e )
                         {
@@ -484,11 +471,11 @@ public class CreateMojo
             String timestamp = String.valueOf( now.getTime() );
             if ( timestampFormat != null )
             {
-                timestamp = MessageFormat.format( timestampFormat, new Object[]{ now } );
+                timestamp = MessageFormat.format( timestampFormat, new Object[] { now } );
             }
 
-            getLog().info( MessageFormat.format( "Storing buildNumber: {0} at timestamp: {1}",
-                                                 new Object[]{ revision, timestamp } ) );
+            getLog().info( MessageFormat.format( "Storing buildNumber: {0} at timestamp: {1}", new Object[] { revision,
+                               timestamp } ) );
             if ( revision != null )
             {
                 project.getProperties().put( buildNumberPropertyName, revision );
@@ -519,7 +506,7 @@ public class CreateMojo
 
     /**
      * Formats the given argument using the configured format template and locale.
-     *
+     * 
      * @param arguments arguments to be formatted @ @return formatted result
      */
     private String format( Object[] arguments )
@@ -575,7 +562,8 @@ public class CreateMojo
             }
 
             throw new MojoExecutionException(
-                "Cannot create the build number because you have local modifications : \n" + message );
+                                              "Cannot create the build number because you have local modifications : \n"
+                                                  + message );
         }
 
     }
@@ -637,7 +625,7 @@ public class CreateMojo
 
     /**
      * Get the branch info for this revision from the repository. For svn, it is in svn info.
-     *
+     * 
      * @return
      * @throws MojoExecutionException
      * @throws MojoExecutionException
@@ -652,9 +640,8 @@ public class CreateMojo
             InfoScmResult scmResult = info( repository, new ScmFileSet( scmDirectory ) );
             if ( scmResult == null || !scmResult.isSuccess() )
             {
-                getLog().debug( "Cannot get the branch information from the scm repository : " + ( scmResult == null
-                    ? ""
-                    : scmResult.getCommandOutput() ) );
+                getLog().debug( "Cannot get the branch information from the scm repository : "
+                                    + ( scmResult == null ? "" : scmResult.getCommandOutput() ) );
                 return DEFAULT_BRANCH_NAME;
             }
             if ( scmResult.getInfoItems().isEmpty() )
@@ -677,17 +664,16 @@ public class CreateMojo
         {
             if ( !StringUtils.isEmpty( revisionOnScmFailure ) )
             {
-                getLog().warn(
-                    "Cannot get the branch information from the scm repository, proceeding with " + DEFAULT_BRANCH_NAME
-                        + " : \n" + e.getLocalizedMessage() );
+                getLog().warn( "Cannot get the branch information from the scm repository, proceeding with "
+                                   + DEFAULT_BRANCH_NAME + " : \n" + e.getLocalizedMessage() );
 
                 setDoCheck( false );
                 setDoUpdate( false );
 
                 return DEFAULT_BRANCH_NAME;
             }
-            throw new MojoExecutionException(
-                "Cannot get the branch information from the scm repository : \n" + e.getLocalizedMessage(), e );
+            throw new MojoExecutionException( "Cannot get the branch information from the scm repository : \n"
+                + e.getLocalizedMessage(), e );
         }
 
         return filterBranchFromScmUrl( scmUrl );
@@ -710,7 +696,7 @@ public class CreateMojo
 
     /**
      * Get the revision info from the repository. For svn, it is svn info
-     *
+     * 
      * @return
      * @throws MojoExecutionException
      */
@@ -718,7 +704,7 @@ public class CreateMojo
         throws MojoExecutionException
     {
 
-        if ( format != null && !useScm)
+        if ( format != null && !useScm )
         {
             return revision;
         }
@@ -750,9 +736,8 @@ public class CreateMojo
         {
             if ( !StringUtils.isEmpty( revisionOnScmFailure ) )
             {
-                getLog().warn(
-                    "Cannot get the revision information from the scm repository, proceeding with " + "revision of "
-                        + revisionOnScmFailure + " : \n" + e.getLocalizedMessage() );
+                getLog().warn( "Cannot get the revision information from the scm repository, proceeding with "
+                                   + "revision of " + revisionOnScmFailure + " : \n" + e.getLocalizedMessage() );
 
                 setDoCheck( false );
                 setDoUpdate( false );
@@ -760,8 +745,8 @@ public class CreateMojo
                 return revisionOnScmFailure;
             }
 
-            throw new MojoExecutionException(
-                "Cannot get the revision information from the scm repository : \n" + e.getLocalizedMessage(), e );
+            throw new MojoExecutionException( "Cannot get the revision information from the scm repository : \n"
+                + e.getLocalizedMessage(), e );
 
         }
 
@@ -769,28 +754,26 @@ public class CreateMojo
 
     /**
      * Get info from scm.
-     *
+     * 
      * @param repository
      * @param fileSet
      * @return
      * @throws ScmException
      * @todo this should be rolled into org.apache.maven.scm.provider.ScmProvider and
-     * org.apache.maven.scm.provider.svn.SvnScmProvider
+     *       org.apache.maven.scm.provider.svn.SvnScmProvider
      */
     public InfoScmResult info( ScmRepository repository, ScmFileSet fileSet )
         throws ScmException
     {
         CommandParameters commandParameters = new CommandParameters();
-        //only for Git, we will make a test for shortRevisionLength parameter
-        if ( GitScmProviderRepository.PROTOCOL_GIT.equals(
-            scmManager.getProviderByRepository( repository ).getScmType() )
+        // only for Git, we will make a test for shortRevisionLength parameter
+        if ( GitScmProviderRepository.PROTOCOL_GIT.equals( scmManager.getProviderByRepository( repository ).getScmType() )
             && this.shortRevisionLength != DEFAULT_SHORT_REVISION_DISABLED )
         {
             getLog().info( "ShortRevision tag detected. The value is '" + this.shortRevisionLength + "'." );
             if ( shortRevisionLength >= 0 && shortRevisionLength < 4 )
             {
-                getLog().warn(
-                    "shortRevision parameter less then 4. ShortRevisionLength is relaying on 'git rev-parese --short=LENGTH' command, accordingly to Git rev-parse specification the LENGTH value is miminum 4. " );
+                getLog().warn( "shortRevision parameter less then 4. ShortRevisionLength is relaying on 'git rev-parese --short=LENGTH' command, accordingly to Git rev-parse specification the LENGTH value is miminum 4. " );
             }
             commandParameters.setInt( CommandParameter.SCM_SHORT_REVISION_LENGTH, this.shortRevisionLength );
         }
@@ -798,7 +781,6 @@ public class CreateMojo
         return scmManager.getProviderByRepository( repository ).info( repository.getProviderRepository(), fileSet,
                                                                       commandParameters );
     }
-
 
     /**
      * @return
@@ -851,7 +833,7 @@ public class CreateMojo
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////
+    // ////////////////////////////////////////////////////////////////////////////////////////////
     // setters to help with test
     public void setScmManager( ScmManager scmManager )
     {

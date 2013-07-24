@@ -29,9 +29,9 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.project.MavenProject;
 
 /**
- * This mojo is designed to give you a timestamp available through one or more properties.
- * Only a single timestamp is created for each execution of the mojo.  This timestamp can
- * be format into one or more strings which are then saved to properties. 
+ * This mojo is designed to give you a timestamp available through one or more properties. Only a single timestamp is
+ * created for each execution of the mojo. This timestamp can be format into one or more strings which are then saved to
+ * properties.
  * 
  * @author pgier
  * @version $Id$
@@ -47,7 +47,7 @@ public class CreateTimestampMojo
 {
     /**
      * Whether to skip this execution.
-     *
+     * 
      * @parameter expression="${maven.buildNumber.skip}" default-value="false"
      * @since 1.3
      */
@@ -63,7 +63,7 @@ public class CreateTimestampMojo
 
     /**
      * Contains the full list of projects in the reactor.
-     *
+     * 
      * @parameter expression="${reactorProjects}"
      * @readonly
      */
@@ -75,10 +75,10 @@ public class CreateTimestampMojo
      * @parameter expression="${maven.buildNumber.timestampPropertyName}" default-value="timestamp"
      */
     private String timestampPropertyName;
-    
+
     /**
-     * Apply this java.text.SimpleDateFormat to the timestamp. By default, no formatting is done
-     * but the raw number value (milliseconds since January 1, 1970, 00:00:00 GMT) is used.
+     * Apply this java.text.SimpleDateFormat to the timestamp. By default, no formatting is done but the raw number
+     * value (milliseconds since January 1, 1970, 00:00:00 GMT) is used.
      * 
      * @parameter expression="${maven.buildNumber.timestampFormat}" default-value=""
      */
@@ -88,40 +88,40 @@ public class CreateTimestampMojo
     {
         if ( skip )
         {
-            getLog().info("Skipping execution.");
+            getLog().info( "Skipping execution." );
             return;
         }
 
         String timestampString = project.getProperties().getProperty( timestampPropertyName );
-        
+
         // Check if the plugin has already run in the current build.
         if ( timestampString != null )
         {
             getLog().debug( "Using previously created timestamp." );
             return;
         }
-        
+
         Calendar cal = Calendar.getInstance();
         Date now = cal.getTime();
-        
-        if ( timestampFormat == null || timestampFormat.equals( "" ))
+
+        if ( timestampFormat == null || timestampFormat.equals( "" ) )
         {
             timestampString = String.valueOf( now.getTime() );
         }
         else
         {
             SimpleDateFormat dateFormat = new SimpleDateFormat( timestampFormat );
-            timestampString = dateFormat.format( now );            
+            timestampString = dateFormat.format( now );
         }
-        
+
         getLog().debug( "Storing timestamp property: " + timestampPropertyName + " " + timestampString );
-        
+
         Iterator projIter = reactorProjects.iterator();
         while ( projIter.hasNext() )
         {
             MavenProject nextProj = (MavenProject) projIter.next();
             nextProj.getProperties().setProperty( this.timestampPropertyName, timestampString );
         }
-        
+
     }
 }
