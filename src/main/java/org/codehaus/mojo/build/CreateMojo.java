@@ -257,7 +257,7 @@ public class CreateMojo
      * If set to true, will get the scm revision once for all modules of a multi-module project instead of fetching once
      * for each module.
      * 
-     * @parameter default-value="false"
+     * @parameter expression="${maven.buildNumber.getRevisionOnlyOnce}" default-value="false"
      * @since 1.0-beta-3
      */
     private boolean getRevisionOnlyOnce;
