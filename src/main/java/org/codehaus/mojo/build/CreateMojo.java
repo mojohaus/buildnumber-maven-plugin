@@ -164,7 +164,7 @@ public class CreateMojo
     /**
      * Specify a message as specified by java.text.MessageFormat. This triggers "items" configuration to be read
      * 
-     * @parameter
+     * @parameter expression="${maven.buildNumber.format}"
      * @since 1.0-beta-1
      */
     private String format;
@@ -207,7 +207,7 @@ public class CreateMojo
     /**
      * Apply this java.text.MessageFormat to the timestamp only (as opposed to the <code>format</code> parameter).
      * 
-     * @parameter
+     * @parameter expression="${maven.buildNumber.timestampFormat}"
      * @since 1.0-beta-2
      */
     private String timestampFormat;
@@ -216,7 +216,7 @@ public class CreateMojo
      * Setting this value allows the build to continue even in the event of an SCM failure. The value set will be used
      * as the revision string in the event of a failure to retrieve the revision it from the SCM.
      * 
-     * @parameter
+     * @parameter expression="${maven.buildNumber.revisionOnScmFailure}"
      * @since 1.0-beta-2
      */
     private String revisionOnScmFailure;
