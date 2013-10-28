@@ -63,12 +63,12 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * This mojo is designed to give you a build number. So when you might make 100 builds of version 1.0-SNAPSHOT, you can
- * differentiate between them all. The build number is based on the revision number retrieved from scm. It only works
- * with subversion, currently. This mojo can also check to make sure that you have checked everything into scm, before
- * issuing the build number. That behaviour can be suppressed, and then the latest local build number is used. Build
- * numbers are not reflected in your artifact's filename (automatically), but can be added to the metadata. You can
- * access the build number in your pom with ${buildNumber}. You can also access ${timestamp} and the scm branch of the
- * build (if applicable) in ${scmBranch} <br>
+ * differentiate between them all. The build number is based on the revision number retrieved from SCM. It is known to
+ * work with Subversion, GIT, and Mercurial. This mojo can also check to make sure that you have checked everything into
+ * SCM, before issuing the build number. That behaviour can be suppressed, and then the latest local build number is
+ * used. Build numbers are not automatically reflected in your artifact's filename, but can be added to the metadata.
+ * You can access the build number in your pom with ${buildNumber}. You can also access ${timestamp} and the SCM branch
+ * of the build (if applicable) in ${SCMBranch} <br>
  * Note that there are several <strong>do</strong> parameters. These parameters (doCheck, doUpdate, etc) are the first
  * thing evaluated. If there is no matching expression, we get the default-value. If there is (ie
  * -Dmaven.buildNumber.doUpdate=false), we get that value. So if the XML contains
