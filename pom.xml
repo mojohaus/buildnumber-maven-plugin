@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -10,32 +9,15 @@
   </parent>
 
   <artifactId>buildnumber-maven-plugin</artifactId>
-  <packaging>maven-plugin</packaging>
-  <name>Build Number Maven Plugin</name>
   <version>1.3-SNAPSHOT</version>
+  <packaging>maven-plugin</packaging>
 
-  <inceptionYear>2007</inceptionYear>
-
-  <prerequisites>
-    <maven>2.0.6</maven>
-  </prerequisites>
-  
+  <name>Build Number Maven Plugin</name>
   <description>
      This plugin is designed to give you a build number. So when you might make 100 builds of version
      1.0-SNAPSHOT, you can differentiate between them all.
   </description>
-  
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/buildnumber-maven-plugin</url>
-  </scm>
-
-  <issueManagement>
-    <system>jira</system>
-    <url>http://jira.codehaus.org/browse/MBUILDNUM</url>
-  </issueManagement>
-
+  <inceptionYear>2007</inceptionYear>
   <licenses>
     <license>
       <name>The MIT License</name>
@@ -72,7 +54,21 @@
           </roles>
       </developer>
   </developers>
-    
+
+  <prerequisites>
+    <maven>2.0.6</maven>
+  </prerequisites>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/buildnumber-maven-plugin</url>
+  </scm>
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/MBUILDNUM</url>
+  </issueManagement>
+
   <properties>
     <maven.scm.version>1.9</maven.scm.version>
     <maven.changes.version>2.4</maven.changes.version>
@@ -199,7 +195,6 @@
   </dependencies>
 
   <build>
-  
     <pluginManagement>
       <plugins>
         <plugin>
@@ -239,7 +234,6 @@
 
       </plugins>
     </pluginManagement>
-    
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -248,7 +242,29 @@
       </plugin>
     </plugins>
   </build>
-  
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>${maven.changes.version}</version>
+        <configuration>
+          <fixVersionIds>16003</fixVersionIds>
+          <component>13030</component>
+          <resolutionIds>Closed</resolutionIds>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>jira-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+
   <profiles>
     <profile>
       <id>run-its</id>
@@ -337,29 +353,5 @@
       </plugins>      
       </build>
     </profile>
-
   </profiles>
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changes-plugin</artifactId>
-        <version>${maven.changes.version}</version>
-        <configuration>
-          <fixVersionIds>16003</fixVersionIds>
-          <component>13030</component>
-          <resolutionIds>Closed</resolutionIds>
-        </configuration>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>jira-report</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-    </plugins>
-  </reporting>
-  
 </project>
