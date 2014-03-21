@@ -40,6 +40,10 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.CommandParameter;
 import org.apache.maven.scm.CommandParameters;
@@ -63,92 +67,89 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * This mojo is designed to give you a build number. So when you might make 100 builds of version 1.0-SNAPSHOT, you can
- * differentiate between them all. The build number is based on the revision number retrieved from SCM. It is known to
- * work with Subversion, GIT, and Mercurial. This mojo can also check to make sure that you have checked everything into
- * SCM, before issuing the build number. That behaviour can be suppressed, and then the latest local build number is
- * used. Build numbers are not automatically reflected in your artifact's filename, but can be added to the metadata.
- * You can access the build number in your pom with ${buildNumber}. You can also access ${timestamp} and the SCM branch
- * of the build (if applicable) in ${SCMBranch} <br>
- * Note that there are several <strong>do</strong> parameters. These parameters (doCheck, doUpdate, etc) are the first
- * thing evaluated. If there is no matching expression, we get the default-value. If there is (ie
- * -Dmaven.buildNumber.doUpdate=false), we get that value. So if the XML contains
+ * differentiate between them all.
+ * <p>
+ * The build number is based on the revision number retrieved from SCM. It is known to work with Subversion, GIT, and
+ * Mercurial.
+ * <p>
+ * This mojo can also check to make sure that you have checked everything into SCM, before issuing the build number.
+ * That behaviour can be suppressed, and then the latest local build number is used.
+ * <p>
+ * Build numbers are not automatically reflected in your artifact's filename, but can be added to the metadata. You can
+ * access the build number in your pom with ${buildNumber}. You can also access ${timestamp} and the SCM branch of the
+ * build (if applicable) in ${SCMBranch}
+ * <p>
+ * Note that there are several <code><strong>doFoo</strong></code> parameters. These parameters (doCheck, doUpdate, etc)
+ * are the first thing evaluated. If there is no matching expression, we get the default-value. If there is (ie
+ * <code>-Dmaven.buildNumber.doUpdate=false</code>), we get that value. So if the XML contains
  * <tt>&lt;doCheck&gt;true&lt;/doCheck&gt;</tt>, then normally that's the final value of the param in question. However,
  * this mojo reverses that behaviour, such that the command line parameters get the last say.
  * 
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
  * @version $Id$
- * @goal create
- * @phase initialize
- * @requiresProject
- * @description create a timestamp and a build number from scm or an integer sequence
- * @threadSafe
  */
+@Mojo( name = "create", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true )
 public class CreateMojo
     extends AbstractMojo
 {
+    private static final String DEFAULT_BRANCH_NAME = "UNKNOWN_BRANCH";
 
-    public final String DEFAULT_BRANCH_NAME = "UNKNOWN_BRANCH";
-
-    /**
-     * @parameter expression="${project.scm.developerConnection}"
-     * @readonly
-     */
+    @Parameter( defaultValue = "${project.scm.developerConnection}", readonly = true )
     private String urlScm;
 
     /**
-     * @parameter expression="${project.scm.connection}"
-     * @readonly
      * @since 1.0-beta-5
      */
+    @Parameter( defaultValue = "${project.scm.connection}", readonly = true )
     private String readUrlScm;
 
     /**
      * The username that is used when connecting to the SCM system.
      * 
-     * @parameter expression="${username}"
      * @since 1.0-beta-1
      */
+    @Parameter( property = "username" )
     private String username;
 
     /**
      * The password that is used when connecting to the SCM system.
      * 
-     * @parameter expression="${password}"
      * @since 1.0-beta-1
      */
+    @Parameter( property = "password" )
     private String password;
 
     /**
      * Local directory to be used to issue SCM actions
      * 
-     * @parameter expression="${maven.buildNumber.scmDirectory}" default-value="${basedir}
      * @since 1.0-beta-
      */
+    @Parameter( property = "maven.buildNumber.scmDirectory", defaultValue = "${basedir}" )
     private File scmDirectory;
 
     /**
      * You can rename the buildNumber property name to another property name if desired.
      * 
-     * @parameter expression="${maven.buildNumber.buildNumberPropertyName}" default-value="buildNumber"
      * @since 1.0-beta-1
      */
+    @Parameter( property = "maven.buildNumber.buildNumberPropertyName", defaultValue = "buildNumber" )
     private String buildNumberPropertyName;
 
     /**
      * You can rename the timestamp property name to another property name if desired.
      * 
-     * @parameter expression="${maven.buildNumber.timestampPropertyName}" default-value="timestamp"
      * @since 1.0-beta-1
      */
+    @Parameter( property = "maven.buildNumber.timestampPropertyName", defaultValue = "timestamp" )
     private String timestampPropertyName;
 
     /**
      * If this is made true, we check for modified files, and if there are any, we fail the build. Note that this used
      * to be inverted (skipCheck), but needed to be changed to allow releases to work. This corresponds to 'svn status'.
      * 
-     * @parameter expression="${maven.buildNumber.doCheck}" default-value="false"
      * @since 1.0-beta-1
      */
+    @Parameter( property = "maven.buildNumber.doCheck", defaultValue = "false" )
     private boolean doCheck;
 
     /**
@@ -156,25 +157,25 @@ public class CreateMojo
      * it is locally. Note that this used to be inverted (skipUpdate), but needed to be changed to allow releases to
      * work. This corresponds to 'svn update'.
      * 
-     * @parameter expression="${maven.buildNumber.doUpdate}" default-value="false"
      * @since 1.0-beta-1
      */
+    @Parameter( property = "maven.buildNumber.doUpdate", defaultValue = "false" )
     private boolean doUpdate;
 
     /**
      * Specify a message as specified by java.text.MessageFormat. This triggers "items" configuration to be read
      * 
-     * @parameter expression="${maven.buildNumber.format}"
      * @since 1.0-beta-1
      */
+    @Parameter( property = "maven.buildNumber.format" )
     private String format;
 
     /**
      * Properties file to be created when "format" is not null and item has "buildNumber". See Usage for details
      * 
-     * @parameter default-value="${basedir}/buildNumber.properties";
      * @since 1.0-beta-2
      */
+    @Parameter( defaultValue = "${basedir}/buildNumber.properties" )
     private File buildNumberPropertiesFileLocation;
 
     /**
@@ -182,43 +183,43 @@ public class CreateMojo
      * values are "scmVersion", "timestamp" and "buildNumber[digits]", where [digits] are optional digits added to the
      * end of the number to select a property.
      * 
-     * @parameter
      * @since 1.0-beta-1
      */
+    @Parameter
     private List items;
 
     /**
      * The locale used for date and time formatting. The locale name should be in the format defined in
      * {@link Locale#toString()}. The default locale is the platform default returned by {@link Locale#getDefault()}.
      * 
-     * @parameter expression="${maven.buildNumber.locale}"
      * @since 1.0-beta-2
      */
+    @Parameter( property = "maven.buildNumber.locale" )
     private String locale;
 
     /**
      * whether to retrieve the revision for the last commit, or the last revision of the repository.
      * 
-     * @parameter expression="${maven.buildNumber.useLastCommittedRevision}" default-value="false"
      * @since 1.0-beta-2
      */
+    @Parameter( property = "maven.buildNumber.useLastCommittedRevision", defaultValue = "false" )
     private boolean useLastCommittedRevision;
 
     /**
      * Apply this java.text.MessageFormat to the timestamp only (as opposed to the <code>format</code> parameter).
      * 
-     * @parameter expression="${maven.buildNumber.timestampFormat}"
      * @since 1.0-beta-2
      */
+    @Parameter( property = "maven.buildNumber.timestampFormat" )
     private String timestampFormat;
 
     /**
      * Setting this value allows the build to continue even in the event of an SCM failure. The value set will be used
      * as the revision string in the event of a failure to retrieve the revision it from the SCM.
      * 
-     * @parameter expression="${maven.buildNumber.revisionOnScmFailure}"
      * @since 1.0-beta-2
      */
+    @Parameter( property = "maven.buildNumber.revisionOnScmFailure" )
     private String revisionOnScmFailure;
 
     /**
@@ -226,63 +227,51 @@ public class CreateMojo
      * SCM URL like "cvs" or "svn", the map value specifies the provider type of the desired implementation to use
      * instead. In other words, this map configures a substitition mapping for SCM providers.
      * 
-     * @parameter
      * @since 1.0-beta-3
      */
+    @Parameter
     private Map<String, String> providerImplementations;
 
-    /**
-     * @component
-     */
+    @Component
     private ScmManager scmManager;
 
-    /**
-     * The maven project.
-     * 
-     * @parameter expression="${project}"
-     * @readonly
-     */
+    @Parameter( defaultValue = "${project}", required = true, readonly = true )
     private MavenProject project;
 
     /**
      * Contains the full list of projects in the reactor.
      * 
-     * @parameter expression="${reactorProjects}"
-     * @readonly
      * @since 1.0-beta-3
      */
+    @Parameter( defaultValue = "${reactorProjects}", readonly = true, required = true )
     private List reactorProjects;
 
     /**
      * If set to true, will get the scm revision once for all modules of a multi-module project instead of fetching once
      * for each module.
      * 
-     * @parameter expression="${maven.buildNumber.getRevisionOnlyOnce}" default-value="false"
      * @since 1.0-beta-3
      */
+    @Parameter( property = "maven.buildNumber.getRevisionOnlyOnce", defaultValue = "false" )
     private boolean getRevisionOnlyOnce;
 
     /**
      * You can rename the buildScmBranch property name to another property name if desired.
      * 
-     * @parameter expression="${maven.buildNumber.scmBranchPropertyName}" default-value="scmBranch"
      * @since 1.0-beta-4
      */
+    @Parameter( property = "maven.buildNumber.scmBranchPropertyName", defaultValue = "scmBranch" )
     private String scmBranchPropertyName;
 
     /**
      * Whether to skip this execution.
      * 
-     * @parameter expression="${maven.buildNumber.skip}" default-value="false"
      * @since 1.3
      */
+    @Parameter( property = "maven.buildNumber.skip", defaultValue = "false" )
     private boolean skip;
 
-    /**
-     * @parameter expression="${session}"
-     * @readonly
-     * @required
-     */
+    @Parameter( defaultValue = "${session}", readonly = true, required = true )
     protected MavenSession session;
 
     private ScmLogDispatcher logger;
@@ -292,9 +281,9 @@ public class CreateMojo
     /**
      * Max length of a revision id (used only for git)
      * 
-     * @parameter default value is null
      * @since 1.1
      */
+    @Parameter
     private int shortRevisionLength = DEFAULT_SHORT_REVISION_DISABLED;
 
     /**

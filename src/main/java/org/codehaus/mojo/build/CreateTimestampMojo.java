@@ -26,6 +26,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 /**
@@ -35,53 +38,45 @@ import org.apache.maven.project.MavenProject;
  * 
  * @author pgier
  * @version $Id$
- * @goal create-timestamp
- * @phase initialize
  * @since 1.0-beta-5
- * @requiresProject
  * @description create a timestamp property
- * @threadSafe
  */
+@Mojo( name = "create-timestamp", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true )
 public class CreateTimestampMojo
     extends AbstractMojo
 {
     /**
      * Whether to skip this execution.
      * 
-     * @parameter expression="${maven.buildNumber.skip}" default-value="false"
      * @since 1.3
      */
+    @Parameter( property = "maven.buildNumber.skip", defaultValue = "false" )
     private boolean skip;
 
     /**
      * The maven project.
-     * 
-     * @parameter expression="${project}"
-     * @readonly
      */
+    @Parameter( defaultValue = "${project}", required = true, readonly = true )
     private MavenProject project;
 
     /**
      * Contains the full list of projects in the reactor.
      * 
-     * @parameter expression="${reactorProjects}"
-     * @readonly
      */
+    @Parameter( defaultValue = "${reactorProjects}", required = true, readonly = true )
     private List reactorProjects;
 
     /**
      * You can rename the timestamp property name to another property name if desired.
-     * 
-     * @parameter expression="${maven.buildNumber.timestampPropertyName}" default-value="timestamp"
      */
+    @Parameter( property = "maven.buildNumber.timestampPropertyName", defaultValue = "timestamp" )
     private String timestampPropertyName;
 
     /**
      * Apply this java.text.SimpleDateFormat to the timestamp. By default, no formatting is done but the raw number
      * value (milliseconds since January 1, 1970, 00:00:00 GMT) is used.
-     * 
-     * @parameter expression="${maven.buildNumber.timestampFormat}" default-value=""
      */
+    @Parameter( property = "maven.buildNumber.timestampFormat", defaultValue = "" )
     private String timestampFormat;
 
     public void execute()

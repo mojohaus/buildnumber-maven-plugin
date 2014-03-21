@@ -20,6 +20,9 @@ import java.io.File;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFileStatus;
@@ -34,38 +37,34 @@ import org.codehaus.plexus.util.StringUtils;
  * Goal which sets project properties for changeSet and changeSetDate from the current Mercurial repository.
  * 
  * @author Tomas Pollak
- * @goal hgchangeset
- * @phase initialize
- * @requiresProject
  * @since 1.0-beta-4
  */
+@Mojo( name = "hgchangeset", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true )
 public class HgChangeSetMojo
     extends AbstractMojo
 {
     /**
      * Whether to skip this execution.
      * 
-     * @parameter expression="${maven.buildNumber.skip}" default-value="false"
      * @since 1.3
      */
+    @Parameter( property = "maven.buildNumber.skip", defaultValue = "false" )
     private boolean skip;
 
     private ScmLogDispatcher logger = new ScmLogDispatcher();
 
     /**
      * The maven project.
-     * 
-     * @parameter expression="${project}"
-     * @readonly
      */
+    @Parameter( defaultValue = "${project}", required = true, readonly = true )
     private MavenProject project;
 
     /**
      * Local directory to be used to issue SCM actions
      * 
-     * @parameter expression="${maven.changeSet.scmDirectory}" default-value="${basedir}
      * @since 1.0
      */
+    @Parameter( property = "maven.changeSet.scmDirectory", defaultValue = "${basedir}" )
     private File scmDirectory;
 
     private void checkResult( ScmResult result )
