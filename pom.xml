@@ -9,7 +9,6 @@
     <version>33</version>
   </parent>
 
-  <groupId>org.codehaus.mojo</groupId>
   <artifactId>buildnumber-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>Build Number Maven Plugin</name>
@@ -20,7 +19,6 @@
   <prerequisites>
     <maven>2.0.6</maven>
   </prerequisites>
-  
   
   <description>
      This plugin is designed to give you a build number. So when you might make 100 builds of version
@@ -38,7 +36,6 @@
     <url>http://jira.codehaus.org/browse/MBUILDNUM</url>
   </issueManagement>
 
-  
   <licenses>
     <license>
       <name>The MIT License</name>
@@ -46,8 +43,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
-  
 
   <developers>
     <developer>
@@ -77,13 +72,13 @@
           </roles>
       </developer>
   </developers>
-
     
   <properties>
     <maven.scm.version>1.9</maven.scm.version>
+    <maven.changes.version>2.4</maven.changes.version>
+    <maven.api.version>2.0.6</maven.api.version>
     <maven.compiler.source>1.5</maven.compiler.source>
     <maven.compiler.target>1.5</maven.compiler.target>    
-    <maven.api.version>2.0.6</maven.api.version>
     <mojo.java.target>1.5</mojo.java.target>
   </properties>
 
@@ -249,7 +244,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
-        <version>2.4</version>
+        <version>${maven.changes.version}</version>
       </plugin>
     </plugins>
   </build>
@@ -350,7 +345,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
-        <version>2.4</version>
+        <version>${maven.changes.version}</version>
         <configuration>
           <fixVersionIds>16003</fixVersionIds>
           <component>13030</component>
@@ -366,38 +361,5 @@
       </plugin>
     </plugins>
   </reporting>
-
-  <!--repositories>
-    <repository>
-      <id>apache.snapshots</id>
-      <url>https://repository.apache.org/content/groups/snapshots-group/</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>oss.sonatype.snapshots</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>maven.tmatesoft.com.releases</id>
-      <url>http://maven.tmatesoft.com/content/repositories/releases</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories-->
   
 </project>
