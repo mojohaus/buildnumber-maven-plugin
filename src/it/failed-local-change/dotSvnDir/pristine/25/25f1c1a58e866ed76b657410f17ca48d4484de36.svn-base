@@ -19,8 +19,3 @@
  
 def f1 = new File(basedir, 'thefoo.txt');
 f1.append( "abcdefg" );
-
-File dotSvnDir = new File(basedir, 'dotSvnDir')
-assert dotSvnDir.exists()
-assert dotSvnDir.isDirectory()
-assert dotSvnDir.renameTo(new File(basedir, '.svn')) 
