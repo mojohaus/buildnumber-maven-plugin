@@ -62,6 +62,7 @@ import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.manager.ScmManager;
 import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.ScmProviderRepository;
+import org.apache.maven.scm.provider.git.gitexe.command.branch.GitBranchCommand;
 import org.apache.maven.scm.provider.git.repository.GitScmProviderRepository;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.StringUtils;
@@ -645,6 +646,29 @@ public class CreateMojo
      */
     public String getScmBranch()
         throws MojoExecutionException
+    {
+    	/* git branch can be obtained directly by a command */
+    	try
+    	{
+	    	ScmRepository repository = getScmRepository();
+	    	ScmProvider provider = scmManager.getProviderByRepository( repository );
+	    	if ( GitScmProviderRepository.PROTOCOL_GIT.equals( provider.getScmType() ) )
+	        {
+	    		ScmFileSet fileSet = new ScmFileSet( scmDirectory );
+	        	return GitBranchCommand.getCurrentBranch(getLogger(), (GitScmProviderRepository)repository.getProviderRepository(), fileSet);
+	        }
+    	}
+    	catch ( ScmException e )
+    	{
+            getLog().warn(
+                    "Cannot get the branch information from the git repository: \n" + e.getLocalizedMessage() );
+    	}
+    	
+    	return getScmBranchFromUrl();
+    }
+    
+    protected String getScmBranchFromUrl() 
+    	throws MojoExecutionException 
     {
         String scmUrl = null;
         try

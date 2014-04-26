@@ -1,0 +1,10 @@
+Bim
+# Veuillez saisir le message de validation pour vos modifications. Les lignes
+# commençant par '#' seront ignorées, et un message vide abandonne la validation.
+# Sur la branche master
+# Modifications qui seront validées :
+#	nouveau fichier: goals.txt
+#	nouveau fichier: pom.xml
+#	nouveau fichier: prebuild.groovy
+#	nouveau fichier: verify.bsh
+#
