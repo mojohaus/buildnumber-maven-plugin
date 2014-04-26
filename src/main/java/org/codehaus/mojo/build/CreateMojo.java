@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Closeable;
 import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Collections;
@@ -364,10 +365,13 @@ public class CreateMojo
 
                         Properties properties = new Properties();
                         String buildNumberString = null;
+                        FileInputStream inputStream = null;
+                        FileOutputStream outputStream = null;
                         try
                         {
                             // get the number for the buildNumber specified
-                            properties.load( new FileInputStream( propertiesFile ) );
+                            inputStream = new FileInputStream(propertiesFile);
+                            properties.load(inputStream);
                             buildNumberString = properties.getProperty( s );
                             if ( buildNumberString == null )
                             {
@@ -377,8 +381,8 @@ public class CreateMojo
 
                             // store the increment
                             properties.setProperty( s, String.valueOf( ++buildNumber ) );
-                            properties.store( new FileOutputStream( propertiesFile ),
-                                              "maven.buildNumber.plugin properties file" );
+                            outputStream = new FileOutputStream( propertiesFile );
+                            properties.store( outputStream, "maven.buildNumber.plugin properties file" );
 
                             // use in the message (format)
                             itemAry[i] = new Integer( buildNumber );
@@ -392,6 +396,11 @@ public class CreateMojo
                         catch ( IOException e )
                         {
                             throw new MojoExecutionException( "Couldn't load properties file: " + propertiesFile, e );
+                        }
+                        finally 
+                        {
+                            closeStream(inputStream);
+                            closeStream(outputStream);
                         }
                     }
                     else
@@ -489,6 +498,21 @@ public class CreateMojo
                     nextProj.getProperties().put( this.timestampPropertyName, timestamp );
                     nextProj.getProperties().put( this.scmBranchPropertyName, scmBranch );
                 }
+            }
+        }
+    }
+
+    private void closeStream( Closeable stream )
+    {
+        if ( stream != null )
+        {
+            try
+            {
+                stream.close();
+            }
+            catch ( IOException e )
+            {
+                getLog().error( "Error while trying to close the stream", e );
             }
         }
     }
