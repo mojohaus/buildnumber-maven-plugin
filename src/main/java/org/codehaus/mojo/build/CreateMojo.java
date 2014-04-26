@@ -424,7 +424,7 @@ public class CreateMojo
             }
             else
             {
-                getLog().info( "Checking for local modifications: skipped." );
+                getLog().debug( "Checking for local modifications: skipped." );
             }
             if ( session.getSettings().isOffline() )
             {
@@ -440,16 +440,16 @@ public class CreateMojo
                     List<ScmFile> changedFiles = update();
                     for ( ScmFile file : changedFiles )
                     {
-                        getLog().info( "Updated: " + file );
+                        getLog().debug( "Updated: " + file );
                     }
                     if ( changedFiles.size() == 0 )
                     {
-                        getLog().info( "No files needed updating." );
+                        getLog().debug( "No files needed updating." );
                     }
                 }
                 else
                 {
-                    getLog().info( "Updating project files from SCM: skipped." );
+                    getLog().debug( "Updating project files from SCM: skipped." );
                 }
             }
             revision = getRevision();
@@ -524,7 +524,7 @@ public class CreateMojo
     private void checkForLocalModifications()
         throws MojoExecutionException
     {
-        getLog().info( "Verifying there are no local modifications ..." );
+        getLog().debug( "Verifying there are no local modifications ..." );
 
         List<ScmFile> changedFiles;
 
