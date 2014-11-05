@@ -35,7 +35,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Goal which sets project properties for changeSet and changeSetDate from the current Mercurial repository.
- * 
+ *
  * @author Tomas Pollak
  * @since 1.0-beta-4
  */
@@ -45,7 +45,7 @@ public class HgChangeSetMojo
 {
     /**
      * Whether to skip this execution.
-     * 
+     *
      * @since 1.3
      */
     @Parameter( property = "maven.buildNumber.skip", defaultValue = "false" )
@@ -61,7 +61,7 @@ public class HgChangeSetMojo
 
     /**
      * Local directory to be used to issue SCM actions
-     * 
+     *
      * @since 1.0
      */
     @Parameter( property = "maven.changeSet.scmDirectory", defaultValue = "${basedir}" )

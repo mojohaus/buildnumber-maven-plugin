@@ -86,7 +86,7 @@ import org.codehaus.plexus.util.StringUtils;
  * <code>-Dmaven.buildNumber.doUpdate=false</code>), we get that value. So if the XML contains
  * <tt>&lt;doCheck&gt;true&lt;/doCheck&gt;</tt>, then normally that's the final value of the param in question. However,
  * this mojo reverses that behaviour, such that the command line parameters get the last say.
- * 
+ *
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
  * @version $Id$
  */
@@ -107,7 +107,7 @@ public class CreateMojo
 
     /**
      * The username that is used when connecting to the SCM system.
-     * 
+     *
      * @since 1.0-beta-1
      */
     @Parameter( property = "username" )
@@ -115,7 +115,7 @@ public class CreateMojo
 
     /**
      * The password that is used when connecting to the SCM system.
-     * 
+     *
      * @since 1.0-beta-1
      */
     @Parameter( property = "password" )
@@ -123,7 +123,7 @@ public class CreateMojo
 
     /**
      * Local directory to be used to issue SCM actions
-     * 
+     *
      * @since 1.0-beta-
      */
     @Parameter( property = "maven.buildNumber.scmDirectory", defaultValue = "${basedir}" )
@@ -131,7 +131,7 @@ public class CreateMojo
 
     /**
      * You can rename the buildNumber property name to another property name if desired.
-     * 
+     *
      * @since 1.0-beta-1
      */
     @Parameter( property = "maven.buildNumber.buildNumberPropertyName", defaultValue = "buildNumber" )
@@ -139,7 +139,7 @@ public class CreateMojo
 
     /**
      * You can rename the timestamp property name to another property name if desired.
-     * 
+     *
      * @since 1.0-beta-1
      */
     @Parameter( property = "maven.buildNumber.timestampPropertyName", defaultValue = "timestamp" )
@@ -148,7 +148,7 @@ public class CreateMojo
     /**
      * If this is made true, we check for modified files, and if there are any, we fail the build. Note that this used
      * to be inverted (skipCheck), but needed to be changed to allow releases to work. This corresponds to 'svn status'.
-     * 
+     *
      * @since 1.0-beta-1
      */
     @Parameter( property = "maven.buildNumber.doCheck", defaultValue = "false" )
@@ -158,7 +158,7 @@ public class CreateMojo
      * If this is made true, then the revision will be updated to the latest in the repo, otherwise it will remain what
      * it is locally. Note that this used to be inverted (skipUpdate), but needed to be changed to allow releases to
      * work. This corresponds to 'svn update'.
-     * 
+     *
      * @since 1.0-beta-1
      */
     @Parameter( property = "maven.buildNumber.doUpdate", defaultValue = "false" )
@@ -166,7 +166,7 @@ public class CreateMojo
 
     /**
      * Specify a message as specified by java.text.MessageFormat. This triggers "items" configuration to be read
-     * 
+     *
      * @since 1.0-beta-1
      */
     @Parameter( property = "maven.buildNumber.format" )
@@ -174,7 +174,7 @@ public class CreateMojo
 
     /**
      * Properties file to be created when "format" is not null and item has "buildNumber". See Usage for details
-     * 
+     *
      * @since 1.0-beta-2
      */
     @Parameter( defaultValue = "${basedir}/buildNumber.properties" )
@@ -184,7 +184,7 @@ public class CreateMojo
      * Specify the corresponding items for the format message, as specified by java.text.MessageFormat. Special item
      * values are "scmVersion", "timestamp" and "buildNumber[digits]", where [digits] are optional digits added to the
      * end of the number to select a property.
-     * 
+     *
      * @since 1.0-beta-1
      */
     @Parameter
@@ -193,7 +193,7 @@ public class CreateMojo
     /**
      * The locale used for date and time formatting. The locale name should be in the format defined in
      * {@link Locale#toString()}. The default locale is the platform default returned by {@link Locale#getDefault()}.
-     * 
+     *
      * @since 1.0-beta-2
      */
     @Parameter( property = "maven.buildNumber.locale" )
@@ -201,7 +201,7 @@ public class CreateMojo
 
     /**
      * whether to retrieve the revision for the last commit, or the last revision of the repository.
-     * 
+     *
      * @since 1.0-beta-2
      */
     @Parameter( property = "maven.buildNumber.useLastCommittedRevision", defaultValue = "false" )
@@ -209,7 +209,7 @@ public class CreateMojo
 
     /**
      * Apply this java.text.MessageFormat to the timestamp only (as opposed to the <code>format</code> parameter).
-     * 
+     *
      * @since 1.0-beta-2
      */
     @Parameter( property = "maven.buildNumber.timestampFormat" )
@@ -218,7 +218,7 @@ public class CreateMojo
     /**
      * Setting this value allows the build to continue even in the event of an SCM failure. The value set will be used
      * as the revision string in the event of a failure to retrieve the revision it from the SCM.
-     * 
+     *
      * @since 1.0-beta-2
      */
     @Parameter( property = "maven.buildNumber.revisionOnScmFailure" )
@@ -228,7 +228,7 @@ public class CreateMojo
      * Selects alternative SCM provider implementations. Each map key denotes the original provider type as given in the
      * SCM URL like "cvs" or "svn", the map value specifies the provider type of the desired implementation to use
      * instead. In other words, this map configures a substitition mapping for SCM providers.
-     * 
+     *
      * @since 1.0-beta-3
      */
     @Parameter
@@ -242,7 +242,7 @@ public class CreateMojo
 
     /**
      * Contains the full list of projects in the reactor.
-     * 
+     *
      * @since 1.0-beta-3
      */
     @Parameter( defaultValue = "${reactorProjects}", readonly = true, required = true )
@@ -251,7 +251,7 @@ public class CreateMojo
     /**
      * If set to true, will get the scm revision once for all modules of a multi-module project instead of fetching once
      * for each module.
-     * 
+     *
      * @since 1.0-beta-3
      */
     @Parameter( property = "maven.buildNumber.getRevisionOnlyOnce", defaultValue = "false" )
@@ -259,7 +259,7 @@ public class CreateMojo
 
     /**
      * You can rename the buildScmBranch property name to another property name if desired.
-     * 
+     *
      * @since 1.0-beta-4
      */
     @Parameter( property = "maven.buildNumber.scmBranchPropertyName", defaultValue = "scmBranch" )
@@ -267,7 +267,7 @@ public class CreateMojo
 
     /**
      * Whether to skip this execution.
-     * 
+     *
      * @since 1.3
      */
     @Parameter( property = "maven.buildNumber.skip", defaultValue = "false" )
@@ -282,7 +282,7 @@ public class CreateMojo
 
     /**
      * Max length of a revision id (used only for git)
-     * 
+     *
      * @since 1.1
      */
     @Parameter
@@ -520,7 +520,7 @@ public class CreateMojo
 
     /**
      * Formats the given argument using the configured format template and locale.
-     * 
+     *
      * @param arguments arguments to be formatted @ @return formatted result
      */
     private String format( Object[] arguments )
@@ -639,7 +639,7 @@ public class CreateMojo
 
     /**
      * Get the branch info for this revision from the repository. For svn, it is in svn info.
-     * 
+     *
      * @return
      * @throws MojoExecutionException
      * @throws MojoExecutionException
@@ -734,7 +734,7 @@ public class CreateMojo
 
     /**
      * Get the revision info from the repository. For svn, it is svn info
-     * 
+     *
      * @return
      * @throws MojoExecutionException
      */
@@ -792,7 +792,7 @@ public class CreateMojo
 
     /**
      * Get info from scm.
-     * 
+     *
      * @param repository
      * @param fileSet
      * @return
