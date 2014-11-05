@@ -21,11 +21,11 @@ package org.codehaus.mojo.build;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Closeable;
 import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Collections;
@@ -371,8 +371,8 @@ public class CreateMojo
                         try
                         {
                             // get the number for the buildNumber specified
-                            inputStream = new FileInputStream(propertiesFile);
-                            properties.load(inputStream);
+                            inputStream = new FileInputStream( propertiesFile );
+                            properties.load( inputStream );
                             buildNumberString = properties.getProperty( s );
                             if ( buildNumberString == null )
                             {
@@ -398,10 +398,10 @@ public class CreateMojo
                         {
                             throw new MojoExecutionException( "Couldn't load properties file: " + propertiesFile, e );
                         }
-                        finally 
+                        finally
                         {
-                            closeStream(inputStream);
-                            closeStream(outputStream);
+                            closeStream( inputStream );
+                            closeStream( outputStream );
                         }
                     }
                     else
@@ -647,28 +647,29 @@ public class CreateMojo
     public String getScmBranch()
         throws MojoExecutionException
     {
-    	/* git branch can be obtained directly by a command */
-    	try
-    	{
-	    	ScmRepository repository = getScmRepository();
-	    	ScmProvider provider = scmManager.getProviderByRepository( repository );
-	    	if ( GitScmProviderRepository.PROTOCOL_GIT.equals( provider.getScmType() ) )
-	        {
-	    		ScmFileSet fileSet = new ScmFileSet( scmDirectory );
-	        	return GitBranchCommand.getCurrentBranch(getLogger(), (GitScmProviderRepository)repository.getProviderRepository(), fileSet);
-	        }
-    	}
-    	catch ( ScmException e )
-    	{
-            getLog().warn(
-                    "Cannot get the branch information from the git repository: \n" + e.getLocalizedMessage() );
-    	}
-    	
-    	return getScmBranchFromUrl();
+        /* git branch can be obtained directly by a command */
+        try
+        {
+            ScmRepository repository = getScmRepository();
+            ScmProvider provider = scmManager.getProviderByRepository( repository );
+            if ( GitScmProviderRepository.PROTOCOL_GIT.equals( provider.getScmType() ) )
+            {
+                ScmFileSet fileSet = new ScmFileSet( scmDirectory );
+                return GitBranchCommand.getCurrentBranch( getLogger(),
+                                                          (GitScmProviderRepository) repository.getProviderRepository(),
+                                                          fileSet );
+            }
+        }
+        catch ( ScmException e )
+        {
+            getLog().warn( "Cannot get the branch information from the git repository: \n" + e.getLocalizedMessage() );
+        }
+
+        return getScmBranchFromUrl();
     }
-    
-    protected String getScmBranchFromUrl() 
-    	throws MojoExecutionException 
+
+    protected String getScmBranchFromUrl()
+        throws MojoExecutionException
     {
         String scmUrl = null;
         try

@@ -61,7 +61,6 @@ public class CreateTimestampMojo
 
     /**
      * Contains the full list of projects in the reactor.
-     * 
      */
     @Parameter( defaultValue = "${reactorProjects}", required = true, readonly = true )
     private List reactorProjects;
