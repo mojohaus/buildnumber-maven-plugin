@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.codehaus.mojo</groupId>
     <artifactId>mojo-parent</artifactId>
-    <version>33</version>
+    <version>34</version>
   </parent>
 
   <artifactId>buildnumber-maven-plugin</artifactId>
@@ -196,7 +196,7 @@
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.2</version>
+      <version>3.3</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
@@ -231,7 +231,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-plugin-plugin</artifactId>
-          <version>3.2</version>
+          <version>3.3</version>
           <configuration>
             <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
           </configuration>
@@ -240,12 +240,6 @@
               <id>mojo-descriptor</id>
               <goals>
                 <goal>descriptor</goal>
-              </goals>
-            </execution>
-            <execution>
-              <id>help-goal</id>
-              <goals>
-                <goal>helpmojo</goal>
               </goals>
             </execution>
           </executions>
