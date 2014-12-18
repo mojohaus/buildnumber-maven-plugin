@@ -164,6 +164,13 @@
       <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
       <artifactId>maven-scm-provider-svnjava</artifactId>
       <version>2.1.1</version>
+      <exclusions>
+        <!--  this plugin requires svnkit-1.8.4 but it is not at central -->
+        <exclusion>
+          <groupId>org.tmatesoft.svnkit</groupId>
+          <artifactId>svnkit</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.tmatesoft.svnkit</groupId>

@@ -29,7 +29,7 @@
               <useLastCommittedRevision>true</useLastCommittedRevision>
             </configuration>
           </execution>
-          
+
           <execution>
             <id>timestampFormat</id>
             <goals>
@@ -41,10 +41,11 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>2.5</version>
         <configuration>
           <archive>
             <manifest>
@@ -58,9 +59,9 @@
             </manifestEntries>
           </archive>
         </configuration>
-      </plugin>      
+      </plugin>
     </plugins>
-    
+
   </build>
 
 </project>
