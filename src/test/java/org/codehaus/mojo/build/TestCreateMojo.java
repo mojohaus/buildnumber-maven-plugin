@@ -117,21 +117,21 @@ public class TestCreateMojo
 
         mojo.setLocale( "en" );
         mojo.execute();
-        SimpleDateFormat dateFormat = new SimpleDateFormat( "MMM dd, yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "MMM dd, yyyy" );
         dateFormat.parse( mojo.getRevision() );
-        //assertEquals( "Jan 1, 1970", mojo.getRevision() );
+        // assertEquals( "Jan 1, 1970", mojo.getRevision() );
 
         mojo.setLocale( "fi" );
         mojo.execute();
-        dateFormat = new SimpleDateFormat( "dd.mm.yyyy");
+        dateFormat = new SimpleDateFormat( "dd.mm.yyyy" );
         dateFormat.parse( mojo.getRevision() );
-        //assertEquals( "1.1.1970", mojo.getRevision() );
+        // assertEquals( "1.1.1970", mojo.getRevision() );
 
         mojo.setLocale( "de" );
         mojo.execute();
-        dateFormat = new SimpleDateFormat( "dd.mm.yyyy");
+        dateFormat = new SimpleDateFormat( "dd.mm.yyyy" );
         dateFormat.parse( mojo.getRevision() );
-        //assertEquals( "01.01.1970", mojo.getRevision() );
+        // assertEquals( "01.01.1970", mojo.getRevision() );
     }
 
     public void testSequenceFormat()
