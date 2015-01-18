@@ -188,7 +188,7 @@ public class CreateMojo
      * @since 1.0-beta-1
      */
     @Parameter
-    private List items;
+    private List<?> items;
 
     /**
      * The locale used for date and time formatting. The locale name should be in the format defined in
@@ -246,7 +246,7 @@ public class CreateMojo
      * @since 1.0-beta-3
      */
     @Parameter( defaultValue = "${reactorProjects}", readonly = true, required = true )
-    private List reactorProjects;
+    private List<MavenProject> reactorProjects;
 
     /**
      * If set to true, will get the scm revision once for all modules of a multi-module project instead of fetching once
@@ -488,7 +488,7 @@ public class CreateMojo
             // Add the revision and timestamp properties to each project in the reactor
             if ( getRevisionOnlyOnce && reactorProjects != null )
             {
-                Iterator projIter = reactorProjects.iterator();
+                Iterator<MavenProject> projIter = reactorProjects.iterator();
                 while ( projIter.hasNext() )
                 {
                     MavenProject nextProj = (MavenProject) projIter.next();
@@ -931,7 +931,7 @@ public class CreateMojo
         this.locale = locale;
     }
 
-    void setItems( List items )
+    void setItems( List<?> items )
     {
         this.items = items;
     }

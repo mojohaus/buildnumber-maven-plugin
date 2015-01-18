@@ -63,7 +63,7 @@ public class CreateTimestampMojo
      * Contains the full list of projects in the reactor.
      */
     @Parameter( defaultValue = "${reactorProjects}", required = true, readonly = true )
-    private List reactorProjects;
+    private List<MavenProject> reactorProjects;
 
     /**
      * You can rename the timestamp property name to another property name if desired.
@@ -110,7 +110,7 @@ public class CreateTimestampMojo
 
         getLog().debug( "Storing timestamp property: " + timestampPropertyName + " " + timestampString );
 
-        Iterator projIter = reactorProjects.iterator();
+        Iterator<MavenProject> projIter = reactorProjects.iterator();
         while ( projIter.hasNext() )
         {
             MavenProject nextProj = (MavenProject) projIter.next();
