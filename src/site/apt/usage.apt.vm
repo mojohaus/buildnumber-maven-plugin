@@ -101,7 +101,7 @@ Usage
   </build>
 +------------------------------------------+
 
- The <<<$\{scmBranch\}>>> property is also populated to provide 
+ The <<<$\{scmBranch\}>>> property is also populated to provide
  the SCM branch.
 
  <<Note:>> Older version of the jar and war plugin don't require the
@@ -141,25 +141,25 @@ Usage
  Other more useful configurations might be:
 
 +------------------------------------------+
-        <configuration>
-          <format>{0,number}.{1,number}.{2,number}</format>
-          <items>
-            <item>buildNumber0</item>
-            <item>buildNumber1</item>
-            <item>buildNumber2</item>
-          </items>
-        </configuration>
+    <configuration>
+      <format>{0,number}.{1,number}.{2,number}</format>
+      <items>
+        <item>buildNumber0</item>
+        <item>buildNumber1</item>
+        <item>buildNumber2</item>
+      </items>
+    </configuration>
 +------------------------------------------+
 
  or:
 
 +------------------------------------------+
-        <configuration>
-          <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
-          <items>
-            <item>timestamp</item>
-          </items>
-        </configuration>
+    <configuration>
+      <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
+      <items>
+        <item>timestamp</item>
+      </items>
+    </configuration>
 +------------------------------------------+
 
  The plugin simply uses the
@@ -167,19 +167,19 @@ Usage
  to produce <<<$\{buildNumber\}>>>, and thus the above configurations would produce:
 
 +------------------------------------------+
-At 12:30 PM on Jul 3, 2053, there was a disturbance in the Force on planet 7.
+    At 12:30 PM on Jul 3, 2053, there was a disturbance in the Force on planet 7.
 +------------------------------------------+
 
- and
+  and
 
 +------------------------------------------+
-2.0.3
+    2.0.3
 +------------------------------------------+
 
- and
+  and
 
 +------------------------------------------+
-2005-10-06 2:22:55
+    2005-10-06 2:22:55
 +------------------------------------------+
 
  respectively.
@@ -196,22 +196,84 @@ At 12:30 PM on Jul 3, 2053, there was a disturbance in the Force on planet 7.
 
 * Git short revision ID
 
- 
- From the version 1.1 you can specify the length for the Git revision. 
+
+ From the version 1.1 you can specify the length for the Git revision.
  To enable this feature you have to specify the new tag << <shortRevisionLength> >> in the << <configuration> >> section.
  For exemple:
 
 +------------------------------------------+
-        <configuration>
-           <shortRevisionLength>5</shortRevisionLength>
-       	</configuration>
+    <configuration>
+       <shortRevisionLength>5</shortRevisionLength>
+    </configuration>
 +------------------------------------------+
 
  the output of the found git revision will have only 5 characters:
 
 +------------------------------------------+
-  instead of b0c1c69be579175e63eeb1c056d607f01ab61e96 you will have only b0c1c
-+------------------------------------------+ 
- 
- <<Note:>> this feature uses internally the <<git rev-pasre --short>> command and the revision length is set to minimum 4 characters. 
+    instead of b0c1c69be579175e63eeb1c056d607f01ab61e96 you will have only b0c1c
++------------------------------------------+
+
+ <<Note:>> this feature uses internally the <<git rev-pasre --short>> command and the revision length is set to minimum 4 characters.
  So you can't have the revision id shorter then 4 characters. Even if you specify the length between 0 and 4, the plugin will inform you about this situation and the minimum value (4) will be used.
+
+
+* Using svnjava provider
+
+  If you need to execute the plugin on machine without any svn in the path you can configure
+  the mojo to use the svnjava provider.
+
+  NOTE the svnjava provider use the svnjava scm provider implementation {{{http://code.google.com/a/apache-extras.org/p/maven-scm-provider-svnjava/}maven-scm-provider-svnjava}} which rely on svnkit version.
+
+
++--
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doCheck>true</doCheck>
+          <doUpdate>true</doUpdate>
+          <providerImplementations>
+            <svn>javasvn</svn>
+          </providerImplementations>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
++--
+
+
+* Using Perforce P4Maven provider
+
+  To use this plugin with {{{https://swarm.workshop.perforce.com/files/guest/dantran/p4maven}Perforce P4Maven Provider}},
+  add p4maven-provider to dependencies list.
+
++--
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.perforce.p4maven</groupId>
+            <artifactId>p4maven-provider</artifactId>
+            <version>${p4maven.version}</version>
+          </dependency>
+        </dependencies>
+        [...]
+      </plugin>
+    </plugins>
+  </build>
++--
