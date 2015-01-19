@@ -71,7 +71,7 @@
   </issueManagement>
 
   <properties>
-    <maven.scm.version>1.9</maven.scm.version>
+    <maven.scm.version>1.9.2</maven.scm.version>
     <maven.changes.version>2.4</maven.changes.version>
     <maven.api.version>2.2.1</maven.api.version>
     <maven.compiler.source>1.5</maven.compiler.source>
@@ -160,6 +160,7 @@
       <artifactId>maven-scm-provider-hg</artifactId>
       <version>${maven.scm.version}</version>
     </dependency>
+
     <dependency>
       <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
       <artifactId>maven-scm-provider-svnjava</artifactId>
