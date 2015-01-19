@@ -101,6 +101,12 @@ public class CreateMojo
 {
     private static final String DEFAULT_BRANCH_NAME = "UNKNOWN_BRANCH";
 
+    /**
+     * @since 1.1
+     */
+    private static final int DEFAULT_SHORT_REVISION_DISABLED = -1;
+
+
     @Parameter( defaultValue = "${project.scm.developerConnection}", readonly = true )
     private String urlScm;
 
@@ -239,36 +245,6 @@ public class CreateMojo
     @Parameter
     private Map<String, String> providerImplementations;
 
-    @Component
-    private ScmManager scmManager;
-
-    /**
-     * Maven Security Dispatcher
-     *
-     * @since 1.4
-     */
-    @Component( hint = "mng-4384" )
-    private SecDispatcher securityDispatcher;
-
-    /**
-     * Maven Settings
-     *
-     * @since 1.4
-     */
-    @Parameter( defaultValue = "${settings}", readonly = true )
-    private Settings settings;
-
-    @Parameter( defaultValue = "${project}", required = true, readonly = true )
-    private MavenProject project;
-
-    /**
-     * Contains the full list of projects in the reactor.
-     *
-     * @since 1.0-beta-3
-     */
-    @Parameter( defaultValue = "${reactorProjects}", readonly = true, required = true )
-    private List<MavenProject> reactorProjects;
-
     /**
      * If set to true, will get the scm revision once for all modules of a multi-module project instead of fetching once
      * for each module.
@@ -294,13 +270,6 @@ public class CreateMojo
     @Parameter( property = "maven.buildNumber.skip", defaultValue = "false" )
     private boolean skip;
 
-    @Parameter( defaultValue = "${session}", readonly = true, required = true )
-    protected MavenSession session;
-
-    private ScmLogDispatcher logger;
-
-    private String revision;
-
     /**
      * Max length of a revision id (used only for git)
      *
@@ -309,10 +278,47 @@ public class CreateMojo
     @Parameter
     private int shortRevisionLength = DEFAULT_SHORT_REVISION_DISABLED;
 
+    // ////////////////////////////////////// internal maven components ///////////////////////////////////
+
     /**
-     * @since 1.1
+     * Maven Settings
+     *
+     * @since 1.4
      */
-    private static final int DEFAULT_SHORT_REVISION_DISABLED = -1;
+    @Parameter( defaultValue = "${settings}", readonly = true )
+    private Settings settings;
+
+    @Parameter( defaultValue = "${project}", required = true, readonly = true )
+    private MavenProject project;
+
+    /**
+     * Contains the full list of projects in the reactor.
+     *
+     * @since 1.0-beta-3
+     */
+    @Parameter( defaultValue = "${reactorProjects}", readonly = true, required = true )
+    private List<MavenProject> reactorProjects;
+
+    @Parameter( defaultValue = "${session}", readonly = true, required = true )
+    private MavenSession session;
+
+    @Component
+    private ScmManager scmManager;
+
+    /**
+     * Maven Security Dispatcher
+     *
+     * @since 1.4
+     */
+    @Component( hint = "mng-4384" )
+    private SecDispatcher securityDispatcher;
+
+
+    // ////////////////////////////////////// internal variables ///////////////////////////////////
+
+    private ScmLogDispatcher logger;
+
+    private String revision;
 
     private boolean useScm;
 
