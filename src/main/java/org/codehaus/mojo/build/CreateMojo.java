@@ -62,10 +62,15 @@ import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.manager.ScmManager;
 import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.ScmProviderRepository;
+import org.apache.maven.scm.provider.ScmProviderRepositoryWithHost;
 import org.apache.maven.scm.provider.git.gitexe.command.branch.GitBranchCommand;
 import org.apache.maven.scm.provider.git.repository.GitScmProviderRepository;
 import org.apache.maven.scm.repository.ScmRepository;
+import org.apache.maven.settings.Server;
+import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.util.StringUtils;
+import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
+import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
 
 /**
  * This mojo is designed to give you a build number. So when you might make 100 builds of version 1.0-SNAPSHOT, you can
@@ -236,6 +241,22 @@ public class CreateMojo
 
     @Component
     private ScmManager scmManager;
+
+    /**
+     * Maven Security Dispatcher
+     *
+     * @since 1.4
+     */
+    @Component( hint = "mng-4384" )
+    private SecDispatcher securityDispatcher;
+
+    /**
+     * Maven Settings
+     *
+     * @since 1.4
+     */
+    @Parameter( defaultValue = "${settings}", readonly = true )
+    private Settings settings;
 
     @Parameter( defaultValue = "${project}", required = true, readonly = true )
     private MavenProject project;
@@ -850,6 +871,23 @@ public class CreateMojo
             scmRepo.setPassword( password );
         }
 
+        if ( repository.getProviderRepository() instanceof ScmProviderRepositoryWithHost )
+        {
+            ScmProviderRepositoryWithHost repo = (ScmProviderRepositoryWithHost) repository.getProviderRepository();
+
+            loadInfosFromSettings( repo );
+
+            if ( !StringUtils.isEmpty( username ) )
+            {
+                repo.setUser( username );
+            }
+
+            if ( !StringUtils.isEmpty( password ) )
+            {
+                repo.setPassword( password );
+            }
+
+        }
         return repository;
     }
 
@@ -954,5 +992,53 @@ public class CreateMojo
     public void setShortRevisionLength( int shortRevision )
     {
         this.shortRevisionLength = shortRevision;
+    }
+
+    /**
+     * Load username password from settings if user has not set them in JVM properties
+     *
+     * @param repo not null
+     */
+    private void loadInfosFromSettings( ScmProviderRepositoryWithHost repo )
+    {
+        if ( username == null || password == null )
+        {
+            String host = repo.getHost();
+
+            int port = repo.getPort();
+
+            if ( port > 0 )
+            {
+                host += ":" + port;
+            }
+
+            Server server = this.settings.getServer( host );
+
+            if ( server != null )
+            {
+                if ( username == null )
+                {
+                    username = server.getUsername();
+                }
+
+                if ( password == null )
+                {
+                    password = decrypt( server.getPassword(), host );
+                }
+            }
+        }
+    }
+
+    private String decrypt( String str, String server )
+    {
+        try
+        {
+            return securityDispatcher.decrypt( str );
+        }
+        catch ( SecDispatcherException e )
+        {
+            getLog().warn( "Failed to decrypt password/passphrase for server " + server + ", using auth token as is" );
+            return str;
+        }
     }
 }
