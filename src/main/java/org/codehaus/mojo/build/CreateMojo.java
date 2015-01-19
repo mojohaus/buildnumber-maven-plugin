@@ -106,7 +106,6 @@ public class CreateMojo
      */
     private static final int DEFAULT_SHORT_REVISION_DISABLED = -1;
 
-
     @Parameter( defaultValue = "${project.scm.developerConnection}", readonly = true )
     private String urlScm;
 
@@ -312,7 +311,6 @@ public class CreateMojo
      */
     @Component( hint = "mng-4384" )
     private SecDispatcher securityDispatcher;
-
 
     // ////////////////////////////////////// internal variables ///////////////////////////////////
 

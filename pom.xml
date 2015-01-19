@@ -72,7 +72,6 @@
 
   <properties>
     <maven.scm.version>1.9.2</maven.scm.version>
-    <maven.changes.version>2.4</maven.changes.version>
     <maven.api.version>2.2.1</maven.api.version>
     <maven.compiler.source>1.5</maven.compiler.source>
     <maven.compiler.target>1.5</maven.compiler.target>
