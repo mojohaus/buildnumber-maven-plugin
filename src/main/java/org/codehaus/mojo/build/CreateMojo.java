@@ -21,7 +21,6 @@ package org.codehaus.mojo.build;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -68,6 +67,7 @@ import org.apache.maven.scm.provider.git.repository.GitScmProviderRepository;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.apache.maven.settings.Server;
 import org.apache.maven.settings.Settings;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
@@ -425,8 +425,8 @@ public class CreateMojo
                         }
                         finally
                         {
-                            closeStream( inputStream );
-                            closeStream( outputStream );
+                            IOUtil.close( inputStream );
+                            IOUtil.close( outputStream );
                         }
                     }
                     else
@@ -524,21 +524,6 @@ public class CreateMojo
                     nextProj.getProperties().put( this.timestampPropertyName, timestamp );
                     nextProj.getProperties().put( this.scmBranchPropertyName, scmBranch );
                 }
-            }
-        }
-    }
-
-    private void closeStream( Closeable stream )
-    {
-        if ( stream != null )
-        {
-            try
-            {
-                stream.close();
-            }
-            catch ( IOException e )
-            {
-                getLog().error( "Error while trying to close the stream", e );
             }
         }
     }
