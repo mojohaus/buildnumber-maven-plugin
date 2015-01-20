@@ -693,7 +693,7 @@ public class CreateMojo
         return getScmBranchFromUrl();
     }
 
-    protected String getScmBranchFromUrl()
+    private String getScmBranchFromUrl()
         throws MojoExecutionException
     {
         String scmUrl = null;
