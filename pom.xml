@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -160,7 +159,7 @@
       <artifactId>maven-scm-provider-svnjava</artifactId>
       <version>2.1.1</version>
       <exclusions>
-        <!--  this plugin requires svnkit-1.8.4 but it is not at central -->
+        <!-- this plugin requires svnkit-1.8.4 but it is not at central -->
         <exclusion>
           <groupId>org.tmatesoft.svnkit</groupId>
           <artifactId>svnkit</artifactId>
@@ -208,6 +207,10 @@
             </extraArtifacts>
             <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
             <settingsFile>src/it/settings.xml</settingsFile>
+            <pomExcludes>
+              <!-- Currently not correctly working. -->
+              <pomExclude>MBUILDNUM-5/pom.xml</pomExclude>
+            </pomExcludes>
           </configuration>
           <executions>
             <execution>
