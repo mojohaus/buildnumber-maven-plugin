@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/mojo/!svn/ver/20268/trunk/mojo/buildnumber-maven-plugin/src/it/basic-it-no-devscm
+END
+verify.bsh
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/mojo/!svn/ver/14069/trunk/mojo/buildnumber-maven-plugin/src/it/basic-it-no-devscm/verify.bsh
+END
+goals.txt
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/mojo/!svn/ver/11640/trunk/mojo/buildnumber-maven-plugin/src/it/basic-it-no-devscm/goals.txt
+END
+pom.xml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/mojo/!svn/ver/20268/trunk/mojo/buildnumber-maven-plugin/src/it/basic-it-no-devscm/pom.xml
+END
+prebuild.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/mojo/!svn/ver/19666/trunk/mojo/buildnumber-maven-plugin/src/it/basic-it-no-devscm/prebuild.groovy
+END
