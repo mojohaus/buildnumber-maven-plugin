@@ -21,9 +21,6 @@ package org.codehaus.mojo.build;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -97,18 +94,7 @@ public class CreateTimestampMojo
             return;
         }
 
-        Calendar cal = Calendar.getInstance();
-        Date now = cal.getTime();
-
-        if ( timestampFormat == null || timestampFormat.equals( "" ) )
-        {
-            timestampString = String.valueOf( now.getTime() );
-        }
-        else
-        {
-            SimpleDateFormat dateFormat = new SimpleDateFormat( timestampFormat );
-            timestampString = dateFormat.format( now );
-        }
+        timestampString = Utils.createTimestamp( timestampFormat );
 
         getLog().debug( "Storing timestamp property: " + timestampPropertyName + " " + timestampString );
 

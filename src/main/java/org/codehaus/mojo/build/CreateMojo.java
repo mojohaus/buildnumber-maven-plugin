@@ -37,20 +37,15 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.maven.execution.MavenSession;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.scm.CommandParameter;
-import org.apache.maven.scm.CommandParameters;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFile;
 import org.apache.maven.scm.ScmFileSet;
-import org.apache.maven.scm.ScmResult;
 import org.apache.maven.scm.command.info.InfoItem;
 import org.apache.maven.scm.command.info.InfoScmResult;
 import org.apache.maven.scm.command.status.StatusScmResult;
@@ -60,17 +55,11 @@ import org.apache.maven.scm.log.ScmLogDispatcher;
 import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.manager.ScmManager;
 import org.apache.maven.scm.provider.ScmProvider;
-import org.apache.maven.scm.provider.ScmProviderRepository;
-import org.apache.maven.scm.provider.ScmProviderRepositoryWithHost;
 import org.apache.maven.scm.provider.git.gitexe.command.branch.GitBranchCommand;
 import org.apache.maven.scm.provider.git.repository.GitScmProviderRepository;
 import org.apache.maven.scm.repository.ScmRepository;
-import org.apache.maven.settings.Server;
-import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
-import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
-import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
 
 /**
  * This mojo is designed to give you a build number. So when you might make 100 builds of version 1.0-SNAPSHOT, you can
@@ -97,47 +86,9 @@ import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
  */
 @Mojo( name = "create", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true )
 public class CreateMojo
-    extends AbstractMojo
+    extends AbstractScmMojo
 {
     private static final String DEFAULT_BRANCH_NAME = "UNKNOWN_BRANCH";
-
-    /**
-     * @since 1.1
-     */
-    private static final int DEFAULT_SHORT_REVISION_DISABLED = -1;
-
-    @Parameter( defaultValue = "${project.scm.developerConnection}", readonly = true )
-    private String urlScm;
-
-    /**
-     * @since 1.0-beta-5
-     */
-    @Parameter( defaultValue = "${project.scm.connection}", readonly = true )
-    private String readUrlScm;
-
-    /**
-     * The username that is used when connecting to the SCM system.
-     *
-     * @since 1.0-beta-1
-     */
-    @Parameter( property = "username" )
-    private String username;
-
-    /**
-     * The password that is used when connecting to the SCM system.
-     *
-     * @since 1.0-beta-1
-     */
-    @Parameter( property = "password" )
-    private String password;
-
-    /**
-     * Local directory to be used to issue SCM actions
-     *
-     * @since 1.0-beta-
-     */
-    @Parameter( property = "maven.buildNumber.scmDirectory", defaultValue = "${basedir}" )
-    private File scmDirectory;
 
     /**
      * You can rename the buildNumber property name to another property name if desired.
@@ -226,15 +177,6 @@ public class CreateMojo
     private String timestampFormat;
 
     /**
-     * Setting this value allows the build to continue even in the event of an SCM failure. The value set will be used
-     * as the revision string in the event of a failure to retrieve the revision it from the SCM.
-     *
-     * @since 1.0-beta-2
-     */
-    @Parameter( property = "maven.buildNumber.revisionOnScmFailure" )
-    private String revisionOnScmFailure;
-
-    /**
      * Selects alternative SCM provider implementations. Each map key denotes the original provider type as given in the
      * SCM URL like "cvs" or "svn", the map value specifies the provider type of the desired implementation to use
      * instead. In other words, this map configures a substitition mapping for SCM providers.
@@ -275,20 +217,10 @@ public class CreateMojo
      * @since 1.1
      */
     @Parameter
-    private int shortRevisionLength = DEFAULT_SHORT_REVISION_DISABLED;
+    private int shortRevisionLength = -1;
 
     // ////////////////////////////////////// internal maven components ///////////////////////////////////
 
-    /**
-     * Maven Settings
-     *
-     * @since 1.4
-     */
-    @Parameter( defaultValue = "${settings}", readonly = true )
-    private Settings settings;
-
-    @Parameter( defaultValue = "${project}", required = true, readonly = true )
-    private MavenProject project;
 
     /**
      * Contains the full list of projects in the reactor.
@@ -301,16 +233,6 @@ public class CreateMojo
     @Parameter( defaultValue = "${session}", readonly = true, required = true )
     private MavenSession session;
 
-    @Component
-    private ScmManager scmManager;
-
-    /**
-     * Maven Security Dispatcher
-     *
-     * @since 1.4
-     */
-    @Component( hint = "mng-4384" )
-    private SecDispatcher securityDispatcher;
 
     // ////////////////////////////////////// internal variables ///////////////////////////////////
 
@@ -760,25 +682,7 @@ public class CreateMojo
 
         try
         {
-            ScmRepository repository = getScmRepository();
-
-            InfoScmResult scmResult = info( repository, new ScmFileSet( scmDirectory ) );
-
-            if ( scmResult == null || scmResult.getInfoItems().isEmpty() )
-            {
-                return ( !StringUtils.isEmpty( revisionOnScmFailure ) ) ? revisionOnScmFailure : null;
-            }
-
-            checkResult( scmResult );
-
-            InfoItem info = scmResult.getInfoItems().get( 0 );
-
-            if ( useLastCommittedRevision )
-            {
-                return info.getLastChangedRevision();
-            }
-
-            return info.getRevision();
+            return this.getScmRevision();
         }
         catch ( ScmException e )
         {
@@ -801,36 +705,6 @@ public class CreateMojo
     }
 
     /**
-     * Get info from scm.
-     *
-     * @param repository
-     * @param fileSet
-     * @return
-     * @throws ScmException
-     * @todo this should be rolled into org.apache.maven.scm.provider.ScmProvider and
-     *       org.apache.maven.scm.provider.svn.SvnScmProvider
-     */
-    public InfoScmResult info( ScmRepository repository, ScmFileSet fileSet )
-        throws ScmException
-    {
-        CommandParameters commandParameters = new CommandParameters();
-        // only for Git, we will make a test for shortRevisionLength parameter
-        if ( GitScmProviderRepository.PROTOCOL_GIT.equals( scmManager.getProviderByRepository( repository ).getScmType() )
-            && this.shortRevisionLength != DEFAULT_SHORT_REVISION_DISABLED )
-        {
-            getLog().info( "ShortRevision tag detected. The value is '" + this.shortRevisionLength + "'." );
-            if ( shortRevisionLength >= 0 && shortRevisionLength < 4 )
-            {
-                getLog().warn( "shortRevision parameter less then 4. ShortRevisionLength is relaying on 'git rev-parese --short=LENGTH' command, accordingly to Git rev-parse specification the LENGTH value is miminum 4. " );
-            }
-            commandParameters.setInt( CommandParameter.SCM_SHORT_REVISION_LENGTH, this.shortRevisionLength );
-        }
-
-        return scmManager.getProviderByRepository( repository ).info( repository.getProviderRepository(), fileSet,
-                                                                      commandParameters );
-    }
-
-    /**
      * @return
      * @todo normally this would be handled in AbstractScmProvider
      */
@@ -843,61 +717,6 @@ public class CreateMojo
         return logger;
     }
 
-    private ScmRepository getScmRepository()
-        throws ScmException
-    {
-        ScmRepository repository = scmManager.makeScmRepository( StringUtils.isBlank( urlScm ) ? readUrlScm : urlScm );
-
-        ScmProviderRepository scmRepo = repository.getProviderRepository();
-
-        if ( !StringUtils.isEmpty( username ) )
-        {
-            scmRepo.setUser( username );
-        }
-
-        if ( !StringUtils.isEmpty( password ) )
-        {
-            scmRepo.setPassword( password );
-        }
-
-        if ( repository.getProviderRepository() instanceof ScmProviderRepositoryWithHost )
-        {
-            ScmProviderRepositoryWithHost repo = (ScmProviderRepositoryWithHost) repository.getProviderRepository();
-
-            loadInfosFromSettings( repo );
-
-            if ( !StringUtils.isEmpty( username ) )
-            {
-                repo.setUser( username );
-            }
-
-            if ( !StringUtils.isEmpty( password ) )
-            {
-                repo.setPassword( password );
-            }
-
-        }
-        return repository;
-    }
-
-    private void checkResult( ScmResult result )
-        throws ScmException
-    {
-        if ( !result.isSuccess() )
-        {
-            // TODO: improve error handling
-            getLog().error( "Provider message:" );
-
-            getLog().error( result.getProviderMessage() );
-
-            getLog().error( "Command output:" );
-
-            getLog().error( result.getCommandOutput() );
-
-            throw new ScmException( "Error!" );
-        }
-    }
-
     // ////////////////////////////////////////////////////////////////////////////////////////////
     // setters to help with test
     public void setScmManager( ScmManager scmManager )
@@ -907,7 +726,7 @@ public class CreateMojo
 
     public void setUrlScm( String urlScm )
     {
-        this.urlScm = urlScm;
+        this.scmConnectionUrl = urlScm;
     }
 
     public void setUsername( String username )
@@ -983,51 +802,5 @@ public class CreateMojo
         this.shortRevisionLength = shortRevision;
     }
 
-    /**
-     * Load username password from settings if user has not set them in JVM properties
-     *
-     * @param repo not null
-     */
-    private void loadInfosFromSettings( ScmProviderRepositoryWithHost repo )
-    {
-        if ( username == null || password == null )
-        {
-            String host = repo.getHost();
 
-            int port = repo.getPort();
-
-            if ( port > 0 )
-            {
-                host += ":" + port;
-            }
-
-            Server server = this.settings.getServer( host );
-
-            if ( server != null )
-            {
-                if ( username == null )
-                {
-                    username = server.getUsername();
-                }
-
-                if ( password == null )
-                {
-                    password = decrypt( server.getPassword(), host );
-                }
-            }
-        }
-    }
-
-    private String decrypt( String str, String server )
-    {
-        try
-        {
-            return securityDispatcher.decrypt( str );
-        }
-        catch ( SecDispatcherException e )
-        {
-            getLog().warn( "Failed to decrypt password/passphrase for server " + server + ", using auth token as is" );
-            return str;
-        }
-    }
 }
