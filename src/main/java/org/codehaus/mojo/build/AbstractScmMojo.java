@@ -32,6 +32,7 @@ import org.apache.maven.scm.CommandParameters;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFileSet;
 import org.apache.maven.scm.ScmResult;
+import org.apache.maven.scm.ScmTag;
 import org.apache.maven.scm.command.info.InfoItem;
 import org.apache.maven.scm.command.info.InfoScmResult;
 import org.apache.maven.scm.manager.ScmManager;
@@ -59,6 +60,12 @@ public abstract class AbstractScmMojo
      */
     @Parameter( defaultValue = "${project.scm.developerConnection}", alias = "urlScm", readonly = true )
     protected String scmDeveloperConnectionUrl;
+
+    /**
+     * @since 1.4
+     */
+    @Parameter( defaultValue = "${project.scm.tag}", readonly = true )
+    protected String scmTag;
 
     /**
      * The username that is used when connecting to the SCM system.
@@ -259,6 +266,11 @@ public abstract class AbstractScmMojo
                 getLog().warn( "shortRevision parameter less then 4. ShortRevisionLength is relaying on 'git rev-parese --short=LENGTH' command, accordingly to Git rev-parse specification the LENGTH value is miminum 4. " );
             }
             commandParameters.setInt( CommandParameter.SCM_SHORT_REVISION_LENGTH, this.shortRevisionLength );
+        }
+
+        if ( !StringUtils.isBlank( scmTag ) && !"HEAD".equals( scmTag ) )
+        {
+            commandParameters.setScmVersion( CommandParameter.SCM_VERSION, new ScmTag( scmTag ) );
         }
 
         return scmManager.getProviderByRepository( repository ).info( repository.getProviderRepository(), fileSet,
