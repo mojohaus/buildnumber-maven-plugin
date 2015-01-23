@@ -16,6 +16,10 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.cli.CommandLineException;
+import org.codehaus.plexus.util.cli.CommandLineUtils;
+import org.codehaus.plexus.util.cli.CommandLineUtils.StringStreamConsumer;
+import org.codehaus.plexus.util.cli.Commandline;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -42,6 +46,11 @@ public class BuildNumberMojoTest
     public void basicItTest()
         throws Exception
     {
+        if ( ! isSvn18() ) {
+            System.out.println( "Not Subversion 1.8 compatible. Skip test");
+            return;
+        }
+
         File projDir = resources.getBasedir( "basic-it" );
 
         MavenExecution mavenExec = maven.forProject( projDir );
@@ -85,6 +94,11 @@ public class BuildNumberMojoTest
     public void basicItNoDevScmTest()
         throws Exception
     {
+        if ( ! isSvn18() ) {
+            System.out.println( "Not Subversion 1.8 compatible. Skip test");
+            return;
+        }
+
         File projDir = resources.getBasedir( "basic-it-no-devscm" );
 
         MavenExecution mavenExec = maven.forProject( projDir );
@@ -257,6 +271,11 @@ public class BuildNumberMojoTest
     public void Mojo1668Test()
         throws Exception
     {
+        if ( ! isSvn18() ) {
+            System.out.println( "Not Subversion 1.8 compatible. Skip test");
+            return;
+        }
+
         File projDir = resources.getBasedir( "MOJO-1668" );
 
         MavenExecution mavenExec = maven.forProject( projDir );
@@ -310,5 +329,26 @@ public class BuildNumberMojoTest
         jarFile.close();
         String buildDate = manifest.getValue( "Build-Date" );
         Assert.assertTrue( StringUtils.isBlank( buildDate ) );
+    }
+
+    private static boolean isSvn18()
+    {
+        Commandline cl = new Commandline();
+        cl.setExecutable( "svn" );
+
+        StringStreamConsumer stdout = new StringStreamConsumer();
+        StringStreamConsumer stderr = new StringStreamConsumer();
+
+        try
+        {
+            CommandLineUtils.executeCommandLine( cl, stdout, stderr );
+            return stdout.getOutput().contains( "svn, version 1.8." );
+        }
+        catch ( CommandLineException e )
+        {
+        }
+
+
+        return false;
     }
 }

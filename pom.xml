@@ -284,6 +284,9 @@
 
     <profile>
       <id>run-project-its</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <properties>
         <test.excludes />
       </properties>
