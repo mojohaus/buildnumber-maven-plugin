@@ -122,6 +122,11 @@ public class BuildNumberMojoTest
     public void basicItSvnJavaTest()
         throws Exception
     {
+        if ( ! isSvn18() ) {
+            System.out.println( "Not Subversion 1.8 compatible. Skip test");
+            return;
+        }
+
         File projDir = resources.getBasedir( "basic-it-svnjava" );
 
         MavenExecution mavenExec = maven.forProject( projDir );
