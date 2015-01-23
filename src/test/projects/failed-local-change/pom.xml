@@ -24,6 +24,14 @@
           <doCheck>true</doCheck>
           <doUpdate>false</doUpdate>
         </configuration>
+        <executions>
+          <execution>
+            <id>create</id>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
 

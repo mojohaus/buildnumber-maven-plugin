@@ -22,7 +22,7 @@
         <executions>
           <execution>
             <id>scm-failure</id>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>create</goal>
             </goals>
@@ -33,7 +33,7 @@
           </execution>
           <execution>
             <id>no-scm-failure</id>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>create</goal>
             </goals>

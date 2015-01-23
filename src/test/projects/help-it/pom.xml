@@ -16,6 +16,14 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
         <version>${it-plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>help</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
 
