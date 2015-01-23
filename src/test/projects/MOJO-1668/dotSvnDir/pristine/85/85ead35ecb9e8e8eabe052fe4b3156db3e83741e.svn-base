@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.codehaus.mojo.it</groupId>
+  <artifactId>buildnumber-maven-plugin-MOJO-1668</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <scm>
+    <developerConnection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin/src/it/MOJO-1668</developerConnection>
+  </scm>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>buildnumber-maven-plugin</artifactId>
+          <version>@pom.version@</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
+              <artifactId>maven-scm-provider-svnjava</artifactId>
+              <version>1.11</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+       <groupId>org.codehaus.mojo</groupId>
+       <artifactId>buildnumber-maven-plugin</artifactId>
+       <executions>
+         <execution>
+           <phase>validate</phase>
+           <goals>
+             <goal>create</goal>
+           </goals>
+         </execution>
+       </executions>
+       <configuration>
+         <doCheck>false</doCheck>
+         <doUpdate>false</doUpdate>
+         <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+         <providerImplementations>
+           <svn>javasvn</svn>
+         </providerImplementations>
+         <username>foo</username>
+         <password>bar</password>
+         <timestampFormat>{0,date,yyyyMMdd_HHmmss}</timestampFormat>
+       </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+            <manifestEntries>
+              <SCM-Revision>${buildNumber}</SCM-Revision>
+              <Build-Date>${timestamp}</Build-Date>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>      
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>svn-1.7</id>
+      <activation>
+        <file>
+          <missing>.svn</missing>
+        </file>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>buildnumber-maven-plugin</artifactId>
+              <version>@pom.version@</version>
+              <dependencies>
+                <dependency>
+                  <groupId>org.tmatesoft.svnkit</groupId>
+                  <artifactId>svnkit</artifactId>
+                  <version>1.8.3-1</version>
+                </dependency>
+              </dependencies>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

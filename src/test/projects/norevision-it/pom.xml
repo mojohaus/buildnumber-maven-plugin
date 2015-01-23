@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.codehaus.mojo.it</groupId>
+  <artifactId>buildnumber-maven-plugin-norevision-it</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <scm>
+    <developerConnection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin/src/it/novivision-it
+    </developerConnection>
+  </scm>
+
+  <build>
+
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>@pom.version@</version>
+        <executions>
+          <execution>
+            <id>scm-failure</id>
+            <phase>package</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+            <configuration>
+              <scmDirectory>${project.build.directory}</scmDirectory> //this directory is not a svn local directory
+              <revisionOnScmFailure>NOREVISION</revisionOnScmFailure>
+            </configuration>
+          </execution>
+          <execution>
+            <id>no-scm-failure</id>
+            <phase>package</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+            <configuration>
+              <useLastCommittedRevision>true</useLastCommittedRevision>
+            </configuration>
+          </execution>
+          
+        </executions>
+      </plugin>
+    </plugins>
+    
+  </build>
+
+</project>
