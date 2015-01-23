@@ -289,7 +289,7 @@
     </profile>
 
     <profile>
-      <id>run-takari-its</id>
+      <id>run-project-its</id>
       <properties>
         <test.excludes />
       </properties>

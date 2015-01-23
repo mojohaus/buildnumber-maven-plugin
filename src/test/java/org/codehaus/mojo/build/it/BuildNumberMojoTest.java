@@ -14,6 +14,7 @@ import java.util.jar.JarFile;
 
 import org.codehaus.plexus.util.FileUtils;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +36,7 @@ public class BuildNumberMojoTest
     }
 
     @Test
-    public void basicTests()
+    public void basicIT()
         throws Exception
     {
         File projDir = resources.getBasedir( "basic-it" );
@@ -55,6 +56,29 @@ public class BuildNumberMojoTest
         jarFile.close();
         String scmRev = manifest.getValue( "SCM-Revision" );
         Assert.assertEquals( "19665" , scmRev );
+
+
+    }
+
+    @Test
+    @Ignore
+    public void basicItClearcaseScm()
+        throws Exception
+    {
+        File projDir = resources.getBasedir( "basic-it-clearcase-scm" );
+
+        MavenExecution mavenExec = maven.forProject( projDir );
+        MavenExecutionResult result = mavenExec.execute( "clean", "verify" );
+        File testDir = result.getBasedir();
+        result.assertLogText( "Storing buildNumber: foo" );
+        result.assertLogText( "Storing buildScmBranch: UNKNOWN_BRANCH" );
+
+        File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-clearcase-scm-1.0-SNAPSHOT.jar" );
+        JarFile jarFile = new JarFile( artifact );
+        Attributes manifest = jarFile.getManifest().getMainAttributes();
+        jarFile.close();
+        String scmRev = manifest.getValue( "SCM-Revision" );
+        Assert.assertEquals( "foo" , scmRev );
 
 
     }
