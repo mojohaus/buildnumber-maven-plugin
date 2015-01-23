@@ -19,14 +19,14 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>@pom.version@</version>
+        <version>${it-plugin.version}</version>
         <configuration>
           <doCheck>true</doCheck>
-          <doUpdate>false</doUpdate>        
+          <doUpdate>false</doUpdate>
         </configuration>
       </plugin>
     </plugins>
-    
+
   </build>
 
 </project>

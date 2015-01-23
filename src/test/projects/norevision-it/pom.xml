@@ -18,7 +18,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>@pom.version@</version>
+        <version>${it-plugin.version}</version>
         <executions>
           <execution>
             <id>scm-failure</id>
@@ -41,11 +41,11 @@
               <useLastCommittedRevision>true</useLastCommittedRevision>
             </configuration>
           </execution>
-          
+
         </executions>
       </plugin>
     </plugins>
-    
+
   </build>
 
 </project>

@@ -56,12 +56,9 @@ public class BuildNumberMojoTest
         jarFile.close();
         String scmRev = manifest.getValue( "SCM-Revision" );
         Assert.assertEquals( "19665" , scmRev );
-
-
     }
 
     @Test
-    @Ignore
     public void basicItClearcaseScm()
         throws Exception
     {

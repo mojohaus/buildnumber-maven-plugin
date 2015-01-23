@@ -15,10 +15,10 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>@pom.version@</version>
+        <version>${it-plugin.version}</version>
       </plugin>
     </plugins>
-    
+
   </build>
 
 </project>
