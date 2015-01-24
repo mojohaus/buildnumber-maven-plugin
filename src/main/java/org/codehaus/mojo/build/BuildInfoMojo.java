@@ -164,6 +164,13 @@ public class BuildInfoMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+
+        if ( skip )
+        {
+            getLog().info( "Skipping execution." );
+            return;
+        }
+
         Properties props = new Properties();
         props.put( this.applicationPropertyName, applicationName );
         props.put( this.versionPropertyName, version );

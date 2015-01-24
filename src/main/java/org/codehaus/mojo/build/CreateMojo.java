@@ -204,14 +204,6 @@ public class CreateMojo
     private String scmBranchPropertyName;
 
     /**
-     * Whether to skip this execution.
-     *
-     * @since 1.3
-     */
-    @Parameter( property = "maven.buildNumber.skip", defaultValue = "false" )
-    private boolean skip;
-
-    /**
      * Max length of a revision id (used only for git)
      *
      * @since 1.1

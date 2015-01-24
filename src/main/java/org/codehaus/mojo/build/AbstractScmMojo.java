@@ -117,6 +117,14 @@ public abstract class AbstractScmMojo
     private boolean useLastCommittedRevision;
 
     /**
+     * Whether to skip this execution.
+     *
+     * @since 1.3
+     */
+    @Parameter( property = "maven.buildNumber.skip", defaultValue = "false" )
+    protected boolean skip;
+
+    /**
      * Maven Settings
      *
      * @since 1.4
