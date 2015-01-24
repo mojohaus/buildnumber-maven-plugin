@@ -277,3 +277,34 @@ Usage
     </plugins>
   </build>
 +--
+
+* Create Build Metadata
+
+  For quick quick discovery of a SCM revision of an snapshot/release artifact available at maven repository, use
+  buildnumber:create-metadata to deploy a build metadata file associate with a specific artifact of the same project.
+
++--
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <phase>generate-ressources</phase>
+            <goals>
+              <goal>create-metadata</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <attach>true</attach>
+          <!--make it available for jar/war classpath resource -->
+          <addOutputDirectoryToResources>true</addOutputDirectoryToResources>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
++--
+

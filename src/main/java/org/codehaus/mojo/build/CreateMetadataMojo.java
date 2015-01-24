@@ -43,21 +43,14 @@ import org.apache.maven.scm.ScmException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * This mojo discovers latest SCM revision and current timestamp, then write them to a java property file together with
- * a set of user provided properties.
+ * This mojo discovers latest SCM revision, current timestamp, project version, and project name then write them to one
+ * or more java property files together with a set of user provided properties. It also has option to add the output file
+ * to resource classpath for jar packaging.
  */
 @Mojo( name = "create-metadata", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresProject = true, threadSafe = true, aggregator = true )
 public class CreateMetadataMojo
     extends AbstractScmMojo
 {
-
-    /**
-     * Java property name to store the project name under the output file
-     *
-     * @since 1.4
-     */
-    @Parameter( defaultValue = "name" )
-    private String applicationPropertyName;
 
     /**
      * Application name
@@ -68,7 +61,15 @@ public class CreateMetadataMojo
     private String applicationName;
 
     /**
-     * Java property name to store the project version under the output file
+     * Java property name to store the project name
+     *
+     * @since 1.4
+     */
+    @Parameter( defaultValue = "name" )
+    private String applicationPropertyName;
+
+    /**
+     * Java property name to store the project version
      *
      * @since 1.4
      */
@@ -84,7 +85,7 @@ public class CreateMetadataMojo
     private String version;
 
     /**
-     * Java property name to store the discovered SCM revision value under the output file
+     * Java property name to store the discovered SCM revision value
      *
      * @since 1.4
      */
@@ -92,7 +93,7 @@ public class CreateMetadataMojo
     private String revisionPropertyName;
 
     /**
-     * Java property name to store the discovered timestamp value under the output file
+     * Java property name to store the discovered timestamp value
      *
      * @since 1.4
      */
@@ -100,11 +101,11 @@ public class CreateMetadataMojo
     private String timestampPropertyName;
 
     /**
-     * java.text.SimpleDateFormat for the discover timestamp, if not given use default java timestamp format
+     * java.text.SimpleDateFormat for the discover timestamp, if not given use long integer format
      *
      * @since 1.4
      */
-    @Parameter
+    @Parameter( property = "maven.build.timestamp.format" )
     private String timestampFormat;
 
     /**
@@ -124,12 +125,13 @@ public class CreateMetadataMojo
     private String outputName;
 
     /**
-     * Add output directory to java resource
+     * Add outputDirectory to java resource so that <i>outputName</i> will be under runtime classpath.
+     * <i>outputName</i> can contain '/'
      *
      * @since 1.4
      */
     @Parameter( defaultValue = "false" )
-    private boolean addOutputDirectoryToResource;
+    private boolean addOutputDirectoryToResources;
 
     /**
      * Install/Deploy to Maven repository
@@ -204,7 +206,7 @@ public class CreateMetadataMojo
             projectHelper.attachArtifact( this.project, "properties", "build", outputFile );
         }
 
-        if ( this.addOutputDirectoryToResource )
+        if ( this.addOutputDirectoryToResources )
         {
             Resource resource = new Resource();
             resource.setDirectory( outputDirectory.getAbsolutePath() );

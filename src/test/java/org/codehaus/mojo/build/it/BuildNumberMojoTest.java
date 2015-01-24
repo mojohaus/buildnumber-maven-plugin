@@ -215,8 +215,11 @@ public class BuildNumberMojoTest
         MavenExecutionResult result = mavenExec.execute( "validate" );
         result.assertErrorFreeLog();
         result.assertLogText( "buildnumber:create" );
-        result.assertLogText( "This mojo discovers latest SCM revision and current timestamp" );
+        result.assertLogText( "This mojo is designed to give you a build number" );
+        result.assertLogText( "buildnumber:create-metadata" );
+        result.assertLogText( "buildnumber:create-timestamp" );
     }
+
 
     @Test
     @Ignore
