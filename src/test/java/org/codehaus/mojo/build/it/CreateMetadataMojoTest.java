@@ -17,14 +17,14 @@ import org.junit.runner.RunWith;
 
 @RunWith( MavenJUnitTestRunner.class )
 @MavenVersions( { "3.1.1" } )
-public class BuildInfoMojoTest
+public class CreateMetadataMojoTest
 {
     @Rule
     public final TestResources resources = new TestResources();
 
     public final MavenRuntime maven;
 
-    public BuildInfoMojoTest( MavenRuntimeBuilder builder )
+    public CreateMetadataMojoTest( MavenRuntimeBuilder builder )
         throws Exception
     {
         this.maven = builder.withCliOptions( "-B" ).build();
@@ -34,7 +34,7 @@ public class BuildInfoMojoTest
     public void testBasicConfiguration()
         throws Exception
     {
-        File projDir = resources.getBasedir( "build-info-basic-it" );
+        File projDir = resources.getBasedir( "create-metadata-it" );
 
         MavenExecution mavenExec = maven.forProject( projDir );
         MavenExecutionResult result = mavenExec.execute( "clean", "test" );
@@ -43,7 +43,7 @@ public class BuildInfoMojoTest
         File testDir = result.getBasedir();
         Assert.assertTrue( new File( testDir, "target/file1.properties" ).exists() );
         Assert.assertTrue( new File( testDir, "target/xxx/file1.properties" ).exists() );
-        Assert.assertTrue( new File( testDir, "target/generated/buildinfo/build.properties" ).exists() );
+        Assert.assertTrue( new File( testDir, "target/generated/build-metadata/build.properties" ).exists() );
         Assert.assertTrue( new File( testDir, "target/classes/build.properties" ).exists() );
 
     }

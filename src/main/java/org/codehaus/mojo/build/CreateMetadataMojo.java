@@ -46,8 +46,8 @@ import org.codehaus.plexus.util.StringUtils;
  * This mojo discovers latest SCM revision and current timestamp, then write them to a java property file together with
  * a set of user provided properties.
  */
-@Mojo( name = "build-info", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresProject = true, threadSafe = true, aggregator = true )
-public class BuildInfoMojo
+@Mojo( name = "create-metadata", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresProject = true, threadSafe = true, aggregator = true )
+public class CreateMetadataMojo
     extends AbstractScmMojo
 {
 
@@ -112,7 +112,7 @@ public class BuildInfoMojo
      *
      * @since 1.4
      */
-    @Parameter( defaultValue = "${project.build.directory}/generated/buildinfo", required = true )
+    @Parameter( defaultValue = "${project.build.directory}/generated/build-metadata", required = true )
     private File outputDirectory;
 
     /**
