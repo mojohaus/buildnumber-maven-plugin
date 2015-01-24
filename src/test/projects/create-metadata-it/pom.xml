@@ -28,11 +28,12 @@
             </goals>
             <configuration>
               <revisionOnScmFailure>UNKNOWN</revisionOnScmFailure>
+              <!-- see outputDirectory + outputName for the default outputFile -->
               <outputFiles>
                 <outputFile>${project.build.directory}/file1.properties</outputFile>
                 <outputFile>${project.build.directory}/xxx/file1.properties</outputFile>
               </outputFiles>
-              <addOutputDirectoryToResource>true</addOutputDirectoryToResource>
+              <addOutputDirectoryToResources>true</addOutputDirectoryToResources>
             </configuration>
           </execution>
         </executions>
