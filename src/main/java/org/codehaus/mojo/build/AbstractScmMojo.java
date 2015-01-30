@@ -96,8 +96,8 @@ public abstract class AbstractScmMojo
      *
      * @since 1.1
      */
-    @Parameter
-    private int shortRevisionLength = 0;
+    @Parameter( property = "maven.buildNumber.shortRevisionLength", defaultValue = "0" )
+    protected int shortRevisionLength = 0;
 
     /**
      * Setting this value allows the build to continue even in the event of an SCM failure. The value set will be used

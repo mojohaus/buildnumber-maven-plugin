@@ -203,13 +203,6 @@ public class CreateMojo
     @Parameter( property = "maven.buildNumber.scmBranchPropertyName", defaultValue = "scmBranch" )
     private String scmBranchPropertyName;
 
-    /**
-     * Max length of a revision id (used only for git)
-     *
-     * @since 1.1
-     */
-    @Parameter
-    private int shortRevisionLength = -1;
 
     // ////////////////////////////////////// internal maven components ///////////////////////////////////
 
