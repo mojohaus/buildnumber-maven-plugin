@@ -72,8 +72,6 @@
   <properties>
     <maven.scm.version>1.9.2</maven.scm.version>
     <maven.api.version>2.2.1</maven.api.version>
-    <maven.compiler.source>1.5</maven.compiler.source>
-    <maven.compiler.target>1.5</maven.compiler.target>
     <mojo.java.target>1.5</mojo.java.target>
     <maven.it.version>3.1.1</maven.it.version>
     <takari.plugin.testing.version>2.1.0</takari.plugin.testing.version>
@@ -329,7 +327,7 @@
                 <configuration>
                   <rules>
                     <enforceBytecodeVersion>
-                      <maxJdkVersion>1.5</maxJdkVersion>
+                      <maxJdkVersion>${mojo.java.target}</maxJdkVersion>
                       <excludes>
                         <exclude>io.takari.*</exclude>
                         <exclude>org.codehaus.plexus:plexus-classworlds</exclude>
