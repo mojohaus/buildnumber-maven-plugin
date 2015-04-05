@@ -70,7 +70,7 @@
   </issueManagement>
 
   <properties>
-    <maven.scm.version>1.9.2</maven.scm.version>
+    <maven.scm.version>1.9.4</maven.scm.version>
     <maven.api.version>2.2.1</maven.api.version>
     <mojo.java.target>1.5</mojo.java.target>
     <maven.it.version>3.1.1</maven.it.version>
