@@ -17,22 +17,6 @@
 <component-set>
   <components>
     <component>
-      <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
-      <role-hint>rpm</role-hint>
-      <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
-      <instantiation-strategy>per-lookup</instantiation-strategy>
-      <configuration>
-        <phases>
-          <initialize>org.codehaus.mojo:rpm-maven-plugin:version</initialize>
-          <process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
-          <compile>org.apache.maven.plugins:maven-compiler-plugin:compile</compile>
-          <package>org.codehaus.mojo:rpm-maven-plugin:rpm</package>
-          <install>org.apache.maven.plugins:maven-install-plugin:install</install>
-          <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
-        </phases>
-      </configuration>
-    </component>
-    <component>
       <role>org.sonatype.plexus.components.sec.dispatcher.SecDispatcher</role>
       <role-hint>mng-4384</role-hint>
       <implementation>org.sonatype.plexus.components.sec.dispatcher.DefaultSecDispatcher</implementation>
