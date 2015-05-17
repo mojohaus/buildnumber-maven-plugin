@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20150517" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>Build Number Maven Plugin &#x2013; Usage</title>
+    <title>Build Number Maven Plugin - Usage</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.3.0.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -62,7 +62,7 @@
                 
                     
                   <li id="publishDate" class="pull-right">Last Published: 2015-05-17</li> <li class="divider pull-right">|</li>
-              <li id="projectVersion" class="pull-right">Version: 1.4-SNAPSHOT</li>
+              <li id="projectVersion" class="pull-right">Version: 1.3</li>
             
                                             <li class="divider pull-right">|</li>
                         
@@ -107,6 +107,13 @@
           <i class="none"></i>
         FAQ</a>
             </li>
+                  
+      <li>
+    
+                          <a href="using-svnjava.html" title="Using svnjava">
+          <i class="none"></i>
+        Using svnjava</a>
+            </li>
                               <li class="nav-header">Project Documentation</li>
                                                                                                                                                                                                                                                                                         
       <li>
@@ -115,7 +122,7 @@
           <i class="icon-chevron-right"></i>
         Project Information</a>
                   </li>
-                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                          
       <li>
     
                           <a href="project-reports.html" title="Project Reports">
@@ -149,7 +156,7 @@
         <div id="bodyColumn"  class="span9" >
                                   
             <div class="section">
-<h2><a name="Usage"></a>Usage</h2>
+<h2>Usage<a name="Usage"></a></h2>
 <p>This plugin works in one of 3 ways: with an SCM, with a sequential build number, or with a timestamp.</p>
 <p>No matter which method you choose, you must include it in your pom:</p>
 <div class="source">
@@ -158,7 +165,7 @@
       &lt;plugin&gt;
         &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
         &lt;artifactId&gt;buildnumber-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;1.4-SNAPSHOT&lt;/version&gt;
+        &lt;version&gt;1.3&lt;/version&gt;
         &lt;executions&gt;
           &lt;execution&gt;
             &lt;phase&gt;validate&lt;/phase&gt;
@@ -234,7 +241,7 @@
       &lt;plugin&gt;
         &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
         &lt;artifactId&gt;buildnumber-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;1.4-SNAPSHOT&lt;/version&gt;
+        &lt;version&gt;1.3&lt;/version&gt;
         &lt;configuration&gt;
           &lt;format&gt;At {1,time} on {1,date}, there was {2} on planet {0,number,integer}.&lt;/format&gt;
           &lt;items&gt;
@@ -256,121 +263,45 @@
   &lt;/build&gt;</pre></div>
 <p>Other more useful configurations might be:</p>
 <div class="source">
-<pre>    &lt;configuration&gt;
-      &lt;format&gt;{0,number}.{1,number}.{2,number}&lt;/format&gt;
-      &lt;items&gt;
-        &lt;item&gt;buildNumber0&lt;/item&gt;
-        &lt;item&gt;buildNumber1&lt;/item&gt;
-        &lt;item&gt;buildNumber2&lt;/item&gt;
-      &lt;/items&gt;
-    &lt;/configuration&gt;</pre></div>
+<pre>        &lt;configuration&gt;
+          &lt;format&gt;{0,number}.{1,number}.{2,number}&lt;/format&gt;
+          &lt;items&gt;
+            &lt;item&gt;buildNumber0&lt;/item&gt;
+            &lt;item&gt;buildNumber1&lt;/item&gt;
+            &lt;item&gt;buildNumber2&lt;/item&gt;
+          &lt;/items&gt;
+        &lt;/configuration&gt;</pre></div>
 <p>or:</p>
 <div class="source">
-<pre>    &lt;configuration&gt;
-      &lt;format&gt;{0,date,yyyy-MM-dd HH:mm:ss}&lt;/format&gt;
-      &lt;items&gt;
-        &lt;item&gt;timestamp&lt;/item&gt;
-      &lt;/items&gt;
-    &lt;/configuration&gt;</pre></div>
+<pre>        &lt;configuration&gt;
+          &lt;format&gt;{0,date,yyyy-MM-dd HH:mm:ss}&lt;/format&gt;
+          &lt;items&gt;
+            &lt;item&gt;timestamp&lt;/item&gt;
+          &lt;/items&gt;
+        &lt;/configuration&gt;</pre></div>
 <p>The plugin simply uses the <a class="externalLink" href="http://java.sun.com/j2se/1.4.2/docs/api/java/text/MessageFormat.html"> MessageFormat class</a> to produce <tt>${buildNumber}</tt>, and thus the above configurations would produce:</p>
 <div class="source">
-<pre>    At 12:30 PM on Jul 3, 2053, there was a disturbance in the Force on planet 7.</pre></div>
+<pre>At 12:30 PM on Jul 3, 2053, there was a disturbance in the Force on planet 7.</pre></div>
 <p>and</p>
 <div class="source">
-<pre>    2.0.3</pre></div>
+<pre>2.0.3</pre></div>
 <p>and</p>
 <div class="source">
-<pre>    2005-10-06 2:22:55</pre></div>
+<pre>2005-10-06 2:22:55</pre></div>
 <p>respectively.</p>
 <p>When you specify the special items of &quot;buildNumber\d*&quot; or &quot;timestamp&quot;, then some magic is performed. For each unique buildNumber, a properties file ( see <a href="./create-mojo.html#buildNumberPropertiesFileLocation">buildNumberPropertiesFileLocation</a> ) will be created (or read if it exists) which holds an integer, starting at 1. That number will be incremented on each access. Of course, the given example is somewhat non-sensical, since it will increment all 3 numbers on each build, but it shows the type of flexibility available. For each timestamp, you simply get the current date and time.</p>
 <p>Here is some additional writeup on <a class="externalLink" href="http://apollo.ucalgary.ca/tlcprojectswiki/index.php/Public/Project_Versioning_-_Best_Practices#Build_Versioning"> how to version your projects with this plugin</a>. It even details how to access the version number in your code.</p>
 <div class="section">
-<h3><a name="Git_short_revision_ID"></a>Git short revision ID</h3>
+<h3>Git short revision ID<a name="Git_short_revision_ID"></a></h3>
 <p>From the version 1.1 you can specify the length for the Git revision. To enable this feature you have to specify the new tag <b> &lt;shortRevisionLength&gt; </b> in the <b> &lt;configuration&gt; </b> section. For exemple:</p>
 <div class="source">
-<pre>    &lt;configuration&gt;
-       &lt;shortRevisionLength&gt;5&lt;/shortRevisionLength&gt;
-    &lt;/configuration&gt;</pre></div>
+<pre>        &lt;configuration&gt;
+           &lt;shortRevisionLength&gt;5&lt;/shortRevisionLength&gt;
+        &lt;/configuration&gt;</pre></div>
 <p>the output of the found git revision will have only 5 characters:</p>
 <div class="source">
-<pre>    instead of b0c1c69be579175e63eeb1c056d607f01ab61e96 you will have only b0c1c</pre></div>
-<p><b>Note:</b> this feature uses internally the <b>git rev-pasre --short</b> command and the revision length is set to minimum 4 characters. So you can't have the revision id shorter then 4 characters. Even if you specify the length between 0 and 4, the plugin will inform you about this situation and the minimum value (4) will be used.</p></div>
-<div class="section">
-<h3><a name="Using_svnjava_provider"></a>Using svnjava provider</h3>
-<p>If you need to execute the plugin on machine without any svn in the path you can configure the mojo to use the svnjava provider.</p>
-<p>NOTE the svnjava provider use the svnjava scm provider implementation <a class="externalLink" href="http://code.google.com/a/apache-extras.org/p/maven-scm-provider-svnjava/">maven-scm-provider-svnjava</a> which rely on svnkit version.</p>
-<div class="source">
-<pre>  &lt;build&gt;
-    &lt;plugins&gt;
-      &lt;plugin&gt;
-        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
-        &lt;artifactId&gt;buildnumber-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;1.4-SNAPSHOT&lt;/version&gt;
-        &lt;executions&gt;
-          &lt;execution&gt;
-            &lt;phase&gt;validate&lt;/phase&gt;
-            &lt;goals&gt;
-              &lt;goal&gt;create&lt;/goal&gt;
-            &lt;/goals&gt;
-          &lt;/execution&gt;
-        &lt;/executions&gt;
-        &lt;configuration&gt;
-          &lt;doCheck&gt;true&lt;/doCheck&gt;
-          &lt;doUpdate&gt;true&lt;/doUpdate&gt;
-          &lt;providerImplementations&gt;
-            &lt;svn&gt;javasvn&lt;/svn&gt;
-          &lt;/providerImplementations&gt;
-        &lt;/configuration&gt;
-      &lt;/plugin&gt;
-    &lt;/plugins&gt;
-  &lt;/build&gt;</pre></div></div>
-<div class="section">
-<h3><a name="Using_Perforce_P4Maven_provider"></a>Using Perforce P4Maven provider</h3>
-<p>To use this plugin with <a class="externalLink" href="https://swarm.workshop.perforce.com/files/guest/dantran/p4maven">Perforce P4Maven Provider</a>, add p4maven-provider to dependencies list.</p>
-<div class="source">
-<pre>  &lt;build&gt;
-    &lt;plugins&gt;
-      &lt;plugin&gt;
-        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
-        &lt;artifactId&gt;buildnumber-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;1.4-SNAPSHOT&lt;/version&gt;
-        &lt;dependencies&gt;
-          &lt;dependency&gt;
-            &lt;groupId&gt;com.perforce.p4maven&lt;/groupId&gt;
-            &lt;artifactId&gt;p4maven-provider&lt;/artifactId&gt;
-            &lt;version&gt;${p4maven.version}&lt;/version&gt;
-          &lt;/dependency&gt;
-        &lt;/dependencies&gt;
-        [...]
-      &lt;/plugin&gt;
-    &lt;/plugins&gt;
-  &lt;/build&gt;</pre></div></div>
-<div class="section">
-<h3><a name="Create_Build_Metadata"></a>Create Build Metadata</h3>
-<p>For quick quick discovery of a SCM revision of an snapshot/release artifact available at maven repository, use buildnumber:create-metadata to deploy a build metadata file associate with a specific artifact of the same project.</p>
-<div class="source">
-<pre>  &lt;build&gt;
-    &lt;plugins&gt;
-      &lt;plugin&gt;
-        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
-        &lt;artifactId&gt;buildnumber-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;1.4-SNAPSHOT&lt;/version&gt;
-        &lt;executions&gt;
-          &lt;execution&gt;
-            &lt;phase&gt;generate-ressources&lt;/phase&gt;
-            &lt;goals&gt;
-              &lt;goal&gt;create-metadata&lt;/goal&gt;
-            &lt;/goals&gt;
-          &lt;/execution&gt;
-        &lt;/executions&gt;
-        &lt;configuration&gt;
-          &lt;attach&gt;true&lt;/attach&gt;
-          &lt;!--make it available for jar/war classpath resource --&gt;
-          &lt;addOutputDirectoryToResources&gt;true&lt;/addOutputDirectoryToResources&gt;
-        &lt;/configuration&gt;
-      &lt;/plugin&gt;
-    &lt;/plugins&gt;
-  &lt;/build&gt;</pre></div></div></div>
+<pre>  instead of b0c1c69be579175e63eeb1c056d607f01ab61e96 you will have only b0c1c</pre></div>
+<p><b>Note:</b> this feature uses internally the <b>git rev-pasre --short</b> command and the revision length is set to minimum 4 characters. So you can't have the revision id shorter then 4 characters. Even if you specify the length between 0 and 4, the plugin will inform you about this situation and the minimum value (4) will be used.</p></div></div>
                   </div>
             </div>
           </div>

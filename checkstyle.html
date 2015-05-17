@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20150517" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>Build Number Maven Plugin &#x2013; Checkstyle Results</title>
+    <title>Build Number Maven Plugin - Checkstyle Results</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.3.0.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -62,7 +62,7 @@
                 
                     
                   <li id="publishDate" class="pull-right">Last Published: 2015-05-17</li> <li class="divider pull-right">|</li>
-              <li id="projectVersion" class="pull-right">Version: 1.4-SNAPSHOT</li>
+              <li id="projectVersion" class="pull-right">Version: 1.3</li>
             
                                             <li class="divider pull-right">|</li>
                         
@@ -109,6 +109,13 @@
           <i class="none"></i>
         FAQ</a>
             </li>
+                  
+      <li>
+    
+                          <a href="using-svnjava.html" title="Using svnjava">
+          <i class="none"></i>
+        Using svnjava</a>
+            </li>
                               <li class="nav-header">Project Documentation</li>
                                                                                                                                                                                                                                                                                         
       <li>
@@ -117,7 +124,7 @@
           <i class="icon-chevron-right"></i>
         Project Information</a>
                   </li>
-                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                    
       <li>
     
                           <a href="project-reports.html" title="Project Reports">
@@ -167,9 +174,16 @@
                       
       <li>
     
-                          <a href="pmd.html" title="PMD">
+                          <a href="cpd.html" title="CPD Report">
           <i class="none"></i>
-        PMD</a>
+        CPD Report</a>
+            </li>
+                      
+      <li>
+    
+                          <a href="pmd.html" title="PMD Report">
+          <i class="none"></i>
+        PMD Report</a>
             </li>
                       
       <li>
@@ -191,6 +205,13 @@
                           <a href="taglist.html" title="Tag List">
           <i class="none"></i>
         Tag List</a>
+            </li>
+                      
+      <li>
+    
+                          <a href="jira-report.html" title="JIRA Report">
+          <i class="none"></i>
+        JIRA Report</a>
             </li>
               </ul>
         </li>
@@ -221,492 +242,571 @@
         <div id="bodyColumn"  class="span9" >
                                   
             <div class="section">
-<h2><a name="Checkstyle_Results"></a>Checkstyle Results</h2>
-<p>The following document contains the results of <a class="externalLink" href="http://checkstyle.sourceforge.net/">Checkstyle</a> 5.7.&#160;<a href="checkstyle.rss"><img alt="rss feed" src="images/rss.png" /></a></p></div>
+<h2>Checkstyle Results<a name="Checkstyle_Results"></a></h2>
+<p>The following document contains the results of <a class="externalLink" href="http://checkstyle.sourceforge.net/">Checkstyle</a>.&#160;<a href="checkstyle.rss"><img alt="rss feed" src="images/rss.png" /></a></p></div>
 <div class="section">
-<h2><a name="Summary"></a>Summary</h2>
+<h2>Summary<a name="Summary"></a></h2>
 <table border="0" class="table table-striped">
 <tr class="a">
 <th>Files</th>
-<th><img src="images/icon_info_sml.gif" alt="" />&#160;Info</th>
-<th><img src="images/icon_warning_sml.gif" alt="" />&#160;Warnings</th>
-<th><img src="images/icon_error_sml.gif" alt="" />&#160;Errors</th></tr>
+<th>Infos&#160;<img alt="Infos" src="images/icon_info_sml.gif" /></th>
+<th>Warnings&#160;<img alt="Warnings" src="images/icon_warning_sml.gif" /></th>
+<th>Errors&#160;<img alt="Errors" src="images/icon_error_sml.gif" /></th></tr>
 <tr class="b">
-<td>6</td>
-<td>2</td>
-<td>36</td>
-<td>15</td></tr></table></div>
+<td>3</td>
+<td>1</td>
+<td>31</td>
+<td>36</td></tr></table></div>
 <div class="section">
-<h2><a name="Files"></a>Files</h2>
+<h2>Files<a name="Files"></a></h2>
 <table border="0" class="table table-striped">
 <tr class="a">
-<th>File</th>
-<th><img src="images/icon_info_sml.gif" alt="" />&#160;I</th>
-<th><img src="images/icon_warning_sml.gif" alt="" />&#160;W</th>
-<th><img src="images/icon_error_sml.gif" alt="" />&#160;E</th></tr>
-<tr class="b">
-<td><a href="#org.codehaus.mojo.build.AbstractScmMojo.java">org/codehaus/mojo/build/AbstractScmMojo.java</a></td>
-<td>2</td>
-<td>7</td>
-<td>4</td></tr>
-<tr class="a">
-<td><a href="#org.codehaus.mojo.build.CreateMetadataMojo.java">org/codehaus/mojo/build/CreateMetadataMojo.java</a></td>
-<td>0</td>
-<td>2</td>
-<td>3</td></tr>
+<th>Files</th>
+<th>I&#160;<img alt="Infos" src="images/icon_info_sml.gif" /></th>
+<th>W&#160;<img alt="Warnings" src="images/icon_warning_sml.gif" /></th>
+<th>E&#160;<img alt="Errors" src="images/icon_error_sml.gif" /></th></tr>
 <tr class="b">
 <td><a href="#org.codehaus.mojo.build.CreateMojo.java">org/codehaus/mojo/build/CreateMojo.java</a></td>
-<td>0</td>
-<td>19</td>
-<td>4</td></tr>
+<td>1</td>
+<td>24</td>
+<td>35</td></tr>
 <tr class="a">
 <td><a href="#org.codehaus.mojo.build.CreateTimestampMojo.java">org/codehaus/mojo/build/CreateTimestampMojo.java</a></td>
 <td>0</td>
 <td>1</td>
-<td>1</td></tr>
+<td>0</td></tr>
 <tr class="b">
 <td><a href="#org.codehaus.mojo.build.HgChangeSetMojo.java">org/codehaus/mojo/build/HgChangeSetMojo.java</a></td>
 <td>0</td>
 <td>6</td>
-<td>1</td></tr>
-<tr class="a">
-<td><a href="#org.codehaus.mojo.build.Utils.java">org/codehaus/mojo/build/Utils.java</a></td>
-<td>0</td>
-<td>1</td>
-<td>2</td></tr></table></div>
+<td>1</td></tr></table></div>
 <div class="section">
-<h2><a name="Rules"></a>Rules</h2>
+<h2>Rules<a name="Rules"></a></h2>
 <table border="0" class="table table-striped">
-<tr class="b">
-<th>Category</th>
-<th>Rule</th>
+<tr class="a">
+<th>Rules</th>
 <th>Violations</th>
 <th>Severity</th></tr>
-<tr class="a">
-<td>coding</td>
-<td><a class="externalLink" href="http://checkstyle.sourceforge.net/config_coding.html#HiddenField">HiddenField</a>
-<ul>
-<li>ignoreConstructorParameter: <tt>&quot;true&quot;</tt></li>
-<li>ignoreSetter: <tt>&quot;true&quot;</tt></li></ul></td>
-<td>1</td>
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td></tr>
 <tr class="b">
-<td>header</td>
-<td><a class="externalLink" href="http://checkstyle.sourceforge.net/config_header.html#RegexpHeader">RegexpHeader</a>
-<ul>
-<li>fileExtensions: <tt>&quot;java&quot;</tt></li>
-<li>headerFile: <tt>&quot;target/checkstyle-header.txt&quot;</tt></li></ul></td>
-<td>6</td>
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td></tr>
+<td>Translation</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="a">
-<td>javadoc</td>
-<td><a class="externalLink" href="http://checkstyle.sourceforge.net/config_javadoc.html#JavadocMethod">JavadocMethod</a>
-<ul>
-<li>scope: <tt>&quot;protected&quot;</tt></li></ul></td>
-<td>35</td>
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td></tr>
+<td>FileLength</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="b">
-<td></td>
-<td><a class="externalLink" href="http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType">JavadocType</a>
+<td>RegexpHeader
 <ul>
-<li>allowUnknownTags: <tt>&quot;true&quot;</tt></li>
-<li>scope: <tt>&quot;protected&quot;</tt></li></ul></td>
+<li><b>fileExtensions</b>: <tt>&quot;java&quot;</tt></li>
+<li><b>headerFile</b>: <tt>&quot;target/checkstyle-header.txt&quot;</tt></li></ul></td>
 <td>2</td>
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td></tr>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="a">
-<td></td>
-<td><a class="externalLink" href="http://checkstyle.sourceforge.net/config_javadoc.html#JavadocVariable">JavadocVariable</a>
+<td>FileTabCharacter
 <ul>
-<li>scope: <tt>&quot;protected&quot;</tt></li></ul></td>
-<td>2</td>
-<td><img src="images/icon_info_sml.gif" alt="" />&#160;Info</td></tr>
+<li><b>eachLine</b>: <tt>&quot;true&quot;</tt></li></ul></td>
+<td>17</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="b">
-<td>sizes</td>
-<td><a class="externalLink" href="http://checkstyle.sourceforge.net/config_sizes.html#LineLength">LineLength</a>
+<td>LeftCurly
 <ul>
-<li>max: <tt>&quot;120&quot;</tt></li>
-<li>ignorePattern: <tt>&quot;@version|@see|@todo|TODO&quot;</tt></li></ul></td>
-<td>6</td>
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td></tr>
+<li><b>option</b>: <tt>&quot;nl&quot;</tt></li></ul></td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="a">
-<td></td>
-<td><a class="externalLink" href="http://checkstyle.sourceforge.net/config_sizes.html#MethodLength">MethodLength</a></td>
+<td>RightCurly
+<ul>
+<li><b>option</b>: <tt>&quot;alone&quot;</tt></li></ul></td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>LineLength
+<ul>
+<li><b>max</b>: <tt>&quot;120&quot;</tt></li>
+<li><b>ignorePattern</b>: <tt>&quot;@version|@see|@todo|TODO&quot;</tt></li></ul></td>
+<td>5</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="a">
+<td>MemberName</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>JavadocMethod
+<ul>
+<li><b>scope</b>: <tt>&quot;protected&quot;</tt></li></ul></td>
+<td>30</td>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" />&#160;Warning</td></tr>
+<tr class="a">
+<td>JavadocType
+<ul>
+<li><b>allowUnknownTags</b>: <tt>&quot;true&quot;</tt></li>
+<li><b>scope</b>: <tt>&quot;protected&quot;</tt></li></ul></td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>JavadocVariable
+<ul>
+<li><b>scope</b>: <tt>&quot;protected&quot;</tt></li></ul></td>
 <td>1</td>
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td></tr></table></div>
-<div class="section">
-<h2><a name="Details"></a>Details</h2>
-<div class="section">
-<h3 id="org.codehaus.mojo.build.AbstractScmMojo.java">org/codehaus/mojo/build/AbstractScmMojo.java</h3>
-<table border="0" class="table table-striped">
-<tr class="b">
-<th>Severity</th>
-<th>Category</th>
-<th>Rule</th>
-<th>Message</th>
-<th>Line</th></tr>
+<td><img alt="Infos" src="images/icon_info_sml.gif" />&#160;Info</td></tr>
 <tr class="a">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>header</td>
-<td>RegexpHeader</td>
-<td>Line does not match expected header line of '^/\*\s*$'.</td>
-<td><a href="./xref/org/codehaus/mojo/build/AbstractScmMojo.html#L3">3</a></td></tr>
+<td>ConstantName</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="b">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>javadoc</td>
-<td>JavadocType</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/AbstractScmMojo.html#L49">49</a></td></tr>
+<td>LocalFinalVariableName</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="a">
-<td><img src="images/icon_info_sml.gif" alt="" />&#160;Info</td>
-<td>javadoc</td>
-<td>JavadocVariable</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/AbstractScmMojo.html#L135">135</a></td></tr>
+<td>LocalVariableName</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="b">
-<td><img src="images/icon_info_sml.gif" alt="" />&#160;Info</td>
-<td>javadoc</td>
-<td>JavadocVariable</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/AbstractScmMojo.html#L138">138</a></td></tr>
+<td>MethodName</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/AbstractScmMojo.html#L195">195</a></td></tr>
+<td>PackageName</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/AbstractScmMojo.html#L234">234</a></td></tr>
+<td>ParameterName</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Expected an @return tag.</td>
-<td><a href="./xref/org/codehaus/mojo/build/AbstractScmMojo.html#L262">262</a></td></tr>
+<td>StaticVariableName</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Expected @param tag for 'repository'.</td>
-<td><a href="./xref/org/codehaus/mojo/build/AbstractScmMojo.html#L262">262</a></td></tr>
+<td>TypeName</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Expected @param tag for 'fileSet'.</td>
-<td><a href="./xref/org/codehaus/mojo/build/AbstractScmMojo.html#L262">262</a></td></tr>
+<td>AvoidStarImport</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Expected @throws tag for 'ScmException'.</td>
-<td><a href="./xref/org/codehaus/mojo/build/AbstractScmMojo.html#L263">263</a></td></tr>
+<td>IllegalImport</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="a">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>sizes</td>
-<td>LineLength</td>
-<td>Line is longer than 120 characters (found 122).</td>
-<td><a href="./xref/org/codehaus/mojo/build/AbstractScmMojo.html#L268">268</a></td></tr>
+<td>RedundantImport</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="b">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>sizes</td>
-<td>LineLength</td>
-<td>Line is longer than 120 characters (found 223).</td>
-<td><a href="./xref/org/codehaus/mojo/build/AbstractScmMojo.html#L274">274</a></td></tr>
+<td>UnusedImports</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
 <tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/AbstractScmMojo.html#L288">288</a></td></tr></table></div>
-<div class="section">
-<h3 id="org.codehaus.mojo.build.CreateMetadataMojo.java">org/codehaus/mojo/build/CreateMetadataMojo.java</h3>
-<table border="0" class="table table-striped">
-<tr class="b">
-<th>Severity</th>
-<th>Category</th>
-<th>Rule</th>
-<th>Message</th>
-<th>Line</th></tr>
-<tr class="a">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>header</td>
-<td>RegexpHeader</td>
-<td>Line does not match expected header line of '^/\*\s*$'.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMetadataMojo.html#L3">3</a></td></tr>
-<tr class="b">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>sizes</td>
-<td>LineLength</td>
-<td>Line is longer than 120 characters (found 121).</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMetadataMojo.html#L47">47</a></td></tr>
-<tr class="a">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>sizes</td>
-<td>LineLength</td>
-<td>Line is longer than 120 characters (found 145).</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMetadataMojo.html#L50">50</a></td></tr>
-<tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMetadataMojo.html#L166">166</a></td></tr>
-<tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMetadataMojo.html#L218">218</a></td></tr></table></div>
-<div class="section">
-<h3 id="org.codehaus.mojo.build.CreateMojo.java">org/codehaus/mojo/build/CreateMojo.java</h3>
-<table border="0" class="table table-striped">
-<tr class="b">
-<th>Severity</th>
-<th>Category</th>
-<th>Rule</th>
-<th>Message</th>
-<th>Line</th></tr>
-<tr class="a">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>header</td>
-<td>RegexpHeader</td>
-<td>Line does not match expected header line of '^/\*\s*$'.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L3">3</a></td></tr>
-<tr class="b">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>sizes</td>
 <td>MethodLength</td>
+<td>1</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>ParameterNumber</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="a">
+<td>EmptyForIteratorPad
+<ul>
+<li><b>option</b>: <tt>&quot;space&quot;</tt></li></ul></td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>OperatorWrap</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="a">
+<td>ParenPad
+<ul>
+<li><b>option</b>: <tt>&quot;space&quot;</tt></li></ul></td>
+<td>10</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>WhitespaceAfter</td>
+<td>1</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="a">
+<td>WhitespaceAround</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>ModifierOrder</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="a">
+<td>RedundantModifier</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>AvoidNestedBlocks</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="a">
+<td>EmptyBlock
+<ul>
+<li><b>option</b>: <tt>&quot;text&quot;</tt></li></ul></td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>NeedBraces</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="a">
+<td>EmptyStatement</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>EqualsHashCode</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="a">
+<td>HiddenField
+<ul>
+<li><b>ignoreConstructorParameter</b>: <tt>&quot;true&quot;</tt></li>
+<li><b>ignoreSetter</b>: <tt>&quot;true&quot;</tt></li></ul></td>
+<td>1</td>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" />&#160;Warning</td></tr>
+<tr class="b">
+<td>IllegalInstantiation</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="a">
+<td>InnerAssignment</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>MagicNumber
+<ul>
+<li><b>ignoreNumbers</b>: <tt>&quot;-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 32, 64, 100, 128, 256, 512, 1000, 1024&quot;</tt></li></ul></td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="a">
+<td>MissingSwitchDefault</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>RedundantThrows</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="a">
+<td>SimplifyBooleanExpression</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>SimplifyBooleanReturn</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="a">
+<td>InterfaceIsType</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="b">
+<td>VisibilityModifier
+<ul>
+<li><b>packageAllowed</b>: <tt>&quot;true&quot;</tt></li>
+<li><b>protectedAllowed</b>: <tt>&quot;true&quot;</tt></li></ul></td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr>
+<tr class="a">
+<td>UpperEll</td>
+<td>0</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" />&#160;Error</td></tr></table></div>
+<div class="section">
+<h2>Details<a name="Details"></a></h2>
+<div class="section">
+<h3>org/codehaus/mojo/build/CreateMojo.java<a name="orgcodehausmojobuildCreateMojo.java"></a></h3><a name="org.codehaus.mojo.build.CreateMojo.java"></a>
+<table border="0" class="table table-striped">
+<tr class="b">
+<th>Violation</th>
+<th>Message</th>
+<th>Line</th></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line does not match expected header line of '^/\*\s*$'.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#3">3</a></td></tr>
+<tr class="b">
+<td><img alt="Infos" src="images/icon_info_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#276">276</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
 <td>Method length is 205 lines (max allowed is 150).</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L230">230</a></td></tr>
-<tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L230">230</a></td></tr>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#298">298</a></td></tr>
 <tr class="b">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>sizes</td>
-<td>LineLength</td>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#298">298</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
 <td>Line is longer than 120 characters (found 140).</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L256">256</a></td></tr>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#324">324</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>'(' is not followed by whitespace.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#374">374</a></td></tr>
 <tr class="a">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>sizes</td>
-<td>LineLength</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>')' is not preceded with whitespace.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#374">374</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>'(' is not followed by whitespace.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#375">375</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>')' is not preceded with whitespace.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#375">375</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
 <td>Line is longer than 120 characters (found 125).</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L326">326</a></td></tr>
-<tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L502">502</a></td></tr>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#394">394</a></td></tr>
 <tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>coding</td>
-<td>HiddenField</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>'(' is not followed by whitespace.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#403">403</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>')' is not preceded with whitespace.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#403">403</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>'(' is not followed by whitespace.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#404">404</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>')' is not preceded with whitespace.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#404">404</a></td></tr>
+<tr class="a">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#585">585</a></td></tr>
+<tr class="b">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
 <td>'revision' hides a field.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L522">522</a></td></tr>
-<tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L536">536</a></td></tr>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#605">605</a></td></tr>
 <tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#619">619</a></td></tr>
+<tr class="b">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
 <td>Expected an @return tag.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L564">564</a></td></tr>
-<tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Expected @throws tag for 'MojoExecutionException'.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L565">565</a></td></tr>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#647">647</a></td></tr>
 <tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L637">637</a></td></tr>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Expected @throws tag for 'MojoExecutionException'.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#648">648</a></td></tr>
 <tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#650">650</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#651">651</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#652">652</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#653">653</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#654">654</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#655">655</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#656">656</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#657">657</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line is longer than 120 characters (found 141).</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#658">658</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#658">658</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>'(' is not followed by whitespace.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#658">658</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>'cast' is not followed by whitespace.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#658">658</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>')' is not preceded with whitespace.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#658">658</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#659">659</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#660">660</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#661">661</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#662">662</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#665">665</a></td></tr>
+<tr class="b">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#666">666</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#667">667</a></td></tr>
+<tr class="b">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#670">670</a></td></tr>
+<tr class="a">
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line contains a tab character.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#671">671</a></td></tr>
+<tr class="b">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#719">719</a></td></tr>
+<tr class="a">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
 <td>Expected an @return tag.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L658">658</a></td></tr>
-<tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#740">740</a></td></tr>
+<tr class="b">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
 <td>Expected @throws tag for 'MojoExecutionException'.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L659">659</a></td></tr>
-<tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L707">707</a></td></tr>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#741">741</a></td></tr>
 <tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L712">712</a></td></tr>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Expected an @return tag.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#802">802</a></td></tr>
 <tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L717">717</a></td></tr>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Expected @param tag for 'repository'.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#802">802</a></td></tr>
 <tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L722">722</a></td></tr>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Expected @param tag for 'fileSet'.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#802">802</a></td></tr>
 <tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L727">727</a></td></tr>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Expected @throws tag for 'ScmException'.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#803">803</a></td></tr>
 <tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L741">741</a></td></tr>
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line is longer than 120 characters (found 122).</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#807">807</a></td></tr>
 <tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L770">770</a></td></tr>
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line is longer than 120 characters (found 223).</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#813">813</a></td></tr>
 <tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
 <td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L775">775</a></td></tr>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#875">875</a></td></tr>
 <tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
 <td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L780">780</a></td></tr>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#880">880</a></td></tr>
 <tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
 <td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#L785">785</a></td></tr></table></div>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#885">885</a></td></tr>
+<tr class="b">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#890">890</a></td></tr>
+<tr class="a">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#895">895</a></td></tr>
+<tr class="b">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#909">909</a></td></tr>
+<tr class="a">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#938">938</a></td></tr>
+<tr class="b">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#943">943</a></td></tr>
+<tr class="a">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#948">948</a></td></tr>
+<tr class="b">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/CreateMojo.html#953">953</a></td></tr></table></div>
 <div class="section">
-<h3 id="org.codehaus.mojo.build.CreateTimestampMojo.java">org/codehaus/mojo/build/CreateTimestampMojo.java</h3>
-<table border="0" class="table table-striped">
-<tr class="b">
-<th>Severity</th>
-<th>Category</th>
-<th>Rule</th>
-<th>Message</th>
-<th>Line</th></tr>
-<tr class="a">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>header</td>
-<td>RegexpHeader</td>
-<td>Line does not match expected header line of '^/\*\s*$'.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateTimestampMojo.html#L3">3</a></td></tr>
-<tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/CreateTimestampMojo.html#L80">80</a></td></tr></table></div>
-<div class="section">
-<h3 id="org.codehaus.mojo.build.HgChangeSetMojo.java">org/codehaus/mojo/build/HgChangeSetMojo.java</h3>
+<h3>org/codehaus/mojo/build/CreateTimestampMojo.java<a name="orgcodehausmojobuildCreateTimestampMojo.java"></a></h3><a name="org.codehaus.mojo.build.CreateTimestampMojo.java"></a>
 <table border="0" class="table table-striped">
 <tr class="a">
-<th>Severity</th>
-<th>Category</th>
-<th>Rule</th>
+<th>Violation</th>
 <th>Message</th>
 <th>Line</th></tr>
 <tr class="b">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>header</td>
-<td>RegexpHeader</td>
-<td>Line does not match expected header line of '^/\*\s*$'.</td>
-<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#L3">3</a></td></tr>
-<tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
 <td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#L89">89</a></td></tr>
-<tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#L118">118</a></td></tr>
-<tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#L127">127</a></td></tr>
-<tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#L138">138</a></td></tr>
-<tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#L143">143</a></td></tr>
-<tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
-<td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#L148">148</a></td></tr></table></div>
+<td><a href="./xref/org/codehaus/mojo/build/CreateTimestampMojo.html#82">82</a></td></tr></table></div>
 <div class="section">
-<h3 id="org.codehaus.mojo.build.Utils.java">org/codehaus/mojo/build/Utils.java</h3>
+<h3>org/codehaus/mojo/build/HgChangeSetMojo.java<a name="orgcodehausmojobuildHgChangeSetMojo.java"></a></h3><a name="org.codehaus.mojo.build.HgChangeSetMojo.java"></a>
 <table border="0" class="table table-striped">
 <tr class="a">
-<th>Severity</th>
-<th>Category</th>
-<th>Rule</th>
+<th>Violation</th>
 <th>Message</th>
 <th>Line</th></tr>
 <tr class="b">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>header</td>
-<td>RegexpHeader</td>
-<td>Line does not match expected header line of '^/\*\s*$'.</td>
-<td><a href="./xref/org/codehaus/mojo/build/Utils.html#L3">3</a></td></tr>
+<td><img alt="Errors" src="images/icon_error_sml.gif" /></td>
+<td>Line does not match expected header line of '^ \* Licensed to the Apache Software Foundation \(ASF\) under one\s*$'.</td>
+<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#4">4</a></td></tr>
 <tr class="a">
-<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
-<td>javadoc</td>
-<td>JavadocType</td>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
 <td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/Utils.html#L9">9</a></td></tr>
+<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#84">84</a></td></tr>
 <tr class="b">
-<td><img src="images/icon_warning_sml.gif" alt="" />&#160;Warning</td>
-<td>javadoc</td>
-<td>JavadocMethod</td>
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
 <td>Missing a Javadoc comment.</td>
-<td><a href="./xref/org/codehaus/mojo/build/Utils.html#L15">15</a></td></tr></table></div></div>
+<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#113">113</a></td></tr>
+<tr class="a">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#122">122</a></td></tr>
+<tr class="b">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#133">133</a></td></tr>
+<tr class="a">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#138">138</a></td></tr>
+<tr class="b">
+<td><img alt="Warnings" src="images/icon_warning_sml.gif" /></td>
+<td>Missing a Javadoc comment.</td>
+<td><a href="./xref/org/codehaus/mojo/build/HgChangeSetMojo.html#143">143</a></td></tr></table></div></div>
                   </div>
             </div>
           </div>
