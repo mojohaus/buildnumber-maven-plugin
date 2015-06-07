@@ -187,7 +187,7 @@ public class CreateMojo
     private Map<String, String> providerImplementations;
 
     /**
-     * If set to true, will get the scm revision once for all modules of a multi-module project instead of fetching once
+     * If set to true, will get the build number once for all modules of a multi-module project instead of fetching once
      * for each module.
      *
      * @since 1.0-beta-3
@@ -247,6 +247,18 @@ public class CreateMojo
                 scmManager.setScmProviderImplementation( providerType, providerImplementation );
             }
         }
+
+        // Check if the plugin has already run.
+        if ( project != null )
+        {
+            revision = project.getProperties().getProperty( this.buildNumberPropertyName );
+            if ( this.getRevisionOnlyOnce && revision != null )
+            {
+                getLog().debug( "Revision available from previous execution" );
+                return;
+            }
+        }
+
         Date now = Calendar.getInstance().getTime();
         if ( format != null )
         {
@@ -351,14 +363,6 @@ public class CreateMojo
         }
         else
         {
-            // Check if the plugin has already run.
-            revision = project.getProperties().getProperty( this.buildNumberPropertyName );
-            if ( this.getRevisionOnlyOnce && revision != null )
-            {
-                getLog().debug( "Revision available from previous execution" );
-                return;
-            }
-
             if ( doCheck )
             {
                 // we fail if there are local mods
