@@ -23,7 +23,9 @@ package org.codehaus.mojo.build;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -77,6 +79,13 @@ public class CreateTimestampMojo
     @Parameter( property = "maven.buildNumber.timestampFormat", defaultValue = "" )
     private String timestampFormat;
 
+    /**
+     * The timezone of the generated timestamp.
+     * If blank will default to {@link TimeZone#getDefault()}
+     */
+    @Parameter(property = "maven.buildNumber.timestampTimeZone", defaultValue = "")
+    private String timezone;
+
     public void execute()
     {
         if ( skip )
@@ -94,7 +103,7 @@ public class CreateTimestampMojo
             return;
         }
 
-        timestampString = Utils.createTimestamp( timestampFormat );
+        timestampString = Utils.createTimestamp( timestampFormat, timezone );
 
         getLog().debug( "Storing timestamp property: " + timestampPropertyName + " " + timestampString );
 
