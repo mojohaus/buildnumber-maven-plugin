@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -109,6 +110,13 @@ public class CreateMetadataMojo
     private String timestampFormat;
 
     /**
+     * The timezone of the generated timestamp.
+     * If blank will default to {@link TimeZone#getDefault()}
+     */
+    @Parameter(property = "maven.buildNumber.timestampTimeZone", defaultValue = "")
+    private String timezone;
+
+    /**
      * Output directory
      *
      * @since 1.4
@@ -176,7 +184,7 @@ public class CreateMetadataMojo
         Properties props = new Properties();
         props.put( this.applicationPropertyName, applicationName );
         props.put( this.versionPropertyName, version );
-        props.put( this.timestampPropertyName, Utils.createTimestamp( this.timestampFormat ) );
+        props.put( this.timestampPropertyName, Utils.createTimestamp( this.timestampFormat, timezone ) );
         props.put( this.revisionPropertyName, this.getRevision() );
         for ( String key : properties.keySet() )
         {

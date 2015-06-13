@@ -3,6 +3,7 @@ package org.codehaus.mojo.build;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -12,7 +13,7 @@ public class Utils
     {
     }
 
-    public static String createTimestamp( String timestampFormat )
+    public static String createTimestamp( String timestampFormat, String timeZoneId)
     {
         Date now = Calendar.getInstance().getTime();
 
@@ -23,8 +24,15 @@ public class Utils
         else
         {
             SimpleDateFormat dateFormat = new SimpleDateFormat( timestampFormat );
+            dateFormat.setTimeZone(getTimeZone(timeZoneId));
             return dateFormat.format( now );
         }
     }
-
+    private static TimeZone getTimeZone(String timeZoneId) {
+        TimeZone timeZone = TimeZone.getDefault();
+        if (StringUtils.isNotBlank(timeZoneId)) {
+            timeZone =  TimeZone.getTimeZone(timeZoneId);
+        }
+        return timeZone;
+    }
 }
