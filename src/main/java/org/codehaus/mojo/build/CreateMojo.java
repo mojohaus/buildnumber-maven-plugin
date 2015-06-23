@@ -46,6 +46,7 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFile;
 import org.apache.maven.scm.ScmFileSet;
+import org.apache.maven.scm.ScmResult;
 import org.apache.maven.scm.command.info.InfoItem;
 import org.apache.maven.scm.command.info.InfoScmResult;
 import org.apache.maven.scm.command.status.StatusScmResult;
@@ -57,6 +58,8 @@ import org.apache.maven.scm.manager.ScmManager;
 import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.git.gitexe.command.branch.GitBranchCommand;
 import org.apache.maven.scm.provider.git.repository.GitScmProviderRepository;
+import org.apache.maven.scm.provider.hg.HgScmProvider;
+import org.apache.maven.scm.provider.hg.HgUtils;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -564,18 +567,26 @@ public class CreateMojo
     public String getScmBranch()
         throws MojoExecutionException
     {
-        /* git branch can be obtained directly by a command */
         try
         {
             ScmRepository repository = getScmRepository();
             ScmProvider provider = scmManager.getProviderByRepository( repository );
+            /* git branch can be obtained directly by a command */
             if ( GitScmProviderRepository.PROTOCOL_GIT.equals( provider.getScmType() ) )
             {
                 ScmFileSet fileSet = new ScmFileSet( scmDirectory );
                 return GitBranchCommand.getCurrentBranch( getLogger(),
                                                           (GitScmProviderRepository) repository.getProviderRepository(),
                                                           fileSet );
-            }
+            } else if ( provider instanceof HgScmProvider ) {
+                /* hg branch can be obtained directly by a command */
+                HgOutputConsumer consumer = new HgOutputConsumer( getLogger() );
+ 		        ScmResult result = HgUtils.execute( consumer, logger, scmDirectory, new String[] { "id", "-b" } );
+		        checkResult( result );
+		        if (StringUtils.isNotEmpty(consumer.getOutput())) {
+		        	return consumer.getOutput();	
+		        }
+	         }
         }
         catch ( ScmException e )
         {
