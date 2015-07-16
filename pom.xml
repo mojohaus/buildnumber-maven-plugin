@@ -21,7 +21,7 @@
   <licenses>
     <license>
       <name>The MIT License</name>
-      <url>https://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin/LICENSE.txt</url>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
