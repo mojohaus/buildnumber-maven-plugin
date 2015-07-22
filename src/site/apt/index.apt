@@ -30,7 +30,7 @@ Introduction
 
   * {{{./create-mojo.html}buildnumber:create-metadata}}: Write build properties into file
 
-  * {{{./hgchangeset-mojo.html}buildnumber:hgchangeset}}: Create properties for changeSet and changeSetDate from a Mercurial repository.
+  * {{{./hgchangeset-mojo.html}buildnumber:hgchangeset}}: Create properties for changeSet, changeSetDate and branch from a Mercurial repository.
 
   []
 

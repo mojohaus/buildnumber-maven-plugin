@@ -39,7 +39,7 @@ import org.apache.maven.scm.provider.hg.command.HgConsumer;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * Goal which sets project properties for changeSet and changeSetDate from the current Mercurial repository.
+ * Goal which sets project properties for changeSet, changeSetDate and branch from the current Mercurial repository.
  *
  * @author Tomas Pollak
  * @since 1.0-beta-4
@@ -48,6 +48,13 @@ import org.codehaus.plexus.util.StringUtils;
 public class HgChangeSetMojo
     extends AbstractMojo
 {
+    /**
+     * Hg scm protocol
+     * 
+     * @since 1.4
+     */
+    public static final String PROTOCOL_HG = "hg";
+    
     /**
      * Whether to skip this execution.
      *
@@ -103,10 +110,13 @@ public class HgChangeSetMojo
             {
                 String changeSet = getChangeSet();
                 String changeSetDate = getChangeSetDate();
+                String branch = getBranch();
                 getLog().info( "Setting Mercurial Changeset: " + changeSet );
                 getLog().info( "Setting Mercurial Changeset Date: " + changeSetDate );
                 setChangeSetProperty( changeSet );
                 setChangeSetDateProperty( changeSetDate );
+                getLog().info( "Setting Mercurial Branch: " + branch );
+                setBranchProperty( branch );
             }
         }
         catch ( ScmException e )
@@ -135,6 +145,21 @@ public class HgChangeSetMojo
         return consumer.getOutput();
     }
 
+    protected String getBranch()
+        throws ScmException, MojoExecutionException
+    {
+        return getBranch( logger, scmDirectory );
+    }
+
+    protected String getBranch(ScmLogger scmLogger, File scmDirectory)
+        throws ScmException, MojoExecutionException
+    {
+        HgOutputConsumer consumer = new HgOutputConsumer( scmLogger );
+        ScmResult result = HgUtils.execute( consumer, scmLogger, scmDirectory, new String[] { "id", "-b" } );
+        checkResult( result );
+        return consumer.getOutput();
+    }
+    
     protected String getChangeSetDateProperty()
     {
         return getProperty( "changeSetDate" );
@@ -143,6 +168,11 @@ public class HgChangeSetMojo
     protected String getChangeSetProperty()
     {
         return getProperty( "changeSet" );
+    }
+
+    protected String getBranchProperty()
+    {
+        return getProperty( "branch" );
     }
 
     protected String getProperty( String property )
@@ -158,6 +188,11 @@ public class HgChangeSetMojo
     private void setChangeSetProperty( String changeSet )
     {
         setProperty( "changeSet", changeSet );
+    }
+
+    private void setBranchProperty( String branch )
+    {
+        setProperty( "branch", branch );
     }
 
     private void setProperty( String property, String value )
