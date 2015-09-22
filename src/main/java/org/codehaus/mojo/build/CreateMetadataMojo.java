@@ -22,7 +22,6 @@ package org.codehaus.mojo.build;
  */
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -42,6 +41,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProjectHelper;
 import org.apache.maven.scm.ScmException;
 import org.codehaus.plexus.util.StringUtils;
+import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
  * This mojo discovers latest SCM revision, current timestamp, project version, and project name then write them to one
@@ -170,6 +170,9 @@ public class CreateMetadataMojo
      */
     @Component
     private MavenProjectHelper projectHelper;
+    
+    @Component
+    private BuildContext buildContext;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -197,10 +200,11 @@ public class CreateMetadataMojo
         for ( File file : outputFiles )
         {
             file.getParentFile().mkdirs();
+            buildContext.refresh( file.getParentFile() );
             OutputStream os = null;
             try
             {
-                os = new FileOutputStream( file );
+                os = buildContext.newFileOutputStream( file );
                 props.store( os, "Created by build system. Do not modify" );
             }
             catch ( IOException e )
