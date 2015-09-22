@@ -26,6 +26,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -203,6 +205,41 @@ public class CreateMojo
     @Parameter( property = "maven.buildNumber.scmBranchPropertyName", defaultValue = "scmBranch" )
     private String scmBranchPropertyName;
 
+    /**
+	 * You can rename the lastChangedDate property name to another property name if desired.
+	 * 
+	 * @since 1.4
+	 */
+	@Parameter(property = "maven.buildNumber.lastChangedDatePropertyName", defaultValue = "lastChangedDate")
+	private String lastChangedDatePropertyName;
+	
+	/**
+	 * Apply this java.text.MessageFormat to the lastChangedDate only (as opposed to the <code>format</code>
+	 * parameter).
+	 * 
+	 * @since 1.4
+	 */
+	@Parameter(property = "maven.buildNumber.lastChangedDateFormat")
+	private String lastChangedDateFormat;
+	
+	/**
+	 * If this is set the last changed date will be parsed from the repository info. The value should be a
+	 * java.text.SimpleDateFormat pattern which will be used to parse the last changed date string retrieved from the
+	 * SCM.
+	 * 
+	 * @since 1.4
+	 */
+	@Parameter(property = "maven.buildNumber.lastChangedDateParseFormat")
+	private String lastChangedDateParseFormat;
+	
+	/**
+	 * The value set will be used as the last changed date string in the event of a failure to retrieve one from the
+	 * SCM. The pattern defined by the lastChangedDateParseFormat parameter will be used to parse the date.
+	 * 
+	 * @since 1.4
+	 */
+	@Parameter(property = "maven.buildNumber.lastChangedDateOnFailure")
+	private String lastChangedDateOnFailure;
 
     // ////////////////////////////////////// internal maven components ///////////////////////////////////
 
@@ -267,6 +304,10 @@ public class CreateMojo
                     if ( s.equals( "timestamp" ) )
                     {
                         itemAry[i] = now;
+                    }
+                    else if (s.startsWith("lastChangedDate"))
+                    {
+                        itemAry[i] = getLastChangedDate();
                     }
                     else if ( s.startsWith( "scmVersion" ) )
                     {
@@ -405,11 +446,30 @@ public class CreateMojo
                 timestamp = MessageFormat.format( timestampFormat, new Object[] { now } );
             }
 
+            Date revDate = getLastChangedDate();
+            String lastChangedDate = null;
+            if (revDate != null)
+            {
+                if (lastChangedDateFormat != null)
+                {
+                    lastChangedDate = MessageFormat.format(lastChangedDateFormat, new Object[] { revDate });
+                }
+                else
+                {
+                    lastChangedDate = String.valueOf(revDate.getTime());
+                }
+            }
+
             getLog().info( MessageFormat.format( "Storing buildNumber: {0} at timestamp: {1}", new Object[] { revision,
                                timestamp } ) );
             if ( revision != null )
             {
                 project.getProperties().put( buildNumberPropertyName, revision );
+            }
+            if (lastChangedDate != null)
+            {
+                getLog().info( "Storing lastChangedDate: " + lastChangedDate );
+                project.getProperties().put( lastChangedDatePropertyName, lastChangedDate );
             }
             project.getProperties().put( timestampPropertyName, timestamp );
 
@@ -427,6 +487,10 @@ public class CreateMojo
                     if ( revision != null )
                     {
                         nextProj.getProperties().put( this.buildNumberPropertyName, revision );
+                    }
+                    if (lastChangedDate != null)
+                    {
+                    	nextProj.getProperties().put( this.lastChangedDatePropertyName, lastChangedDate );
                     }
                     nextProj.getProperties().put( this.timestampPropertyName, timestamp );
                     nextProj.getProperties().put( this.scmBranchPropertyName, scmBranch );
@@ -687,6 +751,84 @@ public class CreateMojo
 
         }
 
+    }
+
+    /**
+     * Get the last changed date from the repository.
+     * 
+     * @return
+     * @throws MojoExecutionException
+     */
+    public Date getLastChangedDate() throws MojoExecutionException
+    {
+        if(!StringUtils.isEmpty(lastChangedDateParseFormat))
+        {
+            try
+            {
+                ScmRepository repository = getScmRepository();
+
+                InfoScmResult scmResult = info( repository, new ScmFileSet( scmDirectory ) );
+
+                if ( scmResult == null || scmResult.getInfoItems().isEmpty() )
+                {
+                    return null;
+                }
+
+                checkResult( scmResult );
+
+                InfoItem info = scmResult.getInfoItems().get(0);
+
+                String lastChangedDate = info.getLastChangedDate();
+                try
+                {
+                    return new SimpleDateFormat( lastChangedDateParseFormat ).parse( lastChangedDate );
+                }
+                catch (ParseException e)
+                {
+                    if ( !StringUtils.isEmpty( lastChangedDateOnFailure ) )
+                    {
+                        getLog().warn("Failed to parse last changed date \"" + lastChangedDate + "\" with pattern \""
+                            + lastChangedDateParseFormat + "\", proceeding with date of " + lastChangedDateOnFailure
+                            + " : \n" + e.getLocalizedMessage());
+                        return getLastChangedDateOnFailure();
+                    }
+                    throw new MojoExecutionException( "Failed to parse last changed date from the scm repository : \n"
+                        + e.getLocalizedMessage(), e );
+                }
+            }
+            catch (ScmException e)
+            {
+                if ( !StringUtils.isEmpty( lastChangedDateOnFailure ) )
+                {
+                    getLog().warn( "Cannot get the revision date from the scm repository, proceeding with date of "
+                        + lastChangedDateOnFailure + " : \n" + e.getLocalizedMessage() );
+                    return getLastChangedDateOnFailure();
+                }
+                throw new MojoExecutionException( "Cannot get the revision date from the scm repository : \n"
+                    + e.getLocalizedMessage(), e );
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get the last changed date from the lastChangedDateOnFailure parameter.
+     * 
+     * @return
+     * @throws MojoExecutionException
+     */
+    public Date getLastChangedDateOnFailure() throws MojoExecutionException
+    {
+        try
+        {
+            return new SimpleDateFormat(lastChangedDateParseFormat).parse(lastChangedDateOnFailure);
+        }
+        catch (ParseException e)
+        {
+            throw new MojoExecutionException("Failed to parse the lastChangedDateOnFailure \""
+                + lastChangedDateOnFailure + "\" with pattern \"" + lastChangedDateParseFormat + "\" : \n"
+            	+ e.getLocalizedMessage());
+        }
     }
 
     /**
