@@ -77,6 +77,7 @@
     <maven.it.version>3.1.1</maven.it.version>
     <takari.plugin.testing.version>2.1.0</takari.plugin.testing.version>
     <test.excludes>**/it/**</test.excludes>
+    <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
   </properties>
 
   <dependencies>
