@@ -20,19 +20,19 @@ under the License.
 <rss version="0.91">
   <channel>
     <title>Build Number Maven Plugin - Checkstyle report</title>
-    <link>http://mojo.codehaus.org/buildnumber-maven-plugin</link>
+    <link>http://www.mojohaus.org/buildnumber-maven-plugin/buildnumber-maven-plugin</link>
     <description>Build Number Maven Plugin - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2007 - 2015 Codehaus</copyright>
+    <copyright>&#169;2007 - 2015 MojoHaus</copyright>
     <item>
-      <title>File: 3,
-             Errors: 36,
-             Warnings: 31,
-             Infos: 1
+      <title>File: 7,
+             Errors: 38,
+             Warnings: 36,
+             Infos: 2
       </title>
-            <link>http://mojo.codehaus.org/buildnumber-maven-plugin/checkstyle.html</link>
+            <link>http://www.mojohaus.org/buildnumber-maven-plugin/buildnumber-maven-plugin/checkstyle.html</link>
       <description>
-        <p>Click <a href="http://mojo.codehaus.org/buildnumber-maven-plugin/checkstyle.html">here</a> for the full Checkstyle report.</p>
+        <p>Click <a href="http://www.mojohaus.org/buildnumber-maven-plugin/buildnumber-maven-plugin/checkstyle.html">here</a> for the full Checkstyle report.</p>
 
         <table summary="Files" boder="1">
           <thead>
@@ -46,7 +46,7 @@ under the License.
           <tbody>
                           <tr>
                 <td>
-                  <a href="http://mojo.codehaus.org/buildnumber-maven-plugin/checkstyle.html#org.codehaus.mojo.build.CreateTimestampMojo.java">org/codehaus/mojo/build/CreateTimestampMojo.java</a>
+                  <a href="http://www.mojohaus.org/buildnumber-maven-plugin/buildnumber-maven-plugin/checkstyle.html#org.codehaus.mojo.build.CreateTimestampMojo.java">org/codehaus/mojo/build/CreateTimestampMojo.java</a>
                 </td>
                 <td>
                   0
@@ -55,26 +55,40 @@ under the License.
                   1
                 </td>
                 <td>
+                  5
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mojohaus.org/buildnumber-maven-plugin/buildnumber-maven-plugin/checkstyle.html#org.codehaus.mojo.build.CreateMojo.java">org/codehaus/mojo/build/CreateMojo.java</a>
+                </td>
+                <td>
                   0
                 </td>
-              </tr>
-                          <tr>
                 <td>
-                  <a href="http://mojo.codehaus.org/buildnumber-maven-plugin/checkstyle.html#org.codehaus.mojo.build.CreateMojo.java">org/codehaus/mojo/build/CreateMojo.java</a>
+                  19
                 </td>
                 <td>
-                  1
-                </td>
-                <td>
-                  24
-                </td>
-                <td>
-                  35
+                  4
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="http://mojo.codehaus.org/buildnumber-maven-plugin/checkstyle.html#org.codehaus.mojo.build.HgChangeSetMojo.java">org/codehaus/mojo/build/HgChangeSetMojo.java</a>
+                  <a href="http://www.mojohaus.org/buildnumber-maven-plugin/buildnumber-maven-plugin/checkstyle.html#org.codehaus.mojo.build.AbstractScmMojo.java">org/codehaus/mojo/build/AbstractScmMojo.java</a>
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  7
+                </td>
+                <td>
+                  4
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mojohaus.org/buildnumber-maven-plugin/buildnumber-maven-plugin/checkstyle.html#org.codehaus.mojo.build.HgChangeSetMojo.java">org/codehaus/mojo/build/HgChangeSetMojo.java</a>
                 </td>
                 <td>
                   0
@@ -84,6 +98,48 @@ under the License.
                 </td>
                 <td>
                   1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mojohaus.org/buildnumber-maven-plugin/buildnumber-maven-plugin/checkstyle.html#org.codehaus.mojo.build.Utils.java">org/codehaus/mojo/build/Utils.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  17
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mojohaus.org/buildnumber-maven-plugin/buildnumber-maven-plugin/checkstyle.html#org.codehaus.mojo.build.HelpMojo.java">org/codehaus/mojo/build/HelpMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mojohaus.org/buildnumber-maven-plugin/buildnumber-maven-plugin/checkstyle.html#org.codehaus.mojo.build.CreateMetadataMojo.java">org/codehaus/mojo/build/CreateMetadataMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  6
                 </td>
               </tr>
                       </tbody>
