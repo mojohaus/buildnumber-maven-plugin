@@ -729,29 +729,23 @@ public class CreateMojo
 
     public void setDoCheck( boolean doCheck )
     {
-        String doCheckSystemProperty = System.getProperty( "maven.buildNumber.doCheck" );
-        if ( doCheckSystemProperty != null )
-        {
-            // well, this gets the final say
-            this.doCheck = parseBoolean( doCheckSystemProperty );
-        }
-        else
-        {
-            this.doCheck = doCheck;
-        }
+        this.doCheck = getBooleanProperty( "maven.buildNumber.doCheck", doCheck );
     }
 
     public void setDoUpdate( boolean doUpdate )
     {
-        String doUpdateSystemProperty = System.getProperty( "maven.buildNumber.doUpdate" );
-        if ( doUpdateSystemProperty != null )
+        this.doUpdate = getBooleanProperty( "maven.buildNumber.doUpdate", doUpdate );
+    }
+
+    private boolean getBooleanProperty( String key, boolean defaultValue ) {
+        String systemProperty = System.getProperty( key );
+        if (systemProperty == null)
         {
-            // well, this gets the final say
-            this.doUpdate = parseBoolean( doUpdateSystemProperty );
+            return defaultValue;
         }
         else
         {
-            this.doUpdate = doUpdate;
+            return parseBoolean( systemProperty );
         }
     }
 
