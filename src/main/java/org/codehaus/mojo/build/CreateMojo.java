@@ -61,6 +61,9 @@ import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
+import static java.lang.Boolean.parseBoolean;
+import static java.lang.Integer.parseInt;
+
 /**
  * This mojo is designed to give you a build number. So when you might make 100 builds of version 1.0-SNAPSHOT, you can
  * differentiate between them all.
@@ -310,7 +313,7 @@ public class CreateMojo
                             {
                                 buildNumberString = "0";
                             }
-                            int buildNumber = Integer.valueOf( buildNumberString ).intValue();
+                            int buildNumber = parseInt( buildNumberString );
 
                             // store the increment
                             properties.setProperty( s, String.valueOf( ++buildNumber ) );
@@ -730,7 +733,7 @@ public class CreateMojo
         if ( doCheckSystemProperty != null )
         {
             // well, this gets the final say
-            this.doCheck = Boolean.valueOf( doCheckSystemProperty ).booleanValue();
+            this.doCheck = parseBoolean( doCheckSystemProperty );
         }
         else
         {
@@ -744,7 +747,7 @@ public class CreateMojo
         if ( doUpdateSystemProperty != null )
         {
             // well, this gets the final say
-            this.doUpdate = Boolean.valueOf( doUpdateSystemProperty ).booleanValue();
+            this.doUpdate = parseBoolean( doUpdateSystemProperty );
         }
         else
         {
