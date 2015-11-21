@@ -201,6 +201,11 @@ public abstract class AbstractScmMojo
 
         ScmProviderRepository scmRepo = repository.getProviderRepository();
 
+        if ( scmRepo instanceof ScmProviderRepositoryWithHost )
+        {
+            loadInfosFromSettings( (ScmProviderRepositoryWithHost) scmRepo );
+        }
+
         if ( !StringUtils.isEmpty( username ) )
         {
             scmRepo.setUser( username );
@@ -211,23 +216,6 @@ public abstract class AbstractScmMojo
             scmRepo.setPassword( password );
         }
 
-        if ( repository.getProviderRepository() instanceof ScmProviderRepositoryWithHost )
-        {
-            ScmProviderRepositoryWithHost repo = (ScmProviderRepositoryWithHost) repository.getProviderRepository();
-
-            loadInfosFromSettings( repo );
-
-            if ( !StringUtils.isEmpty( username ) )
-            {
-                repo.setUser( username );
-            }
-
-            if ( !StringUtils.isEmpty( password ) )
-            {
-                repo.setPassword( password );
-            }
-
-        }
         return repository;
     }
 
