@@ -147,7 +147,7 @@ public abstract class AbstractScmMojo
     private SecDispatcher securityDispatcher;
 
     /**
-     * Load username password from settings if user has not set them in JVM properties
+     * Load username password from settings.
      */
     private void loadInfosFromSettings( ScmProviderRepositoryWithHost repo )
     {
@@ -166,15 +166,9 @@ public abstract class AbstractScmMojo
 
             if ( server != null )
             {
-                if ( username == null )
-                {
-                    username = server.getUsername();
-                }
+                setPasswordIfNotEmpty( repo, decrypt( server.getPassword(), host ) );
 
-                if ( password == null )
-                {
-                    password = decrypt( server.getPassword(), host );
-                }
+                setUserIfNotEmpty( repo, server.getUsername() );
             }
         }
     }
@@ -206,17 +200,27 @@ public abstract class AbstractScmMojo
             loadInfosFromSettings( (ScmProviderRepositoryWithHost) scmRepo );
         }
 
-        if ( !StringUtils.isEmpty( username ) )
-        {
-            scmRepo.setUser( username );
-        }
+        setPasswordIfNotEmpty( scmRepo, password );
 
-        if ( !StringUtils.isEmpty( password ) )
-        {
-            scmRepo.setPassword( password );
-        }
+        setUserIfNotEmpty( scmRepo, username );
 
         return repository;
+    }
+
+    private void setPasswordIfNotEmpty( ScmProviderRepository repository, String password )
+    {
+        if ( !StringUtils.isEmpty( password ) )
+        {
+            repository.setPassword( password );
+        }
+    }
+
+    private void setUserIfNotEmpty( ScmProviderRepository repository, String user )
+    {
+        if ( !StringUtils.isEmpty( user ) )
+        {
+            repository.setUser( user );
+        }
     }
 
     protected void checkResult( ScmResult result )
