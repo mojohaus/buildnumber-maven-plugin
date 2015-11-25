@@ -292,7 +292,7 @@ Usage
         <version>${project.version}</version>
         <executions>
           <execution>
-            <phase>generate-ressources</phase>
+            <phase>generate-resources</phase>
             <goals>
               <goal>create-metadata</goal>
             </goals>
