@@ -57,21 +57,19 @@ import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.apache.maven.scm.repository.ScmRepositoryException;
 import org.apache.maven.scm.repository.UnknownRepositoryStructure;
-import org.codehaus.plexus.PlexusTestCase;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestCreateMojo
-    extends PlexusTestCase
 {
-
-    protected void setUp()
-        throws Exception
-    {
-        // without this, locale test fails intermittenly depending timezone
-        System.setProperty( "user.timezone", "UTC" );
-
-        super.setUp();
-    }
-
+    @Rule
+    public final TemporaryFolder folder = new TemporaryFolder();
+    
+    @Test
     public void testMessageFormat()
         throws Exception
     {
@@ -103,6 +101,7 @@ public class TestCreateMojo
     /**
      * Test that dates are correctly formatted for different locales.
      */
+    @Test
     public void testLocale()
         throws Exception
     {
@@ -134,15 +133,16 @@ public class TestCreateMojo
         // assertEquals( "01.01.1970", mojo.getRevision() );
     }
 
+    @Test
     public void testSequenceFormat()
         throws Exception
     {
         CreateMojo mojo = new CreateMojo();
-        mojo.setBuildNumberPropertiesFileLocation( new File( getBasedir(), "target/buildNumber.properties" ) );
+        mojo.setBuildNumberPropertiesFileLocation( new File( folder.getRoot(), "target/buildNumber.properties" ) );
         mojo.setFormat( "{0,number}.{1,number}.{2,number}" );
         mojo.setItems( Arrays.asList( new Object[] { "buildNumber0", "buildNumber1", "buildNumber2" } ) );
 
-        File file = new File( getBasedir(), "target/buildNumber.properties" );
+        File file = new File( folder.getRoot(), "target/buildNumber.properties" );
         file.delete();
 
         mojo.execute();
@@ -154,12 +154,9 @@ public class TestCreateMojo
         assertTrue( "Format didn't match.", rev.matches( "(\\d+\\.?){3}" ) );
 
         assertTrue( file.exists() );
-
-        // for tests, we don't want this hanging around
-        file.delete();
-
     }
 
+    @Test
     public void testFilterBranchFromScmUrl()
     {
         CreateMojo mojo = new CreateMojo();
@@ -171,14 +168,15 @@ public class TestCreateMojo
         assertEquals( "tags/v1.2.1", mojo.filterBranchFromScmUrl( scmUrlTag ) );
     }
 
+    @Test
     public void testSpecialItemScmVersion()
         throws Exception
     {
         CreateMojo mojo = new CreateMojo();
-        mojo.setBuildNumberPropertiesFileLocation( new File( getBasedir(), "target/buildNumber.properties" ) );
+        mojo.setBuildNumberPropertiesFileLocation( new File( folder.getRoot(), "target/buildNumber.properties" ) );
         mojo.setFormat( "{0}-{1}-{2}" );
         mojo.setItems( Arrays.asList( "buildNumber0", "scmVersion", "buildNumber0" ) );
-        File file = new File( getBasedir(), "target/buildNumber.properties" );
+        File file = new File( folder.getRoot(), "target/buildNumber.properties" );
         file.delete();
         mojo.setRevisionOnScmFailure( "scmrevision" );
         mojo.setScmManager( new ScmManager()
