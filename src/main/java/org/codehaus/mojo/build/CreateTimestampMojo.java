@@ -107,12 +107,9 @@ public class CreateTimestampMojo
 
         getLog().debug( "Storing timestamp property: " + timestampPropertyName + " " + timestampString );
 
-        Iterator<MavenProject> projIter = reactorProjects.iterator();
-        while ( projIter.hasNext() )
+        for ( MavenProject project : reactorProjects )
         {
-            MavenProject nextProj = (MavenProject) projIter.next();
-            nextProj.getProperties().setProperty( this.timestampPropertyName, timestampString );
+            project.getProperties().setProperty( timestampPropertyName, timestampString );
         }
-
     }
 }
