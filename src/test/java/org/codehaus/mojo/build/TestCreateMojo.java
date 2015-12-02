@@ -86,9 +86,7 @@ public class TestCreateMojo
 
             String rev = mojo.getRevision();
 
-            System.out.println( "rev = " + rev );
-
-            assertTrue( "Format didn't match.",
+            assertTrue( "Revision '" + rev + "' has wrong format.",
                         rev.matches( "^At (\\d{1,2}:?){3} (AM|PM) on \\w{3} \\d{1,2}, \\d{4}, there was a disturbance in the Force on planet 7." ) );
 
         }
@@ -149,9 +147,7 @@ public class TestCreateMojo
 
         String rev = mojo.getRevision();
 
-        System.out.println( "rev = " + rev );
-
-        assertTrue( "Format didn't match.", rev.matches( "(\\d+\\.?){3}" ) );
+        assertTrue( "Revision '" + rev + "' has wrong format.", rev.matches( "(\\d+\\.?){3}" ) );
 
         assertTrue( file.exists() );
     }
@@ -476,10 +472,6 @@ public class TestCreateMojo
         mojo.execute();
         String rev = mojo.getRevision();
 
-        System.out.println( "rev = " + rev );
         assertEquals( "1-scmrevision-2", rev );
-
-        // String result = mojo.getRevision() + "-" +
     }
-
 }
