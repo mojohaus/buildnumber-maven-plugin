@@ -24,7 +24,6 @@ package org.codehaus.mojo.build;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -61,6 +60,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -75,7 +75,7 @@ public class TestCreateMojo
     {
         CreateMojo mojo = new CreateMojo();
         mojo.setFormat( "At {1,time} on {1,date}, there was {2} on planet {0,number,integer}." );
-        mojo.setItems( Arrays.asList( new Object[] { new Integer( 7 ), "timestamp", "a disturbance in the Force" } ) );
+        mojo.setItems( asList( 7, "timestamp", "a disturbance in the Force" ) );
 
         Locale currentLocale = Locale.getDefault();
         try
@@ -109,7 +109,7 @@ public class TestCreateMojo
         CreateMojo mojo = new CreateMojo();
 
         mojo.setFormat( "{0,date}" );
-        mojo.setItems( Arrays.asList( new Object[] { date } ) );
+        mojo.setItems( asList( date) );
 
         mojo.execute();
         assertEquals( DateFormat.getDateInstance( DateFormat.DEFAULT ).format( date ), mojo.getRevision() );
@@ -140,7 +140,7 @@ public class TestCreateMojo
         CreateMojo mojo = new CreateMojo();
         mojo.setBuildNumberPropertiesFileLocation( new File( folder.getRoot(), "target/buildNumber.properties" ) );
         mojo.setFormat( "{0,number}.{1,number}.{2,number}" );
-        mojo.setItems( Arrays.asList( new Object[] { "buildNumber0", "buildNumber1", "buildNumber2" } ) );
+        mojo.setItems( asList( "buildNumber0", "buildNumber1", "buildNumber2" ) );
 
         File file = new File( folder.getRoot(), "target/buildNumber.properties" );
         file.delete();
@@ -175,7 +175,7 @@ public class TestCreateMojo
         CreateMojo mojo = new CreateMojo();
         mojo.setBuildNumberPropertiesFileLocation( new File( folder.getRoot(), "target/buildNumber.properties" ) );
         mojo.setFormat( "{0}-{1}-{2}" );
-        mojo.setItems( Arrays.asList( "buildNumber0", "scmVersion", "buildNumber0" ) );
+        mojo.setItems( asList( "buildNumber0", "scmVersion", "buildNumber0" ) );
         File file = new File( folder.getRoot(), "target/buildNumber.properties" );
         file.delete();
         mojo.setRevisionOnScmFailure( "scmrevision" );
