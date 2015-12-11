@@ -182,7 +182,7 @@ public class CreateMojo
     /**
      * Selects alternative SCM provider implementations. Each map key denotes the original provider type as given in the
      * SCM URL like "cvs" or "svn", the map value specifies the provider type of the desired implementation to use
-     * instead. In other words, this map configures a substitition mapping for SCM providers.
+     * instead. In other words, this map configures a substitution mapping for SCM providers.
      *
      * @since 1.0-beta-3
      */
