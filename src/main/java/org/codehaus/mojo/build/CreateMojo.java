@@ -647,7 +647,7 @@ public class CreateMojo
         }
         else if ( StringUtils.contains( scmUrl, "/branches" ) || StringUtils.contains( scmUrl, "/tags" ) )
         {
-            scmBranch = scmUrl.replaceFirst( ".*((branches|tags)[^/]*).*?", "$1" );
+            scmBranch = scmUrl.replaceFirst( ".*((branches|tags)/[^/]*).*", "$1" );
         }
         return scmBranch;
     }
