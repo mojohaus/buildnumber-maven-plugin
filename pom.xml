@@ -17,6 +17,7 @@
      This plugin is designed to give you a build number. So when you might make 100 builds of version
      1.0-SNAPSHOT, you can differentiate between them all.
   </description>
+  <url>http://www.mojohaus.org/buildnumber-maven-plugin/</url>
   <inceptionYear>2007</inceptionYear>
   <licenses>
     <license>
