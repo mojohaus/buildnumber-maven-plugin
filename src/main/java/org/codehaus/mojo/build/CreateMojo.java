@@ -567,7 +567,7 @@ public class CreateMojo
     public String getScmBranch()
         throws MojoExecutionException
     {
-        /* git branch can be obtained directly by a command */
+        /* git & hg branches can be obtained directly by a command */
         try
         {
             ScmRepository repository = getScmRepository();
@@ -579,10 +579,15 @@ public class CreateMojo
                                                           (GitScmProviderRepository) repository.getProviderRepository(),
                                                           fileSet );
             }
+            if ( HgChangeSetMojo.PROTOCOL_HG.equals( provider.getScmType() ) )
+            {
+                HgChangeSetMojo hgmojo = new HgChangeSetMojo();
+                return hgmojo.getBranch( getLogger(), scmDirectory );
+            }
         }
         catch ( ScmException e )
         {
-            getLog().warn( "Cannot get the branch information from the git repository: \n" + e.getLocalizedMessage() );
+            getLog().warn( "Cannot get the branch information from git or hg repository: \n" + e.getLocalizedMessage() );
         }
 
         return getScmBranchFromUrl();
