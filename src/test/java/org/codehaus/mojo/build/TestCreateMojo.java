@@ -165,6 +165,18 @@ public class TestCreateMojo
     }
 
     @Test
+    public void testFilterBranchFromScmUrlWithSubFolder()
+    {
+        CreateMojo mojo = new CreateMojo();
+        String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/trunk/subfolder";
+        assertEquals( "trunk", mojo.filterBranchFromScmUrl( scmUrlTrunk ) );
+        String scmUrlBranch = "https://mifos.dev.java.net/svn/mifos/branches/v1.2.x/subfolder";
+        assertEquals( "branches/v1.2.x", mojo.filterBranchFromScmUrl( scmUrlBranch ) );
+        String scmUrlTag = "https://mifos.dev.java.net/svn/mifos/tags/v1.2.1/subfolder";
+        assertEquals( "tags/v1.2.1", mojo.filterBranchFromScmUrl( scmUrlTag ) );
+    }
+
+    @Test
     public void testSpecialItemScmVersion()
         throws Exception
     {
