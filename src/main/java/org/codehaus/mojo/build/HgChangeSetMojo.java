@@ -30,12 +30,9 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.ScmException;
-import org.apache.maven.scm.ScmFileStatus;
 import org.apache.maven.scm.ScmResult;
 import org.apache.maven.scm.log.ScmLogDispatcher;
-import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.provider.hg.HgUtils;
-import org.apache.maven.scm.provider.hg.command.HgConsumer;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -168,25 +165,5 @@ public class HgChangeSetMojo
         }
     }
 
-    private static class HgOutputConsumer
-        extends HgConsumer
-    {
 
-        private String output;
-
-        private HgOutputConsumer( ScmLogger logger )
-        {
-            super( logger );
-        }
-
-        public void doConsume( ScmFileStatus status, String line )
-        {
-            output = line;
-        }
-
-        private String getOutput()
-        {
-            return output;
-        }
-    }
 }
