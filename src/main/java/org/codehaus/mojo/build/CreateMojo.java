@@ -164,14 +164,6 @@ public class CreateMojo
     private String locale;
 
     /**
-     * whether to retrieve the revision for the last commit, or the last revision of the repository.
-     *
-     * @since 1.0-beta-2
-     */
-    @Parameter( property = "maven.buildNumber.useLastCommittedRevision", defaultValue = "false" )
-    private boolean useLastCommittedRevision;
-
-    /**
      * Apply this java.text.MessageFormat to the timestamp only (as opposed to the <code>format</code> parameter).
      *
      * @since 1.0-beta-2
