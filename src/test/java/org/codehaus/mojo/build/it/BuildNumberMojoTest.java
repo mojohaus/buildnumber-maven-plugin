@@ -46,8 +46,9 @@ public class BuildNumberMojoTest
     public void basicItTest()
         throws Exception
     {
-        if ( ! isSvn18() ) {
-            System.out.println( "Not Subversion 1.8 compatible. Skip test");
+        if ( !isSvn18() )
+        {
+            System.out.println( "Not Subversion 1.8 compatible. Skip test" );
             return;
         }
 
@@ -94,8 +95,9 @@ public class BuildNumberMojoTest
     public void basicItNoDevScmTest()
         throws Exception
     {
-        if ( ! isSvn18() ) {
-            System.out.println( "Not Subversion 1.8 compatible. Skip test");
+        if ( !isSvn18() )
+        {
+            System.out.println( "Not Subversion 1.8 compatible. Skip test" );
             return;
         }
 
@@ -122,8 +124,9 @@ public class BuildNumberMojoTest
     public void basicItSvnJavaTest()
         throws Exception
     {
-        if ( ! isSvn18() ) {
-            System.out.println( "Not Subversion 1.8 compatible. Skip test");
+        if ( !isSvn18() )
+        {
+            System.out.println( "Not Subversion 1.8 compatible. Skip test" );
             return;
         }
 
@@ -220,7 +223,6 @@ public class BuildNumberMojoTest
         result.assertLogText( "buildnumber:create-timestamp" );
     }
 
-
     @Test
     @Ignore
     // this project needs a dotSvnDir
@@ -279,8 +281,9 @@ public class BuildNumberMojoTest
     public void Mojo1668Test()
         throws Exception
     {
-        if ( ! isSvn18() ) {
-            System.out.println( "Not Subversion 1.8 compatible. Skip test");
+        if ( !isSvn18() )
+        {
+            System.out.println( "Not Subversion 1.8 compatible. Skip test" );
             return;
         }
 
@@ -355,7 +358,6 @@ public class BuildNumberMojoTest
         catch ( CommandLineException e )
         {
         }
-
 
         return false;
     }

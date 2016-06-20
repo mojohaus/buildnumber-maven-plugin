@@ -189,9 +189,8 @@ public abstract class AbstractScmMojo
     protected ScmRepository getScmRepository()
         throws ScmException
     {
-        ScmRepository repository =
-            scmManager.makeScmRepository( !StringUtils.isBlank( this.scmConnectionUrl ) ? scmConnectionUrl
-                            : scmDeveloperConnectionUrl );
+        ScmRepository repository = scmManager.makeScmRepository( !StringUtils.isBlank( this.scmConnectionUrl )
+                        ? scmConnectionUrl : scmDeveloperConnectionUrl );
 
         ScmProviderRepository scmRepo = repository.getProviderRepository();
 
@@ -295,9 +294,9 @@ public abstract class AbstractScmMojo
 
         if ( useLastCommittedRevision )
         {
-            //It seemed the case that for git getLastChangedRevision()
-            //returns null instead of the last revision in contradiction
-            //to the above code: scmResult.getInfoItems().get(0);
+            // It seemed the case that for git getLastChangedRevision()
+            // returns null instead of the last revision in contradiction
+            // to the above code: scmResult.getInfoItems().get(0);
             return info.getLastChangedRevision();
         }
 

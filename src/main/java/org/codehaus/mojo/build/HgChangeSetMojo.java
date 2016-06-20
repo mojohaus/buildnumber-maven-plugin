@@ -69,7 +69,6 @@ public class HgChangeSetMojo
     @Parameter( property = "maven.changeSet.scmDirectory", defaultValue = "${basedir}" )
     private File scmDirectory;
 
-
     /**
      * Forces to use last logged changeset/changesetDate from scmDirectory and not current repository
      * changeset/changesetDate.
@@ -106,7 +105,7 @@ public class HgChangeSetMojo
         {
             String previousChangeSet = getChangeSetProperty();
             String previousChangeSetDate = getChangeSetDateProperty();
-            if ( previousChangeSet == null || previousChangeSetDate == null)
+            if ( previousChangeSet == null || previousChangeSetDate == null )
             {
                 String changeSet = getChangeSet();
                 String changeSetDate = getChangeSetDate();
@@ -122,8 +121,8 @@ public class HgChangeSetMojo
         }
     }
 
-    protected String getHgCommandOutput(String[] command)
-            throws ScmException, MojoExecutionException
+    protected String getHgCommandOutput( String[] command )
+        throws ScmException, MojoExecutionException
     {
         HgOutputConsumer consumer = new HgOutputConsumer( logger );
         ScmResult result = HgUtils.execute( consumer, logger, scmDirectory, command );
@@ -132,19 +131,19 @@ public class HgChangeSetMojo
     }
 
     protected String getChangeSet()
-            throws ScmException, MojoExecutionException
+        throws ScmException, MojoExecutionException
     {
-        return getHgCommandOutput(useLastChangeSetInDirectory
-                ? new String[] { "log", "-l1", "--template", "\"{node|short}\"", "." }
-                : new String[] { "id", "-i" });
+        return getHgCommandOutput( useLastChangeSetInDirectory
+                        ? new String[] { "log", "-l1", "--template", "\"{node|short}\"", "." }
+                        : new String[] { "id", "-i" } );
     }
 
     protected String getChangeSetDate()
-            throws ScmException, MojoExecutionException
+        throws ScmException, MojoExecutionException
     {
-        return getHgCommandOutput(useLastChangeSetInDirectory
-                ? new String[] { "log", "-l1", "--template", "\"{date|isodate}\"", "." }
-                : new String[] { "log", "-r", ".", "--template", "\"{date|isodate}\"" } );
+        return getHgCommandOutput( useLastChangeSetInDirectory
+                        ? new String[] { "log", "-l1", "--template", "\"{date|isodate}\"", "." }
+                        : new String[] { "log", "-r", ".", "--template", "\"{date|isodate}\"" } );
     }
 
     protected String getChangeSetDateProperty()
@@ -179,6 +178,5 @@ public class HgChangeSetMojo
             project.getProperties().put( property, value );
         }
     }
-
 
 }

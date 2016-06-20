@@ -68,7 +68,7 @@ public class TestCreateMojo
 {
     @Rule
     public final TemporaryFolder folder = new TemporaryFolder();
-    
+
     @Test
     public void testMessageFormat()
         throws Exception
@@ -107,7 +107,7 @@ public class TestCreateMojo
         CreateMojo mojo = new CreateMojo();
 
         mojo.setFormat( "{0,date}" );
-        mojo.setItems( asList( date) );
+        mojo.setItems( asList( date ) );
 
         mojo.execute();
         assertEquals( DateFormat.getDateInstance( DateFormat.DEFAULT ).format( date ), mojo.getRevision() );

@@ -91,7 +91,8 @@ public class CreateTimestampMojo
             return;
         }
 
-        if (session.getCurrentProject().isExecutionRoot() && !executeRootOnly) {
+        if ( session.getCurrentProject().isExecutionRoot() && !executeRootOnly )
+        {
             getLog().info( "Skipping because we are not in root module." );
         }
 

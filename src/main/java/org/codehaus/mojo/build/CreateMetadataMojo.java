@@ -204,7 +204,7 @@ public class CreateMetadataMojo
         for ( File file : outputFiles )
         {
             file.getParentFile().mkdirs();
-            writeToFile(props, file);
+            writeToFile( props, file );
         }
 
         if ( attach )
@@ -221,16 +221,19 @@ public class CreateMetadataMojo
         }
     }
 
-    private void writeToFile(Properties props, File file) throws MojoFailureException {
+    private void writeToFile( Properties props, File file )
+        throws MojoFailureException
+    {
         try
         {
-            if( this.autoDetectOutputFormat ) {
-                OutputFormat outputFormat = OutputFormat.getOutputFormatFor(file.getName());
-                writeToFile(props, file, outputFormat);
+            if ( this.autoDetectOutputFormat )
+            {
+                OutputFormat outputFormat = OutputFormat.getOutputFormatFor( file.getName() );
+                writeToFile( props, file, outputFormat );
             }
             else
             {
-                writeToFile(props, file, OutputFormat.DEFAULT_FORMAT);
+                writeToFile( props, file, OutputFormat.DEFAULT_FORMAT );
             }
         }
         catch ( IOException e )
@@ -239,12 +242,16 @@ public class CreateMetadataMojo
         }
     }
 
-    private void writeToFile(Properties props, File file, OutputFormat outputFormat) throws IOException {
-        OutputStream out = new FileOutputStream(file);
-        try {
-            outputFormat.write(props, out);
+    private void writeToFile( Properties props, File file, OutputFormat outputFormat )
+        throws IOException
+    {
+        OutputStream out = new FileOutputStream( file );
+        try
+        {
+            outputFormat.write( props, out );
         }
-        finally {
+        finally
+        {
             out.close();
         }
     }

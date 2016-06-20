@@ -6,20 +6,26 @@ import com.google.gson.stream.JsonWriter;
 import java.io.*;
 import java.util.Properties;
 
-public class JsonOutputFormat extends OutputFormat {
+public class JsonOutputFormat
+    extends OutputFormat
+{
     @Override
-    public boolean handles(String fileName) {
-        return fileName.endsWith(".json");
+    public boolean handles( String fileName )
+    {
+        return fileName.endsWith( ".json" );
     }
 
     @Override
-    public void write(Properties props, OutputStream out) throws IOException {
+    public void write( Properties props, OutputStream out )
+        throws IOException
+    {
         Gson gson = new Gson();
-        JsonWriter jsonWriter = gson.newJsonWriter(new OutputStreamWriter( out, "UTF-8" ));
+        JsonWriter jsonWriter = gson.newJsonWriter( new OutputStreamWriter( out, "UTF-8" ) );
         jsonWriter.beginObject();
-        for(Object key: props.keySet()) {
-            jsonWriter.name((String)key);
-            jsonWriter.value(props.getProperty((String)key));
+        for ( Object key : props.keySet() )
+        {
+            jsonWriter.name( (String) key );
+            jsonWriter.value( props.getProperty( (String) key ) );
         }
         jsonWriter.endObject();
         jsonWriter.flush();

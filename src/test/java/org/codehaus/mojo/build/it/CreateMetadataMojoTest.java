@@ -48,10 +48,9 @@ public class CreateMetadataMojoTest
 
     }
 
-
     @Test
     public void testBasicJsonConfiguration()
-            throws Exception
+        throws Exception
     {
         File projDir = resources.getBasedir( "create-metadata-json-it" );
 
