@@ -183,6 +183,27 @@ public class BuildNumberMojoTest
     }
 
     @Test
+    public void legacyTimestampItTest()
+        throws Exception
+    {
+        File projDir = resources.getBasedir( "legacy-timestamp-it" );
+
+        MavenExecution mavenExec = maven.forProject( projDir );
+        MavenExecutionResult result = mavenExec.execute( "clean", "verify" );
+        result.assertLogText( "Please update your POM" );
+
+        File testDir = result.getBasedir();
+        File artifact = new File( testDir, "target/buildnumber-maven-plugin-legacy-timestamp-it-1.0-SNAPSHOT.jar" );
+        JarFile jarFile = new JarFile( artifact );
+        Attributes manifest = jarFile.getManifest().getMainAttributes();
+        jarFile.close();
+        String timestamp = manifest.getValue( "Build-Time" );
+        SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd" );
+        Assert.assertNotNull( format.parse( timestamp ) );
+
+    }
+
+    @Test
     public void failLocalChangeItTest()
         throws Exception
     {
