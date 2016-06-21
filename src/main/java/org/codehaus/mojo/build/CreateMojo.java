@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -175,12 +176,19 @@ public class CreateMojo
     private boolean useLastCommittedRevision;
 
     /**
-     * Apply this java.text.MessageFormat to the timestamp only (as opposed to the <code>format</code> parameter).
+     * Apply this java.text.SimpleDateFormat to the timestamp only (as opposed to the <code>format</code> parameter).
      *
      * @since 1.0-beta-2
      */
     @Parameter( property = "maven.buildNumber.timestampFormat" )
     private String timestampFormat;
+
+    /**
+     * The timezone of the generated timestamp.
+     * If blank will default to {@link TimeZone#getDefault()}
+     */
+    @Parameter(property = "maven.buildNumber.timestampTimeZone", defaultValue = "")
+    private String timezone;
 
     /**
      * Selects alternative SCM provider implementations. Each map key denotes the original provider type as given in the
@@ -408,7 +416,16 @@ public class CreateMojo
             String timestamp = String.valueOf( now.getTime() );
             if ( timestampFormat != null )
             {
-                timestamp = MessageFormat.format( timestampFormat, new Object[] { now } );
+                if ( timestampFormat.matches("\\{0,date,[^\\}]+\\}"))
+                {
+                    getLog().warn( "The timestampFormat parameter now uses java.text.SimpleDateFormat.");
+                    getLog().warn( "Please update your POM as support for java.text.MessageFormat may be removed.");
+                    timestamp = Utils.createTimestamp( timestampFormat.replaceFirst("\\{0,date,([^\\}]+)\\}","$1"), timezone, now );
+                }
+                else
+                {
+                    timestamp = Utils.createTimestamp( timestampFormat, timezone, now );
+                }
             }
 
             getLog().info( MessageFormat.format( "Storing buildNumber: {0} at timestamp: {1}", new Object[] { revision,

@@ -54,7 +54,7 @@
           </providerImplementations>
           <username>foo</username>
           <password>bar</password>
-          <timestampFormat>{0,date,yyyyMMdd_HHmmss}</timestampFormat>
+          <timestampFormat>yyyyMMdd_HHmmss</timestampFormat>
         </configuration>
       </plugin>
       <plugin>

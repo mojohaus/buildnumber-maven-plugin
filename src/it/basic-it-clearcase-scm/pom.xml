@@ -43,7 +43,7 @@
             <configuration>
               <revisionOnScmFailure>foo</revisionOnScmFailure>
               <useLastCommittedRevision>true</useLastCommittedRevision>
-              <timestampFormat>{0,date,yyyy-MM-dd}</timestampFormat>
+              <timestampFormat>yyyy-MM-dd</timestampFormat>
             </configuration>
           </execution>
         </executions>
