@@ -96,14 +96,23 @@ public class HgChangeSetMojo
         {
             String previousChangeSet = getChangeSetProperty();
             String previousChangeSetDate = getChangeSetDateProperty();
-            if ( previousChangeSet == null || previousChangeSetDate == null )
+            String previousLastChangeSetInFolder = getLastChangeSetInFolderProperty();
+            String previousLastChangeSetDateInFolder = getLastChangeSetDateInFolderProperty();
+            if ( previousChangeSet == null || previousChangeSetDate == null
+                    || previousLastChangeSetInFolder == null || previousLastChangeSetDateInFolder == null)
             {
                 String changeSet = getChangeSet();
                 String changeSetDate = getChangeSetDate();
+                String lastChangeSetInFolder = getLastChangeSetInFolder();
+                String lastChangeSetDateInFolder = getLastChangeSetDateInFolder();
                 getLog().info( "Setting Mercurial Changeset: " + changeSet );
                 getLog().info( "Setting Mercurial Changeset Date: " + changeSetDate );
+                getLog().info( "Setting Mercurial Last Changeset in Folder: " + lastChangeSetInFolder );
+                getLog().info( "Setting Mercurial Last Changeset Date in Folder: " + lastChangeSetDateInFolder );
                 setChangeSetProperty( changeSet );
                 setChangeSetDateProperty( changeSetDate );
+                setLastChangeSetInFolderProperty( lastChangeSetInFolder );
+                setLastChangeSetDateInFolderProperty( lastChangeSetDateInFolder );
             }
         }
         catch ( ScmException e )
@@ -112,25 +121,40 @@ public class HgChangeSetMojo
         }
     }
 
-    protected String getChangeSet()
-        throws ScmException, MojoExecutionException
+    protected String getHgCommandOutput(String[] command)
+            throws ScmException, MojoExecutionException
     {
         HgOutputConsumer consumer = new HgOutputConsumer( logger );
-        ScmResult result = HgUtils.execute( consumer, logger, scmDirectory, new String[] { "id", "-i" } );
+        ScmResult result = HgUtils.execute( consumer, logger, scmDirectory, command );
         checkResult( result );
         return consumer.getOutput();
     }
 
-    protected String getChangeSetDate()
-        throws ScmException, MojoExecutionException
+    protected String getChangeSet()
+            throws ScmException, MojoExecutionException
     {
-        HgOutputConsumer consumer = new HgOutputConsumer( logger );
-        ScmResult result =
-            HgUtils.execute( consumer, logger, scmDirectory, new String[] { "log", "-r", ".", "--template",
-                "\"{date|isodate}\"" } );
-        checkResult( result );
-        return consumer.getOutput();
+        return getHgCommandOutput(new String[] { "id", "-i" });
     }
+
+    protected String getChangeSetDate()
+            throws ScmException, MojoExecutionException
+    {
+        return getHgCommandOutput(new String[] { "log", "-r", ".", "--template",
+                "\"{date|isodate}\"" } );
+    }
+
+    protected String getLastChangeSetInFolder()
+            throws ScmException, MojoExecutionException
+    {
+        return getHgCommandOutput(new String[] { "log", "-l1", "--template", "\"{node|short}\"", "." });
+    }
+
+    protected String getLastChangeSetDateInFolder()
+            throws ScmException, MojoExecutionException
+    {
+        return getHgCommandOutput(new String[] { "log", "-l1", "--template", "\"{date|isodate}\"", "." });
+    }
+
 
     protected String getChangeSetDateProperty()
     {
@@ -140,6 +164,16 @@ public class HgChangeSetMojo
     protected String getChangeSetProperty()
     {
         return getProperty( "changeSet" );
+    }
+
+    protected String getLastChangeSetDateInFolderProperty()
+    {
+        return getProperty( "lastChangeSetDateInFolder" );
+    }
+
+    protected String getLastChangeSetInFolderProperty()
+    {
+        return getProperty( "lastChangeSetInFolder" );
     }
 
     protected String getProperty( String property )
@@ -155,6 +189,16 @@ public class HgChangeSetMojo
     private void setChangeSetProperty( String changeSet )
     {
         setProperty( "changeSet", changeSet );
+    }
+
+    private void setLastChangeSetDateInFolderProperty( String changeSetDate )
+    {
+        setProperty( "lastChangeSetDateInFolder", changeSetDate );
+    }
+
+    private void setLastChangeSetInFolderProperty( String changeSet )
+    {
+        setProperty( "lastChangeSetInFolder", changeSet );
     }
 
     private void setProperty( String property, String value )
