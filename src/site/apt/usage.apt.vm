@@ -155,7 +155,7 @@ Usage
 
 +------------------------------------------+
     <configuration>
-      <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
+      <format>yyyy-MM-dd HH:mm:ss</format>
       <items>
         <item>timestamp</item>
       </items>
