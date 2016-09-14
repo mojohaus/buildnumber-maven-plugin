@@ -74,7 +74,6 @@
   <properties>
     <maven.scm.version>1.9.5</maven.scm.version>
     <maven.api.version>2.2.1</maven.api.version>
-    <mojo.java.target>1.6</mojo.java.target>
     <maven.it.version>3.1.1</maven.it.version>
     <takari.plugin.testing.version>2.1.0</takari.plugin.testing.version>
     <test.excludes>**/it/**</test.excludes>
