@@ -79,7 +79,7 @@ import static java.lang.Integer.parseInt;
  * <p>
  * Build numbers are not automatically reflected in your artifact's filename, but can be added to the metadata. You can
  * access the build number in your pom with ${buildNumber}. You can also access ${timestamp} and the SCM branch of the
- * build (if applicable) in ${SCMBranch}
+ * build (if applicable) in ${scmBranch}
  * <p>
  * Note that there are several <code><strong>doFoo</strong></code> parameters. These parameters (doCheck, doUpdate, etc)
  * are the first thing evaluated. If there is no matching expression, we get the default-value. If there is (ie
