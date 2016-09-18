@@ -27,7 +27,11 @@
               <goal>create</goal>
             </goals>
             <configuration>
+              <!--
+                ! Currently this has been commented out, bases
+                ! on a Bug in scm component.
               <useLastCommittedRevision>true</useLastCommittedRevision>
+              -->
             </configuration>
           </execution>
 

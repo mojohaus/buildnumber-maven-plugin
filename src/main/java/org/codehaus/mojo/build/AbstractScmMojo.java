@@ -295,6 +295,9 @@ public abstract class AbstractScmMojo
 
         if ( useLastCommittedRevision )
         {
+            //It seemed the case that for git getLastChangedRevision()
+            //returns null instead of the last revision in contradiction
+            //to the above code: scmResult.getInfoItems().get(0);
             return info.getLastChangedRevision();
         }
 
