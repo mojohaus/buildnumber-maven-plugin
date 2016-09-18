@@ -211,6 +211,12 @@
       <type>pom</type>
       <scope>test</scope>
     </dependency>
+    
+    <dependency>
+     <groupId>org.sonatype.plexus</groupId>
+     <artifactId>plexus-build-api</artifactId>
+     <version>0.0.7</version>
+   </dependency>
 
   </dependencies>
 
@@ -356,7 +362,7 @@
           <plugin>
             <groupId>io.takari.maven.plugins</groupId>
             <artifactId>takari-lifecycle-plugin</artifactId>
-            <version>1.10.1</version>
+            <version>1.11.10</version>
             <extensions>true</extensions>
             <executions>
               <execution>
