@@ -57,7 +57,7 @@
   </developers>
 
   <prerequisites>
-    <maven>2.2.1</maven>
+    <maven>3.0</maven>
   </prerequisites>
 
   <scm>
@@ -73,7 +73,7 @@
 
   <properties>
     <maven.scm.version>1.9.5</maven.scm.version>
-    <maven.api.version>2.2.1</maven.api.version>
+    <maven.api.version>3.0</maven.api.version>
     <maven.it.version>3.1.1</maven.it.version>
     <takari.plugin.testing.version>2.1.0</takari.plugin.testing.version>
     <test.excludes>**/it/**</test.excludes>
@@ -81,11 +81,6 @@
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-project</artifactId>
-      <version>${maven.api.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-settings</artifactId>
@@ -160,6 +155,9 @@
     <dependency>
       <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
       <artifactId>maven-scm-provider-svnjava</artifactId>
+      <!--
+        ! Upgrade to 2.1.2 
+       -->
       <version>2.1.1</version>
       <exclusions>
         <!-- this plugin requires svnkit-1.8.4 but it is not at central -->
@@ -225,7 +223,6 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-invoker-plugin</artifactId>
-          <version>1.10</version>
           <configuration>
             <debug>true</debug>
             <preBuildHookScript>prebuild</preBuildHookScript>
@@ -278,7 +275,6 @@
         <plugins>
           <plugin>
             <artifactId>maven-invoker-plugin</artifactId>
-            <version>1.10</version>
           </plugin>
         </plugins>
       </build>

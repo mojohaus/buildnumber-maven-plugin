@@ -45,8 +45,8 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * This mojo discovers latest SCM revision, current timestamp, project version, and project name then write them to one
- * or more java property files together with a set of user provided properties. It also has option to add the output file
- * to resource classpath for jar packaging.
+ * or more java property files together with a set of user provided properties. It also has option to add the output
+ * file to resource classpath for jar packaging.
  */
 @Mojo( name = "create-metadata", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresProject = true, threadSafe = true, aggregator = true )
 public class CreateMetadataMojo
@@ -110,10 +110,9 @@ public class CreateMetadataMojo
     private String timestampFormat;
 
     /**
-     * The timezone of the generated timestamp.
-     * If blank will default to {@link TimeZone#getDefault()}
+     * The timezone of the generated timestamp. If blank will default to {@link TimeZone#getDefault()}
      */
-    @Parameter(property = "maven.buildNumber.timestampTimeZone", defaultValue = "")
+    @Parameter( property = "maven.buildNumber.timestampTimeZone", defaultValue = "" )
     private String timezone;
 
     /**
@@ -133,8 +132,8 @@ public class CreateMetadataMojo
     private String outputName;
 
     /**
-     * Add outputDirectory to java resource so that <i>outputName</i> will be under runtime classpath.
-     * <i>outputName</i> can contain '/'
+     * Add outputDirectory to java resource so that <i>outputName</i> will be under runtime classpath. <i>outputName</i>
+     * can contain '/'
      *
      * @since 1.4
      */
@@ -235,7 +234,7 @@ public class CreateMetadataMojo
             if ( !StringUtils.isEmpty( revisionOnScmFailure ) )
             {
                 getLog().warn( "Cannot get the revision information from the scm repository, proceeding with "
-                                   + "revision of " + revisionOnScmFailure + " : \n" + e.getLocalizedMessage() );
+                    + "revision of " + revisionOnScmFailure + " : \n" + e.getLocalizedMessage() );
 
                 return revisionOnScmFailure;
             }

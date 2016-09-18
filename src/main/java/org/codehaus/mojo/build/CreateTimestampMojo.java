@@ -21,10 +21,9 @@ package org.codehaus.mojo.build;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.TimeZone;
 
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -54,16 +53,10 @@ public class CreateTimestampMojo
     private boolean skip;
 
     /**
-     * The maven project.
+     * The maven session.
      */
-    @Parameter( defaultValue = "${project}", required = true, readonly = true )
-    private MavenProject project;
-
-    /**
-     * Contains the full list of projects in the reactor.
-     */
-    @Parameter( defaultValue = "${reactorProjects}", required = true, readonly = true )
-    private List<MavenProject> reactorProjects;
+    @Parameter( defaultValue = "${session}", required = true, readonly = true )
+    private MavenSession session;
 
     /**
      * You can rename the timestamp property name to another property name if desired.
@@ -79,11 +72,16 @@ public class CreateTimestampMojo
     private String timestampFormat;
 
     /**
-     * The timezone of the generated timestamp.
-     * If blank will default to {@link TimeZone#getDefault()}
+     * The timezone of the generated timestamp. If blank will default to {@link TimeZone#getDefault()}
      */
-    @Parameter(property = "maven.buildNumber.timestampTimeZone", defaultValue = "")
+    @Parameter( property = "maven.buildNumber.timestampTimeZone", defaultValue = "" )
     private String timezone;
+
+    /**
+     * Execute this only once in root project of a multi module build.
+     */
+    @Parameter( defaultValue = "false" )
+    private boolean executeRootOnly;
 
     public void execute()
     {
@@ -93,7 +91,11 @@ public class CreateTimestampMojo
             return;
         }
 
-        String timestampString = project.getProperties().getProperty( timestampPropertyName );
+        if (session.getCurrentProject().isExecutionRoot() && !executeRootOnly) {
+            getLog().info( "Skipping because we are not in root module." );
+        }
+
+        String timestampString = session.getTopLevelProject().getProperties().getProperty( timestampPropertyName );
 
         // Check if the plugin has already run in the current build.
         if ( timestampString != null )
@@ -106,8 +108,9 @@ public class CreateTimestampMojo
 
         getLog().debug( "Storing timestamp property: " + timestampPropertyName + " " + timestampString );
 
-        for ( MavenProject project : reactorProjects )
+        for ( MavenProject project : session.getProjectDependencyGraph().getSortedProjects() )
         {
+            getLog().debug( "Storing timestamp property in project " + project.getId() );
             project.getProperties().setProperty( timestampPropertyName, timestampString );
         }
     }
