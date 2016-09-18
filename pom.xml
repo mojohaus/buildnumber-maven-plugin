@@ -54,6 +54,14 @@
         <role>developer</role>
       </roles>
     </developer>
+    <developer>
+      <id>khmarbaise</id>
+      <name>Karl Heinz Marbaise</name>
+      <email>khmarbaise@apache.org</email>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
   </developers>
 
   <prerequisites>
