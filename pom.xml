@@ -155,12 +155,11 @@
     <dependency>
       <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
       <artifactId>maven-scm-provider-svnjava</artifactId>
-      <!--
-        ! Upgrade to 2.1.2 
-       -->
-      <version>2.1.1</version>
+      <version>2.1.2</version>
       <exclusions>
-        <!-- this plugin requires svnkit-1.8.4 but it is not at central -->
+        <!--
+          ! This will bring svnkit 1.8.11 
+          -->
         <exclusion>
           <groupId>org.tmatesoft.svnkit</groupId>
           <artifactId>svnkit</artifactId>
@@ -170,7 +169,7 @@
     <dependency>
       <groupId>org.tmatesoft.svnkit</groupId>
       <artifactId>svnkit</artifactId>
-      <version>1.8.5</version>
+      <version>1.8.12</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
