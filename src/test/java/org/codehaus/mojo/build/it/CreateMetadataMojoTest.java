@@ -47,4 +47,23 @@ public class CreateMetadataMojoTest
         Assert.assertTrue( new File( testDir, "target/classes/build.properties" ).exists() );
 
     }
+
+
+    @Test
+    public void testBasicJsonConfiguration()
+            throws Exception
+    {
+        File projDir = resources.getBasedir( "create-metadata-json-it" );
+
+        MavenExecution mavenExec = maven.forProject( projDir );
+        MavenExecutionResult result = mavenExec.execute( "clean", "test" );
+        result.assertErrorFreeLog();
+
+        File testDir = result.getBasedir();
+        Assert.assertTrue( new File( testDir, "target/file1.json" ).exists() );
+        Assert.assertTrue( new File( testDir, "target/xxx/file1.json" ).exists() );
+        Assert.assertTrue( new File( testDir, "target/generated/build-metadata/build.properties" ).exists() );
+        Assert.assertTrue( new File( testDir, "target/classes/build.properties" ).exists() );
+
+    }
 }

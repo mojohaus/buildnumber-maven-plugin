@@ -165,6 +165,14 @@ public class CreateMetadataMojo
     private Map<String, String> properties = new HashMap<String, String>();
 
     /**
+     * Enable output format detection. (Disabled per default for compatibility.)
+     *
+     * @since 3.0
+     */
+    @Parameter( defaultValue = "false" )
+    private boolean autoDetectOutputFormat;
+
+    /**
      * Maven ProjectHelper.
      */
     @Component
@@ -196,16 +204,7 @@ public class CreateMetadataMojo
         for ( File file : outputFiles )
         {
             file.getParentFile().mkdirs();
-            OutputStream os = null;
-            try
-            {
-                os = new FileOutputStream( file );
-                props.store( os, "Created by build system. Do not modify" );
-            }
-            catch ( IOException e )
-            {
-                throw new MojoFailureException( "Unable to store output to " + file, e );
-            }
+            writeToFile(props, file);
         }
 
         if ( attach )
@@ -219,6 +218,34 @@ public class CreateMetadataMojo
             resource.setDirectory( outputDirectory.getAbsolutePath() );
 
             project.addResource( resource );
+        }
+    }
+
+    private void writeToFile(Properties props, File file) throws MojoFailureException {
+        try
+        {
+            if( this.autoDetectOutputFormat ) {
+                OutputFormat outputFormat = OutputFormat.getOutputFormatFor(file.getName());
+                writeToFile(props, file, outputFormat);
+            }
+            else
+            {
+                writeToFile(props, file, OutputFormat.DEFAULT_FORMAT);
+            }
+        }
+        catch ( IOException e )
+        {
+            throw new MojoFailureException( "Unable to store output to " + file, e );
+        }
+    }
+
+    private void writeToFile(Properties props, File file, OutputFormat outputFormat) throws IOException {
+        OutputStream out = new FileOutputStream(file);
+        try {
+            outputFormat.write(props, out);
+        }
+        finally {
+            out.close();
         }
     }
 
