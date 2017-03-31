@@ -2,6 +2,7 @@
 
 This is the [buildnumber-maven-plugin](http://www.mojohaus.org/buildnumber-maven-plugin/).
  
+[![The MIT License](https://img.shields.io/github/license/mojohaus/buildnumber-maven-plugin.svg?label=License)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/mojohaus/buildnumber-maven-plugin.svg?branch=master)](https://travis-ci.org/mojohaus/buildnumber-maven-plugin)
 
 ## Releasing
