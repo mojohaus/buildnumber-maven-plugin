@@ -113,13 +113,30 @@ public class CreateMojo
     private String timestampPropertyName;
 
     /**
-     * If this is made true, we check for modified files, and if there are any, we fail the build. Note that this used
-     * to be inverted (skipCheck), but needed to be changed to allow releases to work. This corresponds to 'svn status'.
+     * If this is made true, we check for modified files but does not fail the build. If you like to fail the build such
+     * cases you have to set the <code>failTheBuild</code> property as well. Settings doCheck to true a property is set
+     * to true if there are changes
      *
      * @since 1.0-beta-1
      */
     @Parameter( property = "maven.buildNumber.doCheck", defaultValue = "false" )
     private boolean doCheck;
+
+    /**
+     * This will fail the build in cases where doCheck is set to true.
+     * 
+     * @since 3.0.0
+     */
+    @Parameter( property = "maven.buildNumber.failTheBuild", defaultValue = "true" )
+    private boolean failTheBuild;
+
+    /**
+     * In cases where the doCheck shows that there are changes in the current working copy
+     * this property will be set with the value <code>tainted</code> otherwise it will be 
+     * <code>ok</code>.
+     */
+    @Parameter( property = "maven.buildNumber.buildTaintedPropertyName", defaultValue = "buildIsTainted" )
+    private String buildTaintedPropertyName;
 
     /**
      * If this is made true, then the revision will be updated to the latest in the repo, otherwise it will remain what
@@ -225,6 +242,8 @@ public class CreateMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+        String buildIsTainted = "ok";
+        
         if ( skip )
         {
             getLog().info( "Skipping execution." );
@@ -259,8 +278,17 @@ public class CreateMojo
 
             if ( doCheck )
             {
-                // we fail if there are local mods
-                checkForLocalModifications();
+                StringBuilder message = new StringBuilder();
+                if ( doLocalModificationExist( message ) )
+                {
+                    buildIsTainted = "tainted";
+                    if ( failTheBuild )
+                    {
+                        throw new MojoExecutionException( "Cannot create the build number because you have local modifications : \n"
+                            + message );
+
+                    }
+                }
             }
             else
             {
@@ -298,7 +326,7 @@ public class CreateMojo
 
         if ( project != null )
         {
-            buildNumberAndTimeStampForReactorProjects( now );
+            buildNumberAndTimeStampForReactorProjects( now, buildIsTainted );
         }
     }
 
@@ -403,7 +431,7 @@ public class CreateMojo
         }
     }
 
-    private void buildNumberAndTimeStampForReactorProjects( Date now )
+    private void buildNumberAndTimeStampForReactorProjects( Date now, String taintedValue )
         throws MojoExecutionException
     {
         String timestamp = String.valueOf( now.getTime() );
@@ -437,6 +465,7 @@ public class CreateMojo
                 }
                 nextProj.getProperties().put( this.timestampPropertyName, timestamp );
                 nextProj.getProperties().put( this.scmBranchPropertyName, scmBranch );
+                nextProj.getProperties().put( this.buildTaintedPropertyName, taintedValue );
             }
         }
     }
@@ -481,9 +510,11 @@ public class CreateMojo
         return new MessageFormat( format, l ).format( arguments );
     }
 
-    private void checkForLocalModifications()
+    private boolean doLocalModificationExist( StringBuilder message )
         throws MojoExecutionException
     {
+        boolean result = false;
+
         getLog().debug( "Verifying there are no local modifications ..." );
 
         List<ScmFile> changedFiles;
@@ -499,21 +530,17 @@ public class CreateMojo
 
         if ( !changedFiles.isEmpty() )
         {
-            StringBuilder message = new StringBuilder();
-
-            String ls = System.getProperty( "line.separator" );
-
             for ( ScmFile file : changedFiles )
             {
                 message.append( file.toString() );
 
-                message.append( ls );
+                message.append( System.lineSeparator() );
             }
 
-            throw new MojoExecutionException( "Cannot create the build number because you have local modifications : \n"
-                + message );
+            result = true;
         }
 
+        return result;
     }
 
     public List<ScmFile> update()

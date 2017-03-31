@@ -40,6 +40,16 @@ Introduction
   Instructions on how to use the Build Number Maven Plugin can be found on the {{{./usage.html}usage page}}.
 
 
+* Hint
+
+  Starting with version 3.0.0 of the plugin the default behaviour has been changed.
+  If you define <<doCheck>> with <<true>> the plugin will really only check for modifications
+  and will set the property <<buildIsTainted>> with the value <<tainted>>. If there
+  are no modification this property will be set to <<ok>>.
+  
+  If you like to fail the build as in previous versions you have to set the supplemental 
+  configuration <<failTheBuild>> to <<true>> and set <<doCheck>> to to <<true>>.
+   
 ~~ * Examples
 
 
