@@ -21,13 +21,6 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>buildnumber-maven-plugin</artifactId>
           <version>@pom.version@</version>
-          <dependencies>
-            <dependency>
-              <groupId>org.tmatesoft.svnkit</groupId>
-              <artifactId>svnkit</artifactId>
-              <version>1.8.3-1</version>
-            </dependency>
-          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -44,9 +37,9 @@
               <goal>create</goal>
             </goals>
             <configuration>
-                <providerImplementations>
-                  <svn>javasvn</svn>
-                </providerImplementations>
+              <providerImplementations>
+                <svn>javasvn</svn>
+              </providerImplementations>
               <useLastCommittedRevision>true</useLastCommittedRevision>
             </configuration>
           </execution>
@@ -57,9 +50,9 @@
               <goal>create</goal>
             </goals>
             <configuration>
-                <providerImplementations>
-                  <svn>javasvn</svn>
-                </providerImplementations>
+              <providerImplementations>
+                <svn>javasvn</svn>
+              </providerImplementations>
               <useLastCommittedRevision>true</useLastCommittedRevision>
               <timestampFormat>{0,date,yyyy-MM-dd}</timestampFormat>
             </configuration>
