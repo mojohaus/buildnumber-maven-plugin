@@ -24,6 +24,9 @@
               <goal>create</goal> 
             </goals> 
             <configuration> 
+              <providerImplementations>
+                <svn>javasvn</svn>
+              </providerImplementations>
               <buildNumberPropertiesFileLocation>${project.build.directory}/buildNumber.properties</buildNumberPropertiesFileLocation> 
               <format>{0,number}</format> 
               <items> 
