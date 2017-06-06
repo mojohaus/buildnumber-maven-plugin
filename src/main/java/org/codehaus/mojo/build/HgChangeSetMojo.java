@@ -112,17 +112,18 @@ public class HgChangeSetMojo
         {
             String previousChangeSet = getChangeSetProperty();
             String previousChangeSetDate = getChangeSetDateProperty();
-            if ( previousChangeSet == null || previousChangeSetDate == null )
+	    String previousLocaleRevisionNumber = getLocaleRevisionNumberProperty();
+            if ( previousChangeSet == null || previousChangeSetDate == null || previousLocaleRevisionNumber == null)
             {
                 String changeSet = getChangeSet();
                 String changeSetDate = getChangeSetDate();
-				String localeRevisionNumber = getLocaleRevisionNumber();
+		String localeRevisionNumber = getLocaleRevisionNumber();
                 getLog().info( "Setting Mercurial Changeset: " + changeSet );
                 getLog().info( "Setting Mercurial Changeset Date: " + changeSetDate );
-				getLog().info("Setting Mercurial Locale Revision Number: " + localeRevisionNumber);
+		getLog().info("Setting Mercurial Locale Revision Number: " + localeRevisionNumber);
                 setChangeSetProperty( changeSet );
                 setChangeSetDateProperty( changeSetDate );
-				setLocaleRevisionNumber(localeRevisionNumber);
+		setLocaleRevisionNumberProperty(localeRevisionNumber);
             }
         }
         catch ( ScmException e )
@@ -155,6 +156,13 @@ public class HgChangeSetMojo
                         ? new String[] { "log", "-l1", "--template", "\"{date|isodate}\"", "." }
                         : new String[] { "log", "-r", ".", "--template", "\"{date|isodate}\"" } );
     }
+    
+    protected String getLocaleRevisionNumber()
+	        throws ScmException, MojoExecutionException{
+	        return getHgCommandOutput( useLastChangeSetInDirectory
+	                        ? new String[] { "log", "-l1", "--template", "\"{p1rev}\"", "." }
+	                        : new String[] { "id", "-n" } );
+    }
 
     protected String getChangeSetDateProperty()
     {
@@ -166,7 +174,7 @@ public class HgChangeSetMojo
         return getProperty(PROPERTY_CHANGE_SET);
     }
 
-	protected String getLocaleRevisionNumber() {
+	protected String getLocaleRevisionNumberProperty() {
 		return getProperty(PROPERTY_LOCALE_REVISION_NUMER);
 	}
 
@@ -186,9 +194,9 @@ public class HgChangeSetMojo
         setProperty(PROPERTY_CHANGE_SET, changeSet );
     }
 
-	private void setLocaleRevisionNumber(String localeRevisionNumber) {
+    private void setLocaleRevisionNumberProperty(String localeRevisionNumber) {
 		setProperty(PROPERTY_LOCALE_REVISION_NUMER, localeRevisionNumber);
-	}
+    }
 
     private void setProperty( String property, String value )
     {
@@ -197,5 +205,4 @@ public class HgChangeSetMojo
             project.getProperties().put( property, value );
         }
     }
-
 }
