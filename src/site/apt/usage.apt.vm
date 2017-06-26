@@ -213,7 +213,7 @@ Usage
     instead of b0c1c69be579175e63eeb1c056d607f01ab61e96 you will have only b0c1c
 +------------------------------------------+
 
- <<Note:>> this feature uses internally the <<git rev-pasre --short>> command and the revision length is set to minimum 4 characters.
+ <<Note:>> this feature uses internally the <<git rev-parse --short>> command and the revision length is set to minimum 4 characters.
  So you can't have the revision id shorter then 4 characters. Even if you specify the length between 0 and 4, the plugin will inform you about this situation and the minimum value (4) will be used.
 
 
