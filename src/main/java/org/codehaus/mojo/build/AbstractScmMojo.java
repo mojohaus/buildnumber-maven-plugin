@@ -2,18 +2,18 @@ package org.codehaus.mojo.build;
 
 /**
  * The MIT License
- *
+ * <p>
  * Copyright (c) 2015 Codehaus
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the "Software"), to deal in the Software without restriction,
  * including without limitation the rights to use, copy, modify, merge, publish, distribute,
  * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in all copies or
  * substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
  * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
  * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
@@ -21,18 +21,11 @@ package org.codehaus.mojo.build;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import java.io.File;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.scm.CommandParameter;
-import org.apache.maven.scm.CommandParameters;
-import org.apache.maven.scm.ScmException;
-import org.apache.maven.scm.ScmFileSet;
-import org.apache.maven.scm.ScmResult;
-import org.apache.maven.scm.ScmTag;
+import org.apache.maven.scm.*;
 import org.apache.maven.scm.command.info.InfoItem;
 import org.apache.maven.scm.command.info.InfoScmResult;
 import org.apache.maven.scm.manager.ScmManager;
@@ -46,25 +39,26 @@ import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
 
+import java.io.File;
+
 public abstract class AbstractScmMojo
-    extends AbstractMojo
-{
+        extends AbstractMojo {
     /**
      * @since 1.0-beta-5
      */
-    @Parameter( defaultValue = "${project.scm.connection}", alias = "readUrlScm", readonly = true )
+    @Parameter(defaultValue = "${project.scm.connection}", alias = "readUrlScm", readonly = true)
     protected String scmConnectionUrl;
 
     /**
      * @since 1.0-beta-5
      */
-    @Parameter( defaultValue = "${project.scm.developerConnection}", alias = "urlScm", readonly = true )
+    @Parameter(defaultValue = "${project.scm.developerConnection}", alias = "urlScm", readonly = true)
     protected String scmDeveloperConnectionUrl;
 
     /**
      * @since 1.4
      */
-    @Parameter( defaultValue = "${project.scm.tag}", readonly = true )
+    @Parameter(defaultValue = "${project.scm.tag}", readonly = true)
     protected String scmTag;
 
     /**
@@ -72,7 +66,7 @@ public abstract class AbstractScmMojo
      *
      * @since 1.0-beta-1
      */
-    @Parameter( property = "username" )
+    @Parameter(property = "username")
     protected String username;
 
     /**
@@ -80,7 +74,7 @@ public abstract class AbstractScmMojo
      *
      * @since 1.0-beta-1
      */
-    @Parameter( property = "password" )
+    @Parameter(property = "password")
     protected String password;
 
     /**
@@ -88,7 +82,7 @@ public abstract class AbstractScmMojo
      *
      * @since 1.0-beta-1
      */
-    @Parameter( property = "maven.buildNumber.scmDirectory", defaultValue = "${basedir}" )
+    @Parameter(property = "maven.buildNumber.scmDirectory", defaultValue = "${basedir}")
     protected File scmDirectory;
 
     /**
@@ -96,7 +90,7 @@ public abstract class AbstractScmMojo
      *
      * @since 1.1
      */
-    @Parameter( property = "maven.buildNumber.shortRevisionLength", defaultValue = "0" )
+    @Parameter(property = "maven.buildNumber.shortRevisionLength", defaultValue = "0")
     protected int shortRevisionLength = 0;
 
     /**
@@ -105,7 +99,7 @@ public abstract class AbstractScmMojo
      *
      * @since 1.0-beta-2
      */
-    @Parameter( property = "maven.buildNumber.revisionOnScmFailure" )
+    @Parameter(property = "maven.buildNumber.revisionOnScmFailure")
     protected String revisionOnScmFailure;
 
     /**
@@ -113,7 +107,7 @@ public abstract class AbstractScmMojo
      *
      * @since 1.0-beta-2
      */
-    @Parameter( property = "maven.buildNumber.useLastCommittedRevision", defaultValue = "false" )
+    @Parameter(property = "maven.buildNumber.useLastCommittedRevision", defaultValue = "false")
     private boolean useLastCommittedRevision;
 
     /**
@@ -121,7 +115,7 @@ public abstract class AbstractScmMojo
      *
      * @since 1.3
      */
-    @Parameter( property = "maven.buildNumber.skip", defaultValue = "false" )
+    @Parameter(property = "maven.buildNumber.skip", defaultValue = "false")
     protected boolean skip;
 
     /**
@@ -129,10 +123,10 @@ public abstract class AbstractScmMojo
      *
      * @since 1.4
      */
-    @Parameter( defaultValue = "${settings}", readonly = true )
+    @Parameter(defaultValue = "${settings}", readonly = true)
     protected Settings settings;
 
-    @Parameter( defaultValue = "${project}", required = true, readonly = true )
+    @Parameter(defaultValue = "${project}", required = true, readonly = true)
     protected MavenProject project;
 
     @Component
@@ -143,100 +137,118 @@ public abstract class AbstractScmMojo
      *
      * @since 1.4
      */
-    @Component( hint = "mng-4384" )
+    @Component(hint = "mng-4384")
     private SecDispatcher securityDispatcher;
 
     /**
      * Load username password from settings.
      */
-    private void loadInfosFromSettings( ScmProviderRepositoryWithHost repo )
-    {
-        if ( username == null || password == null )
-        {
+    private void loadInfosFromSettings(ScmProviderRepositoryWithHost repo) {
+        if (username == null || password == null) {
             String host = repo.getHost();
 
             int port = repo.getPort();
 
-            if ( port > 0 )
-            {
+            if (port > 0) {
                 host += ":" + port;
             }
 
-            Server server = this.settings.getServer( host );
+            Server server = this.settings.getServer(host);
 
-            if ( server != null )
-            {
-                setPasswordIfNotEmpty( repo, decrypt( server.getPassword(), host ) );
+            if (server != null) {
+                setPasswordIfNotEmpty(repo, decrypt(server.getPassword(), host));
 
-                setUserIfNotEmpty( repo, server.getUsername() );
+                setUserIfNotEmpty(repo, server.getUsername());
             }
         }
     }
 
-    private String decrypt( String str, String server )
-    {
-        try
-        {
-            return securityDispatcher.decrypt( str );
-        }
-        catch ( SecDispatcherException e )
-        {
-            getLog().warn( "Failed to decrypt password/passphrase for server " + server + ", using auth token as is" );
+    private String decrypt(String str, String server) {
+        try {
+            return securityDispatcher.decrypt(str);
+        } catch (SecDispatcherException e) {
+            getLog().warn("Failed to decrypt password/passphrase for server " + server + ", using auth token as is");
             return str;
         }
     }
 
     protected ScmRepository getScmRepository()
-        throws ScmException
-    {
-        ScmRepository repository = scmManager.makeScmRepository( !StringUtils.isBlank( this.scmConnectionUrl )
-                        ? scmConnectionUrl : scmDeveloperConnectionUrl );
+            throws ScmException {
+        ScmRepository repository = scmManager.makeScmRepository(findScmConnectionUrl());
 
         ScmProviderRepository scmRepo = repository.getProviderRepository();
 
-        if ( scmRepo instanceof ScmProviderRepositoryWithHost )
-        {
-            loadInfosFromSettings( (ScmProviderRepositoryWithHost) scmRepo );
+        if (scmRepo instanceof ScmProviderRepositoryWithHost) {
+            loadInfosFromSettings((ScmProviderRepositoryWithHost) scmRepo);
         }
 
-        setPasswordIfNotEmpty( scmRepo, password );
+        setPasswordIfNotEmpty(scmRepo, password);
 
-        setUserIfNotEmpty( scmRepo, username );
+        setUserIfNotEmpty(scmRepo, username);
 
         return repository;
     }
 
-    private void setPasswordIfNotEmpty( ScmProviderRepository repository, String password )
-    {
-        if ( !StringUtils.isEmpty( password ) )
-        {
-            repository.setPassword( password );
+    /**
+     * Returns the SCM connection URL in the following order:
+     * <ol>
+     * <li>The configured {@code scmConnectionUrl} if it has a non-{@link StringUtils#isBlank(String) blank} value.
+     * <li>The configured {@code scmDeveloperConnectionUrl} if it has a non-blank value.
+     * <li>A {@link #determineLocalGitScmUrl() local git SCM url} if {@code scmDirectory} has a {@code ".git"} subdirectory.
+     * <li>{@code null} (to keep the existing exception from the SCM manager).
+     * </ol>
+     *
+     * @return The SCM connection URL or {@code null} if not found.
+     */
+    private String findScmConnectionUrl() {
+        if (!StringUtils.isBlank(scmConnectionUrl)) return scmConnectionUrl;
+        else if (!StringUtils.isBlank(scmDeveloperConnectionUrl)) return scmDeveloperConnectionUrl;
+        return determineLocalGitScmUrl();
+    }
+
+    /**
+     * @return Local git SCM url if the configured {@code scmDirectory} has a {@code ".git"} metadata subdirectory,
+     * otherwise {@code null}.
+     */
+    private String determineLocalGitScmUrl() {
+        try {
+            if (new File(scmDirectory, ".git").isDirectory()) {
+                String fileRepo = scmDirectory.getCanonicalFile().toURI().toASCIIString();
+                if (fileRepo.endsWith("/")) fileRepo = fileRepo.substring(0, fileRepo.length() - 1);
+                return "scm:git:" + fileRepo; // example: scm:git:file:///D:/Dev/myprojects/local-gitrepo
+            }
+            getLog().debug("No .git local metadata found in " + scmDirectory);
+        } catch (Exception e) {
+            getLog().debug("Could not determine local git SCM url because: " + e.getMessage(), e);
+        }
+        return null;
+    }
+
+    private void setPasswordIfNotEmpty(ScmProviderRepository repository, String password) {
+        if (!StringUtils.isEmpty(password)) {
+            repository.setPassword(password);
         }
     }
 
-    private void setUserIfNotEmpty( ScmProviderRepository repository, String user )
-    {
-        if ( !StringUtils.isEmpty( user ) )
-        {
-            repository.setUser( user );
+    private void setUserIfNotEmpty(ScmProviderRepository repository, String user) {
+        if (!StringUtils.isEmpty(user)) {
+            repository.setUser(user);
         }
     }
 
-    protected void checkResult( ScmResult result )
-        throws ScmException
-    {
-        if ( !result.isSuccess() )
-        {
+    protected void checkResult(ScmResult result)
+            throws ScmException {
+        if (!result.isSuccess()) {
             // TODO: improve error handling
-            getLog().error( "Provider message:" );
+            getLog().error("Provider message:");
 
-            getLog().error( result.getProviderMessage() );
+            getLog().error(result.getProviderMessage());
 
-            getLog().error( "Command output:" );
+            getLog().error("Command output:");
 
-            getLog().error( result.getCommandOutput() );
+            getLog().error(result.getCommandOutput());
 
-            throw new ScmException( "Error!" );
+            throw new ScmException("Error!");
         }
     }
 
@@ -248,52 +260,45 @@ public abstract class AbstractScmMojo
      * @return
      * @throws ScmException
      * @todo this should be rolled into org.apache.maven.scm.provider.ScmProvider and
-     *       org.apache.maven.scm.provider.svn.SvnScmProvider
+     * org.apache.maven.scm.provider.svn.SvnScmProvider
      */
-    protected InfoScmResult info( ScmRepository repository, ScmFileSet fileSet )
-        throws ScmException
-    {
+    protected InfoScmResult info(ScmRepository repository, ScmFileSet fileSet)
+            throws ScmException {
         CommandParameters commandParameters = new CommandParameters();
 
         // only for Git, we will make a test for shortRevisionLength parameter
-        if ( GitScmProviderRepository.PROTOCOL_GIT.equals( scmManager.getProviderByRepository( repository ).getScmType() )
-            && this.shortRevisionLength > 0 )
-        {
-            getLog().info( "ShortRevision tag detected. The value is '" + this.shortRevisionLength + "'." );
-            if ( shortRevisionLength >= 0 && shortRevisionLength < 4 )
-            {
-                getLog().warn( "shortRevision parameter less then 4. ShortRevisionLength is relaying on 'git rev-parese --short=LENGTH' command, accordingly to Git rev-parse specification the LENGTH value is miminum 4. " );
+        if (GitScmProviderRepository.PROTOCOL_GIT.equals(scmManager.getProviderByRepository(repository).getScmType())
+                && this.shortRevisionLength > 0) {
+            getLog().info("ShortRevision tag detected. The value is '" + this.shortRevisionLength + "'.");
+            if (shortRevisionLength >= 0 && shortRevisionLength < 4) {
+                getLog().warn("shortRevision parameter less then 4. ShortRevisionLength is relaying on 'git rev-parese --short=LENGTH' command, accordingly to Git rev-parse specification the LENGTH value is miminum 4. ");
             }
-            commandParameters.setInt( CommandParameter.SCM_SHORT_REVISION_LENGTH, this.shortRevisionLength );
+            commandParameters.setInt(CommandParameter.SCM_SHORT_REVISION_LENGTH, this.shortRevisionLength);
         }
 
-        if ( !StringUtils.isBlank( scmTag ) && !"HEAD".equals( scmTag ) )
-        {
-            commandParameters.setScmVersion( CommandParameter.SCM_VERSION, new ScmTag( scmTag ) );
+        if (!StringUtils.isBlank(scmTag) && !"HEAD".equals(scmTag)) {
+            commandParameters.setScmVersion(CommandParameter.SCM_VERSION, new ScmTag(scmTag));
         }
 
-        return scmManager.getProviderByRepository( repository ).info( repository.getProviderRepository(), fileSet,
-                                                                      commandParameters );
+        return scmManager.getProviderByRepository(repository).info(repository.getProviderRepository(), fileSet,
+                commandParameters);
     }
 
     protected String getScmRevision()
-        throws ScmException
-    {
+            throws ScmException {
         ScmRepository repository = getScmRepository();
 
-        InfoScmResult scmResult = info( repository, new ScmFileSet( scmDirectory ) );
+        InfoScmResult scmResult = info(repository, new ScmFileSet(scmDirectory));
 
-        if ( scmResult == null || scmResult.getInfoItems().isEmpty() )
-        {
-            return ( !StringUtils.isEmpty( revisionOnScmFailure ) ) ? revisionOnScmFailure : null;
+        if (scmResult == null || scmResult.getInfoItems().isEmpty()) {
+            return (!StringUtils.isEmpty(revisionOnScmFailure)) ? revisionOnScmFailure : null;
         }
 
-        checkResult( scmResult );
+        checkResult(scmResult);
 
-        InfoItem info = scmResult.getInfoItems().get( 0 );
+        InfoItem info = scmResult.getInfoItems().get(0);
 
-        if ( useLastCommittedRevision )
-        {
+        if (useLastCommittedRevision) {
             // It seemed the case that for git getLastChangedRevision()
             // returns null instead of the last revision in contradiction
             // to the above code: scmResult.getInfoItems().get(0);
