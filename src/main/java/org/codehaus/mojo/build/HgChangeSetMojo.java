@@ -107,8 +107,14 @@ public class HgChangeSetMojo
             String previousChangeSetDate = getChangeSetDateProperty();
             if ( previousChangeSet == null || previousChangeSetDate == null )
             {
-                String changeSet = getChangeSet();
-                String changeSetDate = getChangeSetDate();
+                final String changeSetAndDate = getChageSetAndDate();
+                final String[] lines = changeSetAndDate.split("[\\r\\n]+", 2);
+                if ( lines.length != 2 )
+                {
+                    throw new MojoExecutionException("Command did not return exactly two lines.");
+                }
+                final String changeSetDate = lines[0];
+                final String changeSet = lines[1];
                 getLog().info( "Setting Mercurial Changeset: " + changeSet );
                 getLog().info( "Setting Mercurial Changeset Date: " + changeSetDate );
                 setChangeSetProperty( changeSet );
@@ -130,20 +136,13 @@ public class HgChangeSetMojo
         return consumer.getOutput();
     }
 
-    protected String getChangeSet()
+    protected String getChageSetAndDate()
         throws ScmException, MojoExecutionException
     {
-        return getHgCommandOutput( useLastChangeSetInDirectory
-                        ? new String[] { "log", "-l1", "--template", "\"{node|short}\"", "." }
-                        : new String[] { "id", "-i" } );
-    }
-
-    protected String getChangeSetDate()
-        throws ScmException, MojoExecutionException
-    {
-        return getHgCommandOutput( useLastChangeSetInDirectory
-                        ? new String[] { "log", "-l1", "--template", "\"{date|isodate}\"", "." }
-                        : new String[] { "log", "-r", ".", "--template", "\"{date|isodate}\"" } );
+        String[] command = useLastChangeSetInDirectory
+            ? new String[] { "log", "-l1", "--template", "\"{date|isodate}\\n{node|short}\"", "." }
+            : new String[] { "log", "-r", ".", "--template", "\"{date|isodate}\\n{node|short}\"", "." };
+        return getHgCommandOutput( command );
     }
 
     protected String getChangeSetDateProperty()
