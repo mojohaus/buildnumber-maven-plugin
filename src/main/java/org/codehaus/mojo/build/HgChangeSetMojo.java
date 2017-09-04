@@ -22,6 +22,7 @@ package org.codehaus.mojo.build;
  */
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -45,6 +46,8 @@ import org.codehaus.plexus.util.StringUtils;
 public class HgChangeSetMojo
     extends AbstractMojo
 {
+    private static final String TEMPLATE = "\"{date|isodate}\u001f{node|short}\"";
+
     /**
      * Whether to skip this execution.
      *
@@ -107,8 +110,14 @@ public class HgChangeSetMojo
             String previousChangeSetDate = getChangeSetDateProperty();
             if ( previousChangeSet == null || previousChangeSetDate == null )
             {
-                String changeSet = getChangeSet();
-                String changeSetDate = getChangeSetDate();
+                final String changeSetAndDate = getChangeSetAndDate();
+                final String[] items = changeSetAndDate.split("\\u001f", 2);
+                if ( items.length != 2 )
+                {
+                    throw new MojoExecutionException("Command did not return exactly two items.");
+                }
+                final String changeSetDate = items[0];
+                final String changeSet = items[1];
                 getLog().info( "Setting Mercurial Changeset: " + changeSet );
                 getLog().info( "Setting Mercurial Changeset Date: " + changeSetDate );
                 setChangeSetProperty( changeSet );
@@ -130,20 +139,13 @@ public class HgChangeSetMojo
         return consumer.getOutput();
     }
 
-    protected String getChangeSet()
+    protected String getChangeSetAndDate()
         throws ScmException, MojoExecutionException
     {
-        return getHgCommandOutput( useLastChangeSetInDirectory
-                        ? new String[] { "log", "-l1", "--template", "\"{node|short}\"", "." }
-                        : new String[] { "id", "-i" } );
-    }
-
-    protected String getChangeSetDate()
-        throws ScmException, MojoExecutionException
-    {
-        return getHgCommandOutput( useLastChangeSetInDirectory
-                        ? new String[] { "log", "-l1", "--template", "\"{date|isodate}\"", "." }
-                        : new String[] { "log", "-r", ".", "--template", "\"{date|isodate}\"" } );
+        String[] command = useLastChangeSetInDirectory
+            ? new String[] { "log", "-l1", "--template", TEMPLATE, "." }
+            : new String[] { "log", "-l1", "--template", TEMPLATE };
+        return getHgCommandOutput( command );
     }
 
     protected String getChangeSetDateProperty()
