@@ -552,7 +552,7 @@ public class CreateMojo
 
             ScmProvider scmProvider = scmManager.getProviderByRepository( repository );
 
-            UpdateScmResult result = scmProvider.update( repository, new ScmFileSet( scmDirectory ) );
+            UpdateScmResult result = scmProvider.update( repository, new ScmFileSet( scmDirectory ), getScmBranch() );
 
             if ( result == null )
             {
