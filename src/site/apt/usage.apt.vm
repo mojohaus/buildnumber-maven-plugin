@@ -252,6 +252,51 @@ Usage
   </build>
 +--
 
+* Using Mercurial
+
+  NOTE {{{https://www.mercurial-scm.org/}Mercurial}} must be installed and in the path.
+
+  The properties <<<$\{changeSet\}>>> and <<<$\{changeSetDate\}>>> are set by default.
+  Additional properties can be set or existing ones overwritten by defining them together
+  with hg's command line:
+
++--
+  <build>
+    <plugins>
+       <plugin>
+         <groupId>org.codehaus.mojo</groupId>
+         <artifactId>buildnumber-maven-plugin</artifactId>
+         <version>${project.version}</version>
+         <executions>
+           <execution>
+             <phase>validate</phase>
+             <goals>
+               <goal>hgchangeset</goal>
+             </goals>
+           </execution>
+         </executions>
+         <configuration>
+           <properties>
+             <!-- new property ${author} -->
+             <property>
+               <name>author</name>
+               <value>log -r . --template {author}</value>
+             </property>
+             <!-- overwrite property ${changeSetDate} -->
+             <property>
+               <name>changeSetDate</name>
+               <value>log -r . --template {date|isodate}</value>
+             </property>
+           </properties>
+           <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+           <doCheck>false</doCheck>
+           <doUpdate>false</doUpdate>
+         </configuration>
+       </plugin>
+     </plugins>
+   </build>
+
++--
 
 * Using Perforce P4Maven provider
 
