@@ -149,6 +149,14 @@ public class CreateMetadataMojo
     private boolean attach;
 
     /**
+     * Artifact classifier name when deploying to Maven repository
+     *
+     * @since 3.0
+     */
+    @Parameter( defaultValue = "build" )
+    private String classifier;
+
+    /**
      * Additional output files
      *
      * @since 1.4
@@ -209,7 +217,7 @@ public class CreateMetadataMojo
 
         if ( attach )
         {
-            projectHelper.attachArtifact( this.project, "properties", "build", outputFile );
+            projectHelper.attachArtifact( this.project, "properties", this.classifier, outputFile );
         }
 
         if ( this.addOutputDirectoryToResources )
