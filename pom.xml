@@ -167,7 +167,7 @@
       <version>2.1.2</version>
       <exclusions>
         <!--
-          ! This will bring svnkit 1.8.11 
+          ! This will bring svnkit 1.8.11
           -->
         <exclusion>
           <groupId>org.tmatesoft.svnkit</groupId>
@@ -282,7 +282,7 @@
 
   <profiles>
     <profile>
-      <id>run-its</id>
+      <id>run-its-with-maven-invokder</id>
       <build>
         <plugins>
           <plugin>
@@ -293,7 +293,7 @@
     </profile>
 
     <profile>
-      <id>run-project-its</id>
+      <id>run-its</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
