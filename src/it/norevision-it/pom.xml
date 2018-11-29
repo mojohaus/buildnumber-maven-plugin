@@ -8,8 +8,7 @@
   <version>1.0-SNAPSHOT</version>
 
   <scm>
-    <developerConnection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin/src/it/novivision-it
-    </developerConnection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/pom/tags/apache-17</developerConnection>
   </scm>
 
   <build>
@@ -27,7 +26,10 @@
               <goal>create</goal>
             </goals>
             <configuration>
-              <scmDirectory>${project.build.directory}</scmDirectory> //this directory is not a svn local directory
+              <providerImplementations>
+                <svn>javasvn</svn>
+              </providerImplementations>
+              <scmDirectory>${project.build.directory}</scmDirectory> <!-- this directory is not a svn local directory -->
               <revisionOnScmFailure>NOREVISION</revisionOnScmFailure>
             </configuration>
           </execution>
@@ -38,6 +40,9 @@
               <goal>create</goal>
             </goals>
             <configuration>
+              <providerImplementations>
+                <svn>javasvn</svn>
+              </providerImplementations>
               <useLastCommittedRevision>true</useLastCommittedRevision>
             </configuration>
           </execution>
