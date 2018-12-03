@@ -21,6 +21,7 @@ import org.codehaus.plexus.util.cli.CommandLineUtils;
 import org.codehaus.plexus.util.cli.CommandLineUtils.StringStreamConsumer;
 import org.codehaus.plexus.util.cli.Commandline;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,11 +47,7 @@ public class BuildNumberMojoTest
     public void basicItTest()
         throws Exception
     {
-        if ( !isSvn18() )
-        {
-            System.out.println( "Not Subversion 1.8 compatible. Skip test" );
-            return;
-        }
+        Assume.assumeTrue( isSvn18() );
 
         File projDir = resources.getBasedir( "basic-it" );
 
@@ -95,11 +92,7 @@ public class BuildNumberMojoTest
     public void basicItNoDevScmTest()
         throws Exception
     {
-        if ( !isSvn18() )
-        {
-            System.out.println( "Not Subversion 1.8 compatible. Skip test" );
-            return;
-        }
+        Assume.assumeTrue( isSvn18() );
 
         File projDir = resources.getBasedir( "basic-it-no-devscm" );
 
@@ -124,11 +117,7 @@ public class BuildNumberMojoTest
     public void basicItSvnJavaTest()
         throws Exception
     {
-        if ( !isSvn18() )
-        {
-            System.out.println( "Not Subversion 1.8 compatible. Skip test" );
-            return;
-        }
+        Assume.assumeTrue( isSvn18() );
 
         File projDir = resources.getBasedir( "basic-it-svnjava" );
 
@@ -281,11 +270,7 @@ public class BuildNumberMojoTest
     public void Mojo1668Test()
         throws Exception
     {
-        if ( !isSvn18() )
-        {
-            System.out.println( "Not Subversion 1.8 compatible. Skip test" );
-            return;
-        }
+        Assume.assumeTrue( isSvn18() );
 
         File projDir = resources.getBasedir( "MOJO-1668" );
 
