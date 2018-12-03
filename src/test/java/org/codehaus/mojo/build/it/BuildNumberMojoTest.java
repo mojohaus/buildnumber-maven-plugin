@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.plexus.util.FileUtils;
@@ -31,6 +33,7 @@ import org.junit.runner.RunWith;
 @MavenVersions( { "3.1.1" } )
 public class BuildNumberMojoTest
 {
+    private static final Pattern SVN_VERSION_PATTERN = Pattern.compile( "svn, version (\\d+)\\.(\\d+)\\." );
 
     @Rule
     public final TestResources resources = new TestResources();
@@ -331,6 +334,7 @@ public class BuildNumberMojoTest
     {
         Commandline cl = new Commandline();
         cl.setExecutable( "svn" );
+        cl.createArg().setValue( "--version" );
 
         StringStreamConsumer stdout = new StringStreamConsumer();
         StringStreamConsumer stderr = new StringStreamConsumer();
@@ -338,7 +342,9 @@ public class BuildNumberMojoTest
         try
         {
             CommandLineUtils.executeCommandLine( cl, stdout, stderr );
-            return stdout.getOutput().contains( "svn, version 1.8." );
+            Matcher versionMatcher = SVN_VERSION_PATTERN.matcher( stdout.getOutput() );
+            return versionMatcher.find() && ( Integer.parseInt( versionMatcher.group( 1 ) ) > 1
+                || Integer.parseInt( versionMatcher.group( 2 ) ) >= 8 );
         }
         catch ( CommandLineException e )
         {
