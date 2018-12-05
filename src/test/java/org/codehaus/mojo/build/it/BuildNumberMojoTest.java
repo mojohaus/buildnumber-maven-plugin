@@ -10,7 +10,6 @@ import io.takari.maven.testing.executor.junit.MavenJUnitTestRunner;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
@@ -58,9 +57,9 @@ public class BuildNumberMojoTest
         MavenExecutionResult result = mavenExec.execute( "clean" );
         result.assertErrorFreeLog();
         File testDir = result.getBasedir();
-        FileUtils.copyDirectory( new File( testDir, "DotSvnDir" ), new File( testDir, ".svn" ) );
+        FileUtils.copyDirectoryStructure( new File( testDir, "dotSvnDir" ), new File( testDir, ".svn" ) );
         result = mavenExec.execute( "clean", "verify" );
-        result.assertLogText( "Storing buildNumber: 19665" );
+        result.assertLogText( "Storing buildNumber: 14069" );
         result.assertLogText( "Storing buildScmBranch: trunk" );
 
         File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-1.0-SNAPSHOT.jar" );
@@ -68,7 +67,7 @@ public class BuildNumberMojoTest
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String scmRev = manifest.getValue( "SCM-Revision" );
-        Assert.assertEquals( "19665", scmRev );
+        Assert.assertEquals( "14069", scmRev );
     }
 
     @Test
@@ -103,9 +102,9 @@ public class BuildNumberMojoTest
         MavenExecutionResult result = mavenExec.execute( "clean" );
         result.assertErrorFreeLog();
         File testDir = result.getBasedir();
-        FileUtils.copyDirectory( new File( testDir, "DotSvnDir" ), new File( testDir, ".svn" ) );
+        FileUtils.copyDirectoryStructure( new File( testDir, "dotSvnDir" ), new File( testDir, ".svn" ) );
         result = mavenExec.execute( "clean", "verify" );
-        result.assertLogText( "Storing buildNumber: 19665" );
+        result.assertLogText( "Storing buildNumber: 14069" );
         result.assertLogText( "Storing buildScmBranch: trunk" );
 
         File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-no-devscm-1.0-SNAPSHOT.jar" );
@@ -113,7 +112,7 @@ public class BuildNumberMojoTest
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String scmRev = manifest.getValue( "SCM-Revision" );
-        Assert.assertEquals( "19665", scmRev );
+        Assert.assertEquals( "14069", scmRev );
     }
 
     @Test
@@ -128,7 +127,7 @@ public class BuildNumberMojoTest
         MavenExecutionResult result = mavenExec.execute( "clean" );
         result.assertErrorFreeLog();
         File testDir = result.getBasedir();
-        FileUtils.copyDirectory( new File( testDir, "DotSvnDir" ), new File( testDir, ".svn" ) );
+        FileUtils.copyDirectoryStructure( new File( testDir, "dotSvnDir" ), new File( testDir, ".svn" ) );
         result = mavenExec.execute( "clean", "verify" );
         result.assertLogText( "Storing buildNumber: 19665" );
         result.assertLogText( "Storing buildScmBranch: trunk" );
@@ -156,13 +155,11 @@ public class BuildNumberMojoTest
         jarFile.close();
         String timestamp = manifest.getValue( "Build-Time" );
         SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd hh:mm:ss" );
-        Date theDate = format.parse( timestamp );
+        Assert.assertNotNull( format.parse( timestamp ) );
 
     }
 
     @Test
-    @Ignore
-    // svn local db corrupted
     public void failLocalChangeItTest()
         throws Exception
     {
@@ -174,15 +171,13 @@ public class BuildNumberMojoTest
         File basedir = result.getBasedir();
         File foo = new File( basedir, "foo.txt" );
         FileUtils.fileWrite( foo, "hello" );
-        FileUtils.copyDirectory( new File( basedir, "DotSvnDir" ), new File( basedir, ".svn" ) );
+        FileUtils.copyDirectoryStructure( new File( basedir, "dotSvnDir" ), new File( basedir, ".svn" ) );
         result = mavenExec.execute( "verify" );
-        // this fail local dotSvnDir corrupted, not b/c we change local file
         result.assertLogText( "BUILD FAILURE" );
+        result.assertLogText( "because you have local modifications" );
     }
 
     @Test
-    @Ignore
-    // git local database corrected
     public void gitBasicItMBUILDNUM66Test()
         throws Exception
     {
@@ -194,9 +189,16 @@ public class BuildNumberMojoTest
         File basedir = result.getBasedir();
         File foo = new File( basedir, "foo.txt" );
         FileUtils.fileWrite( foo, "hello" );
-        FileUtils.copyDirectory( new File( basedir, "dotGitDir" ), new File( basedir, ".git" ) );
+        FileUtils.copyDirectoryStructure( new File( basedir, "dotGitDir" ), new File( basedir, ".git" ) );
         result = mavenExec.execute( "verify" );
-        // this fail local dotSvnDir corrupted, not b/c we change local file
+        result.assertLogText( "Storing buildScmBranch: master" );
+        File testDir = result.getBasedir();
+        File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-1.0-SNAPSHOT.jar" );
+        JarFile jarFile = new JarFile( artifact );
+        Attributes manifest = jarFile.getManifest().getMainAttributes();
+        jarFile.close();
+        String scmRev = manifest.getValue( "SCM-Revision" );
+        Assert.assertEquals( "ee58acb27b6636a497c1185f80cd15f76134113f", scmRev );
 
     }
 
@@ -281,7 +283,7 @@ public class BuildNumberMojoTest
         MavenExecutionResult result = mavenExec.execute( "clean" );
         result.assertErrorFreeLog();
         File testDir = result.getBasedir();
-        FileUtils.copyDirectory( new File( testDir, "DotSvnDir" ), new File( testDir, ".svn" ) );
+        FileUtils.copyDirectoryStructure( new File( testDir, "dotSvnDir" ), new File( testDir, ".svn" ) );
         result = mavenExec.execute( "clean", "verify" );
 
         File artifact = new File( testDir, "target/buildnumber-maven-plugin-MOJO-1668-1.0-SNAPSHOT.jar" );
