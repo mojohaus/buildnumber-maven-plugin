@@ -10,9 +10,10 @@ import io.takari.maven.testing.executor.junit.MavenJUnitTestRunner;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.plexus.util.FileUtils;
@@ -21,6 +22,7 @@ import org.codehaus.plexus.util.cli.CommandLineUtils;
 import org.codehaus.plexus.util.cli.CommandLineUtils.StringStreamConsumer;
 import org.codehaus.plexus.util.cli.Commandline;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,6 +32,7 @@ import org.junit.runner.RunWith;
 @MavenVersions( { "3.1.1" } )
 public class BuildNumberMojoTest
 {
+    private static final Pattern SVN_VERSION_PATTERN = Pattern.compile( "svn, version (\\d+)\\.(\\d+)\\." );
 
     @Rule
     public final TestResources resources = new TestResources();
@@ -46,11 +49,7 @@ public class BuildNumberMojoTest
     public void basicItTest()
         throws Exception
     {
-        if ( !isSvn18() )
-        {
-            System.out.println( "Not Subversion 1.8 compatible. Skip test" );
-            return;
-        }
+        Assume.assumeTrue( isSvn18() );
 
         File projDir = resources.getBasedir( "basic-it" );
 
@@ -58,9 +57,9 @@ public class BuildNumberMojoTest
         MavenExecutionResult result = mavenExec.execute( "clean" );
         result.assertErrorFreeLog();
         File testDir = result.getBasedir();
-        FileUtils.copyDirectory( new File( testDir, "DotSvnDir" ), new File( testDir, ".svn" ) );
+        FileUtils.copyDirectoryStructure( new File( testDir, "dotSvnDir" ), new File( testDir, ".svn" ) );
         result = mavenExec.execute( "clean", "verify" );
-        result.assertLogText( "Storing buildNumber: 19665" );
+        result.assertLogText( "Storing buildNumber: 14069" );
         result.assertLogText( "Storing buildScmBranch: trunk" );
 
         File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-1.0-SNAPSHOT.jar" );
@@ -68,7 +67,30 @@ public class BuildNumberMojoTest
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String scmRev = manifest.getValue( "SCM-Revision" );
-        Assert.assertEquals( "19665", scmRev );
+        Assert.assertEquals( "14069", scmRev );
+    }
+
+    @Test
+    public void basicItGitTest()
+        throws Exception
+    {
+        File projDir = resources.getBasedir( "basic-it-git" );
+
+        MavenExecution mavenExec = maven.forProject( projDir );
+        MavenExecutionResult result = mavenExec.execute( "clean" );
+        result.assertErrorFreeLog();
+        File testDir = result.getBasedir();
+        FileUtils.copyDirectoryStructure( new File( testDir, "dotGitDir" ), new File( testDir, ".git" ) );
+        result = mavenExec.execute( "clean", "verify" );
+        result.assertLogText( "Storing buildNumber: 6d36c746e82f00c5913954f9178f40224497b2f3" );
+        result.assertLogText( "Storing buildScmBranch: master" );
+
+        File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-1.0-SNAPSHOT.jar" );
+        JarFile jarFile = new JarFile( artifact );
+        Attributes manifest = jarFile.getManifest().getMainAttributes();
+        jarFile.close();
+        String scmRev = manifest.getValue( "SCM-Revision" );
+        Assert.assertEquals( "6d36c746e82f00c5913954f9178f40224497b2f3", scmRev );
     }
 
     @Test
@@ -95,11 +117,7 @@ public class BuildNumberMojoTest
     public void basicItNoDevScmTest()
         throws Exception
     {
-        if ( !isSvn18() )
-        {
-            System.out.println( "Not Subversion 1.8 compatible. Skip test" );
-            return;
-        }
+        Assume.assumeTrue( isSvn18() );
 
         File projDir = resources.getBasedir( "basic-it-no-devscm" );
 
@@ -107,9 +125,9 @@ public class BuildNumberMojoTest
         MavenExecutionResult result = mavenExec.execute( "clean" );
         result.assertErrorFreeLog();
         File testDir = result.getBasedir();
-        FileUtils.copyDirectory( new File( testDir, "DotSvnDir" ), new File( testDir, ".svn" ) );
+        FileUtils.copyDirectoryStructure( new File( testDir, "dotSvnDir" ), new File( testDir, ".svn" ) );
         result = mavenExec.execute( "clean", "verify" );
-        result.assertLogText( "Storing buildNumber: 19665" );
+        result.assertLogText( "Storing buildNumber: 14069" );
         result.assertLogText( "Storing buildScmBranch: trunk" );
 
         File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-no-devscm-1.0-SNAPSHOT.jar" );
@@ -117,18 +135,14 @@ public class BuildNumberMojoTest
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String scmRev = manifest.getValue( "SCM-Revision" );
-        Assert.assertEquals( "19665", scmRev );
+        Assert.assertEquals( "14069", scmRev );
     }
 
     @Test
     public void basicItSvnJavaTest()
         throws Exception
     {
-        if ( !isSvn18() )
-        {
-            System.out.println( "Not Subversion 1.8 compatible. Skip test" );
-            return;
-        }
+        Assume.assumeTrue( isSvn18() );
 
         File projDir = resources.getBasedir( "basic-it-svnjava" );
 
@@ -136,7 +150,7 @@ public class BuildNumberMojoTest
         MavenExecutionResult result = mavenExec.execute( "clean" );
         result.assertErrorFreeLog();
         File testDir = result.getBasedir();
-        FileUtils.copyDirectory( new File( testDir, "DotSvnDir" ), new File( testDir, ".svn" ) );
+        FileUtils.copyDirectoryStructure( new File( testDir, "dotSvnDir" ), new File( testDir, ".svn" ) );
         result = mavenExec.execute( "clean", "verify" );
         result.assertLogText( "Storing buildNumber: 19665" );
         result.assertLogText( "Storing buildScmBranch: trunk" );
@@ -164,13 +178,11 @@ public class BuildNumberMojoTest
         jarFile.close();
         String timestamp = manifest.getValue( "Build-Time" );
         SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd hh:mm:ss" );
-        Date theDate = format.parse( timestamp );
+        Assert.assertNotNull( format.parse( timestamp ) );
 
     }
 
     @Test
-    @Ignore
-    // svn local db corrupted
     public void failLocalChangeItTest()
         throws Exception
     {
@@ -182,15 +194,13 @@ public class BuildNumberMojoTest
         File basedir = result.getBasedir();
         File foo = new File( basedir, "foo.txt" );
         FileUtils.fileWrite( foo, "hello" );
-        FileUtils.copyDirectory( new File( basedir, "DotSvnDir" ), new File( basedir, ".svn" ) );
+        FileUtils.copyDirectoryStructure( new File( basedir, "dotSvnDir" ), new File( basedir, ".svn" ) );
         result = mavenExec.execute( "verify" );
-        // this fail local dotSvnDir corrupted, not b/c we change local file
         result.assertLogText( "BUILD FAILURE" );
+        result.assertLogText( "because you have local modifications" );
     }
 
     @Test
-    @Ignore
-    // git local database corrected
     public void gitBasicItMBUILDNUM66Test()
         throws Exception
     {
@@ -202,9 +212,16 @@ public class BuildNumberMojoTest
         File basedir = result.getBasedir();
         File foo = new File( basedir, "foo.txt" );
         FileUtils.fileWrite( foo, "hello" );
-        FileUtils.copyDirectory( new File( basedir, "dotGitDir" ), new File( basedir, ".git" ) );
+        FileUtils.copyDirectoryStructure( new File( basedir, "dotGitDir" ), new File( basedir, ".git" ) );
         result = mavenExec.execute( "verify" );
-        // this fail local dotSvnDir corrupted, not b/c we change local file
+        result.assertLogText( "Storing buildScmBranch: master" );
+        File testDir = result.getBasedir();
+        File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-1.0-SNAPSHOT.jar" );
+        JarFile jarFile = new JarFile( artifact );
+        Attributes manifest = jarFile.getManifest().getMainAttributes();
+        jarFile.close();
+        String scmRev = manifest.getValue( "SCM-Revision" );
+        Assert.assertEquals( "ee58acb27b6636a497c1185f80cd15f76134113f", scmRev );
 
     }
 
@@ -281,11 +298,7 @@ public class BuildNumberMojoTest
     public void Mojo1668Test()
         throws Exception
     {
-        if ( !isSvn18() )
-        {
-            System.out.println( "Not Subversion 1.8 compatible. Skip test" );
-            return;
-        }
+        Assume.assumeTrue( isSvn18() );
 
         File projDir = resources.getBasedir( "MOJO-1668" );
 
@@ -293,7 +306,7 @@ public class BuildNumberMojoTest
         MavenExecutionResult result = mavenExec.execute( "clean" );
         result.assertErrorFreeLog();
         File testDir = result.getBasedir();
-        FileUtils.copyDirectory( new File( testDir, "DotSvnDir" ), new File( testDir, ".svn" ) );
+        FileUtils.copyDirectoryStructure( new File( testDir, "dotSvnDir" ), new File( testDir, ".svn" ) );
         result = mavenExec.execute( "clean", "verify" );
 
         File artifact = new File( testDir, "target/buildnumber-maven-plugin-MOJO-1668-1.0-SNAPSHOT.jar" );
@@ -346,6 +359,7 @@ public class BuildNumberMojoTest
     {
         Commandline cl = new Commandline();
         cl.setExecutable( "svn" );
+        cl.createArg().setValue( "--version" );
 
         StringStreamConsumer stdout = new StringStreamConsumer();
         StringStreamConsumer stderr = new StringStreamConsumer();
@@ -353,7 +367,9 @@ public class BuildNumberMojoTest
         try
         {
             CommandLineUtils.executeCommandLine( cl, stdout, stderr );
-            return stdout.getOutput().contains( "svn, version 1.8." );
+            Matcher versionMatcher = SVN_VERSION_PATTERN.matcher( stdout.getOutput() );
+            return versionMatcher.find() && ( Integer.parseInt( versionMatcher.group( 1 ) ) > 1
+                || Integer.parseInt( versionMatcher.group( 2 ) ) >= 8 );
         }
         catch ( CommandLineException e )
         {

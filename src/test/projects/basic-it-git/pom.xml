@@ -8,7 +8,7 @@
   <version>1.0-SNAPSHOT</version>
 
   <scm>
-    <developerConnection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin/src/it/basic-it</developerConnection>
+    <developerConnection>scm:git:https://github.com/mojohaus/buildnumber-maven-plugin/tree/master/src/it/basic-it-git.git</developerConnection>
   </scm>
 
   <build>
@@ -19,7 +19,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>@pom.version@</version>
+        <version>${it-plugin.version}</version>
         <executions>
           <execution>
             <id>useLastCommittedRevision</id>
@@ -27,10 +27,14 @@
               <goal>create</goal>
             </goals>
             <configuration>
+              <!--
+                ! Currently this has been commented out, bases
+                ! on a Bug in scm component.
               <useLastCommittedRevision>true</useLastCommittedRevision>
+              -->
             </configuration>
           </execution>
-          
+
           <execution>
             <id>timestampFormat</id>
             <goals>
@@ -43,10 +47,11 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>2.5</version>
         <configuration>
           <archive>
             <manifest>
@@ -60,9 +65,9 @@
             </manifestEntries>
           </archive>
         </configuration>
-      </plugin>      
+      </plugin>
     </plugins>
-    
+
   </build>
 
 </project>
