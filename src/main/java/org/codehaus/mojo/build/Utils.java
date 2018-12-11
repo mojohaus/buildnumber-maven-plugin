@@ -36,7 +36,13 @@ public class Utils
 
     public static String createTimestamp( String timestampFormat, String timeZoneId )
     {
-        Date now = Calendar.getInstance().getTime();
+        return createTimestamp( timestampFormat, timeZoneId, null );
+    }
+
+    public static String createTimestamp( String timestampFormat, String timeZoneId, Date now )
+    {
+        if ( null == now )
+            now = Calendar.getInstance().getTime();
 
         if ( StringUtils.isBlank( timestampFormat ) )
         {

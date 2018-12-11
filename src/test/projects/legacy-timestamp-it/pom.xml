@@ -4,12 +4,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.codehaus.mojo.it</groupId>
-  <artifactId>buildnumber-maven-plugin-basic-it-clearcase-scm</artifactId>
+  <artifactId>buildnumber-maven-plugin-legacy-timestamp-it</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <scm>
-    <connection>scm:clearcase:mvn_sm_view:load \some-clearcase-path\LATEST</connection>
-    <developerConnection>scm:clearcase:mv_sm_view:load \some-clearcase-path\LATEST</developerConnection>
+    <developerConnection>scm:git:https://github.com/mojohaus/buildnumber-maven-plugin/test/bogus.git</developerConnection>
   </scm>
 
   <build>
@@ -23,27 +22,13 @@
         <version>${it-plugin.version}</version>
         <executions>
           <execution>
-            <id>useLastCommittedRevision</id>
-            <phase>test</phase>
+            <id>legacyTimestampFormat</id>
             <goals>
               <goal>create</goal>
             </goals>
             <configuration>
-              <revisionOnScmFailure>foo</revisionOnScmFailure>
               <useLastCommittedRevision>true</useLastCommittedRevision>
-            </configuration>
-          </execution>
-
-          <execution>
-            <id>timestampFormat</id>
-            <phase>test</phase>
-            <goals>
-              <goal>create</goal>
-            </goals>
-            <configuration>
-              <revisionOnScmFailure>foo</revisionOnScmFailure>
-              <useLastCommittedRevision>true</useLastCommittedRevision>
-              <timestampFormat>yyyy-MM-dd</timestampFormat>
+              <timestampFormat>{0,date,yyyy-MM-dd}</timestampFormat>
             </configuration>
           </execution>
         </executions>
@@ -61,8 +46,7 @@
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
             </manifest>
             <manifestEntries>
-              <SCM-Revision>${buildNumber}</SCM-Revision>
-              <Build-Date>${timestamp}</Build-Date>
+              <Build-Time>${timestamp}</Build-Time>
             </manifestEntries>
           </archive>
         </configuration>
