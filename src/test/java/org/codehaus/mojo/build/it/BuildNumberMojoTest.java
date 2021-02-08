@@ -29,7 +29,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith( MavenJUnitTestRunner.class )
-@MavenVersions( { "3.1.1" } )
+@MavenVersions( { "3.3.9" } )
 public class BuildNumberMojoTest
 {
     private static final Pattern SVN_VERSION_PATTERN = Pattern.compile( "svn, version (\\d+)\\.(\\d+)\\." );
