@@ -46,6 +46,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.scm.ScmBranch;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFile;
 import org.apache.maven.scm.ScmFileSet;
@@ -570,7 +571,7 @@ public class CreateMojo
 
             ScmProvider scmProvider = scmManager.getProviderByRepository( repository );
 
-            UpdateScmResult result = scmProvider.update( repository, new ScmFileSet( scmDirectory ) );
+            UpdateScmResult result = scmProvider.update( repository, new ScmFileSet( scmDirectory ), new ScmBranch( getScmBranch() ));
 
             if ( result == null )
             {
