@@ -189,8 +189,7 @@ public abstract class AbstractScmMojo
     protected ScmRepository getScmRepository()
         throws ScmException
     {
-        ScmRepository repository = scmManager.makeScmRepository( !StringUtils.isBlank( this.scmConnectionUrl )
-                        ? scmConnectionUrl : scmDeveloperConnectionUrl );
+        ScmRepository repository = scmManager.makeScmRepository(findScmConnectionUrl());
 
         ScmProviderRepository scmRepo = repository.getProviderRepository();
 
@@ -204,6 +203,41 @@ public abstract class AbstractScmMojo
         setUserIfNotEmpty( scmRepo, username );
 
         return repository;
+    }
+
+    /**
+     * Returns the SCM connection URL in the following order:
+     * <ol>
+     * <li>The configured {@code scmConnectionUrl} if it has a non-{@link StringUtils#isBlank(String) blank} value.
+     * <li>The configured {@code scmDeveloperConnectionUrl} if it has a non-blank value.
+     * <li>A {@link #determineLocalGitScmUrl() local git SCM url} if {@code scmDirectory} has a {@code ".git"} subdirectory.
+     * <li>{@code null} (to keep the existing exception from the SCM manager).
+     * </ol>
+     *
+     * @return The SCM connection URL or {@code null} if not found.
+     */
+    private String findScmConnectionUrl() {
+        if (!StringUtils.isBlank(scmConnectionUrl)) return scmConnectionUrl;
+        else if (!StringUtils.isBlank(scmDeveloperConnectionUrl)) return scmDeveloperConnectionUrl;
+        return determineLocalGitScmUrl();
+    }
+
+    /**
+     * @return Local git SCM url if the configured {@code scmDirectory} has a {@code ".git"} metadata subdirectory,
+     * otherwise {@code null}.
+     */
+    private String determineLocalGitScmUrl() {
+        try {
+            if (new File(scmDirectory, ".git").isDirectory()) {
+                String fileRepo = scmDirectory.getCanonicalFile().toURI().toASCIIString();
+                if (fileRepo.endsWith("/")) fileRepo = fileRepo.substring(0, fileRepo.length() - 1);
+                return "scm:git:" + fileRepo; // example: scm:git:file:///D:/Dev/myprojects/local-gitrepo
+            }
+            getLog().debug("No .git local metadata found in " + scmDirectory);
+        } catch (Exception e) {
+            getLog().debug("Could not determine local git SCM url because: " + e.getMessage(), e);
+        }
+        return null;
     }
 
     private void setPasswordIfNotEmpty( ScmProviderRepository repository, String password )
