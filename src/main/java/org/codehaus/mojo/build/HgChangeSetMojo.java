@@ -22,6 +22,9 @@ package org.codehaus.mojo.build;
  */
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Properties;
+import java.util.Map.Entry;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -34,6 +37,7 @@ import org.apache.maven.scm.ScmResult;
 import org.apache.maven.scm.log.ScmLogDispatcher;
 import org.apache.maven.scm.provider.hg.HgUtils;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.cli.CommandLineUtils;
 
 /**
  * Goal which sets project properties for changeSet and changeSetDate from the current Mercurial repository.
@@ -78,6 +82,33 @@ public class HgChangeSetMojo
     @Parameter( property = "maven.buildNumber.useLastChangeSetInDirectory", defaultValue = "false" )
     private Boolean useLastChangeSetInDirectory;
 
+    /**
+     * Additional properties with hg command line that create their values.
+     *
+     * @since 3.0
+     */
+    @Parameter
+    private Properties properties;
+
+    private void setAdditionalProperties() throws ScmException, MojoExecutionException
+    {
+        for (Entry<Object, Object> entry : properties.entrySet())
+        {
+            String propertyName = (String) entry.getKey();
+            String[] hgArguments;
+            try {
+                hgArguments = CommandLineUtils.translateCommandline((String)entry.getValue());
+            }
+            catch (Exception e)
+            {
+                throw new ScmException(e.getMessage());
+            }
+            String propertyValue = getHgCommandOutput(hgArguments);
+            setProperty(propertyName,  propertyValue);
+            getLog().info("Setting Mercurial " + propertyName + ": " + propertyValue);
+        }
+    }
+
     private void checkResult( ScmResult result )
         throws MojoExecutionException
     {
@@ -113,6 +144,7 @@ public class HgChangeSetMojo
                 getLog().info( "Setting Mercurial Changeset Date: " + changeSetDate );
                 setChangeSetProperty( changeSet );
                 setChangeSetDateProperty( changeSetDate );
+                setAdditionalProperties();
             }
         }
         catch ( ScmException e )

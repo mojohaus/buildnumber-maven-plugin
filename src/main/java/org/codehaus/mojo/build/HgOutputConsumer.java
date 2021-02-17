@@ -18,7 +18,7 @@ class HgOutputConsumer
     @Override
     public void doConsume( ScmFileStatus status, String line )
     {
-        output = line;
+        output = (output == null) ? line : output + System.lineSeparator() + line;
     }
 
     String getOutput()
