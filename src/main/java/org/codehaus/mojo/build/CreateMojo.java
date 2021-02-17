@@ -711,7 +711,7 @@ public class CreateMojo
     {
         String scmBranch = "UNKNOWN";
 
-        if ( StringUtils.contains( scmUrl, "/trunk" ) )
+        if ( StringUtils.contains( scmUrl, "/trunk" ) && scmUrl.matches( ".*/trunk(/.*)?$" ) )
         {
             scmBranch = "trunk";
         }
