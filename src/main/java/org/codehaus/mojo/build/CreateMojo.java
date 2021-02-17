@@ -283,7 +283,7 @@ public class CreateMojo
                 getLog().debug( "Revision available from previous execution" );
                 return;
             }
-
+            revision = null;
             if ( doCheck )
             {
                 StringBuilder message = new StringBuilder();
@@ -329,7 +329,7 @@ public class CreateMojo
                     getLog().debug( "Updating project files from SCM: skipped." );
                 }
             }
-            revision = getRevision();
+            revision = revision != null ? revision : getRevision();
         }
 
         if ( project != null )
