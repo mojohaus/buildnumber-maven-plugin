@@ -141,9 +141,35 @@ public class HgChangeSetMojo
     protected String getChangeSetDate()
         throws ScmException, MojoExecutionException
     {
+        return getFirstDateValue(readChangeSetDate());
+    }
+
+    private String readChangeSetDate()
+            throws ScmException, MojoExecutionException
+    {
         return getHgCommandOutput( useLastChangeSetInDirectory
                         ? new String[] { "log", "-l1", "--template", "\"{date|isodate}\"", "." }
                         : new String[] { "log", "-r", ".", "--template", "\"{date|isodate}\"" } );
+    }
+
+    private String getFirstDateValue(String dateString)
+    {
+        if (isUnexpectedFormat(dateString)) {
+            return dateString;
+        }
+        int secondQMIndex = dateString.indexOf('"', 1);
+        return isTextAfterIndex(dateString, secondQMIndex) ?
+               dateString.substring(0, secondQMIndex + 1) : dateString;
+    }
+
+    private boolean isUnexpectedFormat(String dateString)
+    {
+        return dateString == null || dateString.isEmpty() || dateString.charAt(0) != '"';
+    }
+
+    private boolean isTextAfterIndex(String s, int index)
+    {
+        return index != -1 && index != (s.length() - 1);
     }
 
     protected String getChangeSetDateProperty()
