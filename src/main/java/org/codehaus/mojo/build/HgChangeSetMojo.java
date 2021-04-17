@@ -45,6 +45,13 @@ import org.codehaus.plexus.util.StringUtils;
 public class HgChangeSetMojo
     extends AbstractMojo
 {
+
+    /**
+     * All property names as constant strings.
+     */
+    private static final String PROPERTY_CHANGE_SET_DATE = "changeSetDate", PROPERTY_CHANGE_SET = "changeSet",
+        PROPERTY_LOCALE_REVISION_NUMER = "localeRevisionNumber";
+            
     /**
      * Whether to skip this execution.
      *
@@ -105,14 +112,18 @@ public class HgChangeSetMojo
         {
             String previousChangeSet = getChangeSetProperty();
             String previousChangeSetDate = getChangeSetDateProperty();
-            if ( previousChangeSet == null || previousChangeSetDate == null )
+            String previousLocaleRevisionNumber = getLocaleRevisionNumberProperty();
+            if ( previousChangeSet == null || previousChangeSetDate == null || previousLocaleRevisionNumber == null)
             {
                 String changeSet = getChangeSet();
                 String changeSetDate = getChangeSetDate();
+                String localeRevisionNumber = getLocaleRevisionNumber();
                 getLog().info( "Setting Mercurial Changeset: " + changeSet );
                 getLog().info( "Setting Mercurial Changeset Date: " + changeSetDate );
+                getLog().info("Setting Mercurial Locale Revision Number: " + localeRevisionNumber);
                 setChangeSetProperty( changeSet );
                 setChangeSetDateProperty( changeSetDate );
+                setLocaleRevisionNumberProperty(localeRevisionNumber);
             }
         }
         catch ( ScmException e )
@@ -145,16 +156,30 @@ public class HgChangeSetMojo
                         ? new String[] { "log", "-l1", "--template", "\"{date|isodate}\"", "." }
                         : new String[] { "log", "-r", ".", "--template", "\"{date|isodate}\"" } );
     }
+    
+    protected String getLocaleRevisionNumber()
+        throws ScmException, MojoExecutionException
+    {
+        return getHgCommandOutput( useLastChangeSetInDirectory
+                        ? new String[] { "log", "-l1", "--template", "\"{p1rev}\"", "." }
+                        : new String[] { "id", "-n" } );
+    }
 
     protected String getChangeSetDateProperty()
     {
-        return getProperty( "changeSetDate" );
+        return getProperty(PROPERTY_CHANGE_SET_DATE);
     }
 
     protected String getChangeSetProperty()
     {
-        return getProperty( "changeSet" );
+        return getProperty(PROPERTY_CHANGE_SET);
     }
+
+    protected String getLocaleRevisionNumberProperty()
+    {
+        return getProperty(PROPERTY_LOCALE_REVISION_NUMER);
+    }
+
 
     protected String getProperty( String property )
     {
@@ -163,12 +188,17 @@ public class HgChangeSetMojo
 
     private void setChangeSetDateProperty( String changeSetDate )
     {
-        setProperty( "changeSetDate", changeSetDate );
+        setProperty(PROPERTY_CHANGE_SET_DATE, changeSetDate );
     }
 
     private void setChangeSetProperty( String changeSet )
     {
-        setProperty( "changeSet", changeSet );
+        setProperty(PROPERTY_CHANGE_SET, changeSet );
+    }
+
+    private void setLocaleRevisionNumberProperty( String localeRevisionNumber )
+    {
+        setProperty(PROPERTY_LOCALE_REVISION_NUMER, localeRevisionNumber);
     }
 
     private void setProperty( String property, String value )
@@ -178,5 +208,4 @@ public class HgChangeSetMojo
             project.getProperties().put( property, value );
         }
     }
-
 }
