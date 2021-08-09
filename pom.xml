@@ -82,7 +82,7 @@
 
   <properties>
     <maven.scm.version>1.11.2</maven.scm.version>
-    <maven.api.version>3.0</maven.api.version>
+    <maven.api.version>3.8.1</maven.api.version>
     <mojo.java.target>1.7</mojo.java.target>
     <maven.it.version>3.1.1</maven.it.version>
     <takari.plugin.testing.version>2.9.2</takari.plugin.testing.version>
