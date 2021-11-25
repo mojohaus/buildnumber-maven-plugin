@@ -114,7 +114,7 @@ public class TestCreateMojo
 
         mojo.setLocale( "en" );
         mojo.execute();
-        SimpleDateFormat dateFormat = new SimpleDateFormat( "MMM dd, yyyy" );
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "MMM dd, yyyy", new Locale( "en ") );
         dateFormat.parse( mojo.getRevision() );
         // assertEquals( "Jan 1, 1970", mojo.getRevision() );
 
