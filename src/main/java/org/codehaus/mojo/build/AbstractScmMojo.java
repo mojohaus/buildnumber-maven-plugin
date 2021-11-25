@@ -240,6 +240,9 @@ public abstract class AbstractScmMojo
         }
     }
 
+     // TODO this should be rolled into org.apache.maven.scm.provider.ScmProvider and
+     //       org.apache.maven.scm.provider.svn.SvnScmProvider
+
     /**
      * Get info from scm.
      *
@@ -247,8 +250,6 @@ public abstract class AbstractScmMojo
      * @param fileSet
      * @return
      * @throws ScmException
-     * @todo this should be rolled into org.apache.maven.scm.provider.ScmProvider and
-     *       org.apache.maven.scm.provider.svn.SvnScmProvider
      */
     protected InfoScmResult info( ScmRepository repository, ScmFileSet fileSet )
         throws ScmException

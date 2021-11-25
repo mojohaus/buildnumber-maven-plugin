@@ -162,7 +162,7 @@ public class CreateMetadataMojo
      * @since 1.4
      */
     @Parameter
-    private List<File> outputFiles = new ArrayList<File>();
+    private List<File> outputFiles = new ArrayList<>();
 
     /**
      * Additional properties to write out
@@ -170,7 +170,7 @@ public class CreateMetadataMojo
      * @since 1.4
      */
     @Parameter
-    private Map<String, String> properties = new HashMap<String, String>();
+    private Map<String, String> properties = new HashMap<>();
 
     /**
      * Enable output format detection. (Disabled per default for compatibility.)
@@ -201,10 +201,7 @@ public class CreateMetadataMojo
         props.put( this.versionPropertyName, version );
         props.put( this.timestampPropertyName, Utils.createTimestamp( this.timestampFormat, timezone ) );
         props.put( this.revisionPropertyName, this.getRevision() );
-        for ( String key : properties.keySet() )
-        {
-            props.put( key, properties.get( key ) );
-        }
+        properties.entrySet().forEach(entry -> props.put(entry.getKey(), entry.getValue()));
 
         File outputFile = new File( outputDirectory, outputName );
         outputFiles.add( outputFile );
@@ -253,14 +250,9 @@ public class CreateMetadataMojo
     private void writeToFile( Properties props, File file, OutputFormat outputFormat )
         throws IOException
     {
-        OutputStream out = new FileOutputStream( file );
-        try
+        try (OutputStream out = new FileOutputStream( file ))
         {
             outputFormat.write( props, out );
-        }
-        finally
-        {
-            out.close();
         }
     }
 
