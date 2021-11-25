@@ -84,11 +84,10 @@ import org.codehaus.plexus.util.StringUtils;
  * Note that there are several <code><strong>doFoo</strong></code> parameters. These parameters (doCheck, doUpdate, etc)
  * are the first thing evaluated. If there is no matching expression, we get the default-value. If there is (ie
  * <code>-Dmaven.buildNumber.doUpdate=false</code>), we get that value. So if the XML contains
- * <tt>&lt;doCheck&gt;true&lt;/doCheck&gt;</tt>, then normally that's the final value of the param in question. However,
+ * <code>&lt;doCheck&gt;true&lt;/doCheck&gt;</code>, then normally that's the final value of the param in question. However,
  * this mojo reverses that behaviour, such that the command line parameters get the last say.
  *
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
- * @version $Id$
  */
 @Mojo( name = "create", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true )
 public class CreateMojo
@@ -368,12 +367,9 @@ public class CreateMojo
 
                     Properties properties = new Properties();
                     String buildNumberString = null;
-                    FileInputStream inputStream = null;
-                    FileOutputStream outputStream = null;
-                    try
+                    try (FileInputStream inputStream = new FileInputStream( propertiesFile ))
                     {
                         // get the number for the buildNumber specified
-                        inputStream = new FileInputStream( propertiesFile );
                         properties.load( inputStream );
                         buildNumberString = properties.getProperty( s );
                         if ( buildNumberString == null )
@@ -384,11 +380,12 @@ public class CreateMojo
 
                         // store the increment
                         properties.setProperty( s, String.valueOf( ++buildNumber ) );
-                        outputStream = new FileOutputStream( propertiesFile );
-                        properties.store( outputStream, "maven.buildNumber.plugin properties file" );
+                        try (FileOutputStream outputStream = new FileOutputStream( propertiesFile )) {
+                            properties.store(outputStream, "maven.buildNumber.plugin properties file");
+                        }
 
                         // use in the message (format)
-                        itemAry[i] = new Integer( buildNumber );
+                        itemAry[i] = buildNumber;
                     }
                     catch ( NumberFormatException e )
                     {
@@ -398,11 +395,6 @@ public class CreateMojo
                     catch ( IOException e )
                     {
                         throw new MojoExecutionException( "Couldn't load properties file: " + propertiesFile, e );
-                    }
-                    finally
-                    {
-                        IOUtil.close( inputStream );
-                        IOUtil.close( outputStream );
                     }
                 }
                 else
@@ -459,7 +451,7 @@ public class CreateMojo
         }
 
         getLog().info( MessageFormat.format( "Storing buildNumber: {0} at timestamp: {1}",
-                                             new Object[] { revision, timestamp } ) );
+                revision, timestamp) );
         if ( revision != null )
         {
             project.getProperties().put( buildNumberPropertyName, revision );
@@ -476,7 +468,7 @@ public class CreateMojo
             Iterator<MavenProject> projIter = reactorProjects.iterator();
             while ( projIter.hasNext() )
             {
-                MavenProject nextProj = (MavenProject) projIter.next();
+                MavenProject nextProj = projIter.next();
                 if ( revision != null )
                 {
                     nextProj.getProperties().put( this.buildNumberPropertyName, revision );
@@ -762,9 +754,9 @@ public class CreateMojo
 
     }
 
+    // TODO normally this would be handled in AbstractScmProvider
     /**
      * @return
-     * @todo normally this would be handled in AbstractScmProvider
      */
     private ScmLogger getLogger()
     {

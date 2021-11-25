@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 public class JsonOutputFormat
@@ -20,14 +21,14 @@ public class JsonOutputFormat
         throws IOException
     {
         Gson gson = new Gson();
-        JsonWriter jsonWriter = gson.newJsonWriter( new OutputStreamWriter( out, "UTF-8" ) );
-        jsonWriter.beginObject();
-        for ( Object key : props.keySet() )
-        {
-            jsonWriter.name( (String) key );
-            jsonWriter.value( props.getProperty( (String) key ) );
+        try (JsonWriter jsonWriter = gson.newJsonWriter( new OutputStreamWriter( out, StandardCharsets.UTF_8) )) {
+            jsonWriter.beginObject();
+            for (Object key : props.keySet()) {
+                jsonWriter.name((String) key);
+                jsonWriter.value(props.getProperty((String) key));
+            }
+            jsonWriter.endObject();
+            jsonWriter.flush();
         }
-        jsonWriter.endObject();
-        jsonWriter.flush();
     }
 }

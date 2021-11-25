@@ -83,7 +83,7 @@
   <properties>
     <maven.scm.version>1.12.0</maven.scm.version>
     <maven.api.version>3.0</maven.api.version>
-    <mojo.java.target>1.7</mojo.java.target>
+    <mojo.java.target>1.8</mojo.java.target>
     <maven.it.version>3.1.1</maven.it.version>
     <takari.plugin.testing.version>3.0.0</takari.plugin.testing.version>
     <takari-lifecycle-plugin.version>1.13.9</takari-lifecycle-plugin.version>
@@ -233,6 +233,13 @@
             <excludes>
               <exclude>${test.excludes}</exclude>
             </excludes>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <configuration>
+            <failOnWarnings>false</failOnWarnings>
           </configuration>
         </plugin>
         <plugin>

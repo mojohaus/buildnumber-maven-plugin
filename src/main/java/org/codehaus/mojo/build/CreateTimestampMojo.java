@@ -34,11 +34,10 @@ import org.apache.maven.project.MavenProject;
  * This mojo is designed to give you a timestamp available through one or more properties. Only a single timestamp is
  * created for each execution of the mojo. This timestamp can be format into one or more strings which are then saved to
  * properties.
+ * create a timestamp property
  *
  * @author pgier
- * @version $Id$
  * @since 1.0-beta-5
- * @description create a timestamp property
  */
 @Mojo( name = "create-timestamp", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true )
 public class CreateTimestampMojo
