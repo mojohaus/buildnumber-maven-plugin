@@ -18,12 +18,12 @@
      This plugin is designed to give you a build number. So when you might make 100 builds of version
      1.0-SNAPSHOT, you can differentiate between them all.
   </description>
-  <url>http://www.mojohaus.org/buildnumber-maven-plugin/</url>
+  <url>https://www.mojohaus.org/buildnumber-maven-plugin/</url>
   <inceptionYear>2007</inceptionYear>
   <licenses>
     <license>
       <name>The MIT License</name>
-      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <url>https://www.opensource.org/licenses/mit-license.php</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -34,7 +34,7 @@
       <name>Julian Wood</name>
       <email>woodj@ucalgary.ca</email>
       <organization>Learning Commons, University of Calgary</organization>
-      <organizationUrl>http://commons.ucalgary.ca</organizationUrl>
+      <organizationUrl>https://commons.ucalgary.ca</organizationUrl>
       <roles>
         <role>Programmer</role>
       </roles>
