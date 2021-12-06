@@ -1,4 +1,4 @@
-packag org.codehaus.mojo.build;
+package org.codehaus.mojo.build;
 
 /**
  * The MIT License
@@ -88,7 +88,8 @@ public class CreateTimestampMojo
     @Parameter( defaultValue = "false" )
     private boolean executeRootOnly;
 
-    public void execute()
+
+  public void execute()
     {
         if ( skip )
         {
