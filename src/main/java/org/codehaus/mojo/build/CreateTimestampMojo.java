@@ -1,4 +1,4 @@
-package org.codehaus.mojo.build;
+packag org.codehaus.mojo.build;
 
 /**
  * The MIT License
@@ -43,6 +43,12 @@ import org.apache.maven.project.MavenProject;
 public class CreateTimestampMojo
     extends AbstractMojo
 {
+
+    /**
+     * Name of the lock property for synchronization. Will be removed after timestamps have been set.
+     */
+    private static final String TIMESTAMP_PROPERTY_LOCK = "maven.buildNumber.timestampPropertyLock";
+
     /**
      * Whether to skip this execution.
      *
@@ -106,12 +112,38 @@ public class CreateTimestampMojo
 
         timestampString = Utils.createTimestamp( timestampFormat, timezone );
 
-        getLog().debug( "Storing timestamp property: " + timestampPropertyName + " " + timestampString );
-
-        for ( MavenProject project : session.getProjectDependencyGraph().getSortedProjects() )
+        if (getLock())
         {
-            getLog().debug( "Storing timestamp property in project " + project.getId() );
-            project.getProperties().setProperty( timestampPropertyName, timestampString );
+            getLog().debug( "Storing timestamp property: " + timestampPropertyName + " " + timestampString );
+
+            for ( MavenProject project : session.getProjectDependencyGraph().getSortedProjects() )
+            {
+                getLog().debug( "Storing timestamp property in project " + project.getId() );
+                project.getProperties().setProperty( timestampPropertyName, timestampString );
+            }
+
+            releaseLock();
         }
+    }
+
+    private boolean getLock()
+    {
+      final String lock = session.getTopLevelProject().getProperties().getProperty(TIMESTAMP_PROPERTY_LOCK);
+      final String currentThreadName = Thread.currentThread().getName();
+
+      if ( lock != null && !currentThreadName.equals(lock))
+      {
+        return false;
+      }
+
+      // lock is either null or set to this thread's name.
+      session.getTopLevelProject().getProperties().setProperty(TIMESTAMP_PROPERTY_LOCK, currentThreadName);
+
+      return true;
+    }
+
+    private void releaseLock()
+    {
+      session.getTopLevelProject().getProperties().remove(TIMESTAMP_PROPERTY_LOCK);
     }
 }

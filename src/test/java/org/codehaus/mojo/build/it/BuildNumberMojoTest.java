@@ -9,6 +9,7 @@ import io.takari.maven.testing.executor.MavenVersions;
 import io.takari.maven.testing.executor.junit.MavenJUnitTestRunner;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
@@ -272,6 +273,25 @@ public class BuildNumberMojoTest
         MavenExecution mavenExec = maven.forProject( projDir );
         MavenExecutionResult result = mavenExec.execute( "verify" );
         result.assertErrorFreeLog();
+    }
+
+    @Test
+    public void mBuildNum75Test()
+            throws Exception
+    {
+        File projDir = resources.getBasedir( "MBUILDNUM-75" );
+
+        MavenExecution mavenExec = maven.forProject( projDir ).withCliOptions("-X", "-T4");
+        MavenExecutionResult result = mavenExec.execute( "clean", "package" );
+        result.assertErrorFreeLog();
+
+        File testDir = result.getBasedir();
+        final File logfile = new File(testDir, "log.txt");
+        final long createdTimestampCount = Files.lines(logfile.toPath())
+                .filter(line -> line.contains("Storing timestamp property: api.test.datetime"))
+                .count();
+
+        Assert.assertEquals(createdTimestampCount, 1);
     }
 
     @Test
