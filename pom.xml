@@ -95,77 +95,93 @@
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-settings</artifactId>
       <version>${maven.api.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
       <version>${maven.api.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
       <version>${maven.api.version}</version>
+      <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-api</artifactId>
       <version>${maven.scm.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-manager-plexus</artifactId>
       <version>${maven.scm.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-provider-bazaar</artifactId>
       <version>${maven.scm.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-provider-svnexe</artifactId>
       <version>${maven.scm.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-provider-gitexe</artifactId>
       <version>${maven.scm.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-provider-svn-commons</artifactId>
       <version>${maven.scm.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-provider-cvsexe</artifactId>
       <version>${maven.scm.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-provider-starteam</artifactId>
       <version>${maven.scm.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-provider-clearcase</artifactId>
       <version>${maven.scm.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-provider-perforce</artifactId>
       <version>${maven.scm.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-provider-hg</artifactId>
       <version>${maven.scm.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
       <artifactId>maven-scm-provider-svnjava</artifactId>
       <version>2.1.2</version>
+      <scope>compile</scope>
       <exclusions>
         <!--
           ! This will bring svnkit 1.8.11
@@ -180,11 +196,13 @@
       <groupId>org.tmatesoft.svnkit</groupId>
       <artifactId>svnkit</artifactId>
       <version>1.10.3</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>3.4.1</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
@@ -196,6 +214,7 @@
       <groupId>org.sonatype.plexus</groupId>
       <artifactId>plexus-sec-dispatcher</artifactId>
       <version>1.4</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
@@ -217,6 +236,7 @@
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.8.9</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
