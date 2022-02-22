@@ -60,7 +60,7 @@ public class BuildNumberMojoTest
         FileUtils.copyDirectoryStructure( new File( testDir, "dotSvnDir" ), new File( testDir, ".svn" ) );
         result = mavenExec.execute( "clean", "verify" );
         result.assertLogText( "Storing buildNumber: 14069" );
-        result.assertLogText( "Storing buildScmBranch: trunk" );
+        result.assertLogText( "Storing scmBranch: trunk" );
 
         File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-1.0-SNAPSHOT.jar" );
         JarFile jarFile = new JarFile( artifact );
@@ -83,7 +83,7 @@ public class BuildNumberMojoTest
         FileUtils.copyDirectoryStructure( new File( testDir, "dotGitDir" ), new File( testDir, ".git" ) );
         result = mavenExec.execute( "clean", "verify" );
         result.assertLogText( "Storing buildNumber: 6d36c746e82f00c5913954f9178f40224497b2f3" );
-        result.assertLogText( "Storing buildScmBranch: master" );
+        result.assertLogText( "Storing scmBranch: master" );
 
         File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-1.0-SNAPSHOT.jar" );
         JarFile jarFile = new JarFile( artifact );
@@ -103,7 +103,7 @@ public class BuildNumberMojoTest
         MavenExecutionResult result = mavenExec.execute( "clean", "verify" );
         File testDir = result.getBasedir();
         result.assertLogText( "Storing buildNumber: foo" );
-        result.assertLogText( "Storing buildScmBranch: UNKNOWN_BRANCH" );
+        result.assertLogText( "Storing scmBranch: UNKNOWN_BRANCH" );
 
         File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-clearcase-scm-1.0-SNAPSHOT.jar" );
         JarFile jarFile = new JarFile( artifact );
@@ -128,7 +128,7 @@ public class BuildNumberMojoTest
         FileUtils.copyDirectoryStructure( new File( testDir, "dotSvnDir" ), new File( testDir, ".svn" ) );
         result = mavenExec.execute( "clean", "verify" );
         result.assertLogText( "Storing buildNumber: 14069" );
-        result.assertLogText( "Storing buildScmBranch: trunk" );
+        result.assertLogText( "Storing scmBranch: trunk" );
 
         File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-no-devscm-1.0-SNAPSHOT.jar" );
         JarFile jarFile = new JarFile( artifact );
@@ -153,7 +153,7 @@ public class BuildNumberMojoTest
         FileUtils.copyDirectoryStructure( new File( testDir, "dotSvnDir" ), new File( testDir, ".svn" ) );
         result = mavenExec.execute( "clean", "verify" );
         result.assertLogText( "Storing buildNumber: 19665" );
-        result.assertLogText( "Storing buildScmBranch: trunk" );
+        result.assertLogText( "Storing scmBranch: trunk" );
 
         File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-svnjava-1.0-SNAPSHOT.jar" );
         JarFile jarFile = new JarFile( artifact );
@@ -235,7 +235,7 @@ public class BuildNumberMojoTest
         FileUtils.fileWrite( foo, "hello" );
         FileUtils.copyDirectoryStructure( new File( basedir, "dotGitDir" ), new File( basedir, ".git" ) );
         result = mavenExec.execute( "verify" );
-        result.assertLogText( "Storing buildScmBranch: master" );
+        result.assertLogText( "Storing scmBranch: master" );
         File testDir = result.getBasedir();
         File artifact = new File( testDir, "target/buildnumber-maven-plugin-basic-it-1.0-SNAPSHOT.jar" );
         JarFile jarFile = new JarFile( artifact );
