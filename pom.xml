@@ -88,6 +88,7 @@
     <takari-lifecycle-plugin.version>1.13.9</takari-lifecycle-plugin.version>
     <test.excludes>**/it/**</test.excludes>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
+    <project.build.outputTimestamp>2022-01-18T09:14:02Z</project.build.outputTimestamp>
   </properties>
 
   <dependencies>
