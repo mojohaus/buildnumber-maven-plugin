@@ -48,7 +48,7 @@ import org.codehaus.plexus.util.StringUtils;
  * or more java property files together with a set of user provided properties. It also has option to add the output
  * file to resource classpath for jar packaging.
  */
-@Mojo( name = "create-metadata", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresProject = true, threadSafe = true, aggregator = true )
+@Mojo( name = "create-metadata", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresProject = true, threadSafe = true)
 public class CreateMetadataMojo
     extends AbstractScmMojo
 {
