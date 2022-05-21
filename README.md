@@ -9,6 +9,7 @@ This is the [buildnumber-maven-plugin](http://www.mojohaus.org/buildnumber-maven
 ## Releasing
 
 * Make sure `gpg-agent` is running.
+* subversion `svn` is also needed for running tests
 * Make sure all tests pass `mvn clean verify -Prun-its`
 * Execute `mvn -B release:prepare release:perform`
 

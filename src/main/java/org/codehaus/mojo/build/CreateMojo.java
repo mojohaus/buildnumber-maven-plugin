@@ -459,7 +459,7 @@ public class CreateMojo
         project.getProperties().put( timestampPropertyName, timestamp );
 
         String scmBranch = getScmBranch();
-        getLog().info( "Storing buildScmBranch: " + scmBranch );
+        getLog().info( "Storing scmBranch: " + scmBranch );
         project.getProperties().put( scmBranchPropertyName, scmBranch );
 
         // Add the revision and timestamp properties to each project in the reactor
