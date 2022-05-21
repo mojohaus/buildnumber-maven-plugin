@@ -56,7 +56,7 @@
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment"> * or more java property files together with a set of user provided properties. It also has option to add the output</em>
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment"> * file to resource classpath for jar packaging.</em>
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  @Mojo( name = <span class="jxr_string">"create-metadata"</span>, defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresProject = <strong class="jxr_keyword">true</strong>, threadSafe = <strong class="jxr_keyword">true</strong>)
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  @Mojo( name = <span class="jxr_string">"create-metadata"</span>, defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresProject = <strong class="jxr_keyword">true</strong>, threadSafe = <strong class="jxr_keyword">true</strong>, aggregator = <strong class="jxr_keyword">true</strong> )
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="CreateMetadataMojo" href="../../../../org/codehaus/mojo/build/CreateMetadataMojo.html#CreateMetadataMojo">CreateMetadataMojo</a>
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">extends</strong> <a name="AbstractScmMojo" href="../../../../org/codehaus/mojo/build/AbstractScmMojo.html#AbstractScmMojo">AbstractScmMojo</a>
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  {

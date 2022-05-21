@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>BuildNumberMojoTest xref</title>
+<title>/Users/slachiewicz/oss/mojohaus/buildnumber-maven-plugin/src/test/java/org/codehaus/mojo/build/it/BuildNumberMojoTest.java xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
 </head>
 <body>
-<div id="overview"><a href="../../../../../../testapidocs/org/codehaus/mojo/build/it/BuildNumberMojoTest.html">View Javadoc</a></div><pre>
+<div id="overview"><a href="../../../../../../testapidocs/org/codehaus/mojo/build/it">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> org.codehaus.mojo.build.it;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> io.takari.maven.testing.TestResources;
@@ -68,7 +68,7 @@
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          FileUtils.copyDirectoryStructure( <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">"dotSvnDir"</span> ), <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">".svn"</span> ) );
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          result = mavenExec.execute( <span class="jxr_string">"clean"</span>, <span class="jxr_string">"verify"</span> );
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          result.assertLogText( <span class="jxr_string">"Storing buildNumber: 14069"</span> );
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>          result.assertLogText( <span class="jxr_string">"Storing scmBranch: trunk"</span> );
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>          result.assertLogText( <span class="jxr_string">"Storing buildScmBranch: trunk"</span> );
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          File artifact = <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">"target/buildnumber-maven-plugin-basic-it-1.0-SNAPSHOT.jar"</span> );
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          JarFile jarFile = <strong class="jxr_keyword">new</strong> JarFile( artifact );
@@ -91,7 +91,7 @@
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>          FileUtils.copyDirectoryStructure( <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">"dotGitDir"</span> ), <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">".git"</span> ) );
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          result = mavenExec.execute( <span class="jxr_string">"clean"</span>, <span class="jxr_string">"verify"</span> );
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          result.assertLogText( <span class="jxr_string">"Storing buildNumber: 6d36c746e82f00c5913954f9178f40224497b2f3"</span> );
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>          result.assertLogText( <span class="jxr_string">"Storing scmBranch: master"</span> );
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>          result.assertLogText( <span class="jxr_string">"Storing buildScmBranch: master"</span> );
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>          File artifact = <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">"target/buildnumber-maven-plugin-basic-it-1.0-SNAPSHOT.jar"</span> );
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>          JarFile jarFile = <strong class="jxr_keyword">new</strong> JarFile( artifact );
@@ -111,7 +111,7 @@
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         MavenExecutionResult result = mavenExec.execute( <span class="jxr_string">"clean"</span>, <span class="jxr_string">"verify"</span> );
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>         File testDir = result.getBasedir();
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>         result.assertLogText( <span class="jxr_string">"Storing buildNumber: foo"</span> );
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>         result.assertLogText( <span class="jxr_string">"Storing scmBranch: UNKNOWN_BRANCH"</span> );
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         result.assertLogText( <span class="jxr_string">"Storing buildScmBranch: UNKNOWN_BRANCH"</span> );
 <a class="jxr_linenumber" name="L107" href="#L107">107</a> 
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>         File artifact = <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">"target/buildnumber-maven-plugin-basic-it-clearcase-scm-1.0-SNAPSHOT.jar"</span> );
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>         JarFile jarFile = <strong class="jxr_keyword">new</strong> JarFile( artifact );
@@ -136,7 +136,7 @@
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>         FileUtils.copyDirectoryStructure( <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">"dotSvnDir"</span> ), <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">".svn"</span> ) );
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>         result = mavenExec.execute( <span class="jxr_string">"clean"</span>, <span class="jxr_string">"verify"</span> );
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>         result.assertLogText( <span class="jxr_string">"Storing buildNumber: 14069"</span> );
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>         result.assertLogText( <span class="jxr_string">"Storing scmBranch: trunk"</span> );
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>         result.assertLogText( <span class="jxr_string">"Storing buildScmBranch: trunk"</span> );
 <a class="jxr_linenumber" name="L132" href="#L132">132</a> 
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>         File artifact = <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">"target/buildnumber-maven-plugin-basic-it-no-devscm-1.0-SNAPSHOT.jar"</span> );
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>         JarFile jarFile = <strong class="jxr_keyword">new</strong> JarFile( artifact );
@@ -161,7 +161,7 @@
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>         FileUtils.copyDirectoryStructure( <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">"dotSvnDir"</span> ), <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">".svn"</span> ) );
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>         result = mavenExec.execute( <span class="jxr_string">"clean"</span>, <span class="jxr_string">"verify"</span> );
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         result.assertLogText( <span class="jxr_string">"Storing buildNumber: 19665"</span> );
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>         result.assertLogText( <span class="jxr_string">"Storing scmBranch: trunk"</span> );
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>         result.assertLogText( <span class="jxr_string">"Storing buildScmBranch: trunk"</span> );
 <a class="jxr_linenumber" name="L157" href="#L157">157</a> 
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>         File artifact = <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">"target/buildnumber-maven-plugin-basic-it-svnjava-1.0-SNAPSHOT.jar"</span> );
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>         JarFile jarFile = <strong class="jxr_keyword">new</strong> JarFile( artifact );
@@ -243,7 +243,7 @@
 <a class="jxr_linenumber" name="L235" href="#L235">235</a>         FileUtils.fileWrite( foo, <span class="jxr_string">"hello"</span> );
 <a class="jxr_linenumber" name="L236" href="#L236">236</a>         FileUtils.copyDirectoryStructure( <strong class="jxr_keyword">new</strong> File( basedir, <span class="jxr_string">"dotGitDir"</span> ), <strong class="jxr_keyword">new</strong> File( basedir, <span class="jxr_string">".git"</span> ) );
 <a class="jxr_linenumber" name="L237" href="#L237">237</a>         result = mavenExec.execute( <span class="jxr_string">"verify"</span> );
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>         result.assertLogText( <span class="jxr_string">"Storing scmBranch: master"</span> );
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>         result.assertLogText( <span class="jxr_string">"Storing buildScmBranch: master"</span> );
 <a class="jxr_linenumber" name="L239" href="#L239">239</a>         File testDir = result.getBasedir();
 <a class="jxr_linenumber" name="L240" href="#L240">240</a>         File artifact = <strong class="jxr_keyword">new</strong> File( testDir, <span class="jxr_string">"target/buildnumber-maven-plugin-basic-it-1.0-SNAPSHOT.jar"</span> );
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>         JarFile jarFile = <strong class="jxr_keyword">new</strong> JarFile( artifact );
