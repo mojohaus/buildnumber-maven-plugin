@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>buildnumber-maven-plugin</artifactId>
-  <version>3.0.1-SNAPSHOT</version>
+  <version>3.1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Build Number Maven Plugin</name>
@@ -65,7 +65,7 @@
   </developers>
 
   <prerequisites>
-    <maven>3.0</maven>
+    <maven>3.2.5</maven>
   </prerequisites>
 
   <scm>
@@ -81,11 +81,11 @@
 
   <properties>
     <maven.scm.version>1.12.2</maven.scm.version>
-    <maven.api.version>3.0</maven.api.version>
+    <maven.api.version>3.2.5</maven.api.version>
     <mojo.java.target>1.8</mojo.java.target>
-    <maven.it.version>3.1.1</maven.it.version>
+    <maven.it.version>3.2.5</maven.it.version>
     <takari.plugin.testing.version>3.0.0</takari.plugin.testing.version>
-    <takari-lifecycle-plugin.version>1.13.9</takari-lifecycle-plugin.version>
+    <takari-lifecycle-plugin.version>2.0.8</takari-lifecycle-plugin.version>
     <test.excludes>**/it/**</test.excludes>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
     <project.build.outputTimestamp>2022-01-18T09:14:02Z</project.build.outputTimestamp>
