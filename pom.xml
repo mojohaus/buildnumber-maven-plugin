@@ -80,7 +80,7 @@
   </issueManagement>
 
   <properties>
-    <maven.scm.version>1.12.2</maven.scm.version>
+    <maven.scm.version>1.13.0</maven.scm.version>
     <maven.api.version>3.2.5</maven.api.version>
     <mojo.java.target>1.8</mojo.java.target>
     <maven.it.version>3.2.5</maven.it.version>
