@@ -70,7 +70,7 @@
 
   <scm>
     <connection>scm:git:https://github.com/mojohaus/buildnumber-maven-plugin.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/mojohaus/buildnumber-maven-plugin.git</developerConnection>
+    <developerConnection>scm:git:https://github.com/mojohaus/buildnumber-maven-plugin.git</developerConnection>
     <url>https://github.com/mojohaus/buildnumber-maven-plugin</url>
     <tag>HEAD</tag>
   </scm>
