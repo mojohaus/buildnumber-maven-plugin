@@ -196,7 +196,7 @@
     <dependency>
       <groupId>org.tmatesoft.svnkit</groupId>
       <artifactId>svnkit</artifactId>
-      <version>1.10.10</version>
+      <version>1.10.11</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
