@@ -65,7 +65,7 @@
   </developers>
 
   <prerequisites>
-    <maven>3.2.5</maven>
+    <maven>3.5.4</maven>
   </prerequisites>
 
   <scm>
@@ -81,9 +81,9 @@
 
   <properties>
     <maven.scm.version>1.13.0</maven.scm.version>
-    <maven.api.version>3.2.5</maven.api.version>
+    <maven.api.version>3.5.4</maven.api.version>
     <mojo.java.target>1.8</mojo.java.target>
-    <maven.it.version>3.2.5</maven.it.version>
+    <maven.it.version>3.5.4</maven.it.version>
     <takari.plugin.testing.version>3.0.0</takari.plugin.testing.version>
     <takari-lifecycle-plugin.version>2.0.8</takari-lifecycle-plugin.version>
     <test.excludes>**/it/**</test.excludes>
