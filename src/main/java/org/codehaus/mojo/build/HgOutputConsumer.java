@@ -1,8 +1,8 @@
 package org.codehaus.mojo.build;
 
 import org.apache.maven.scm.ScmFileStatus;
-import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.provider.hg.command.HgConsumer;
+import org.slf4j.Logger;
 
 class HgOutputConsumer
     extends HgConsumer
@@ -10,9 +10,9 @@ class HgOutputConsumer
 
     private String output;
 
-    HgOutputConsumer( ScmLogger logger )
+    HgOutputConsumer( )
     {
-        super( logger );
+        super( );
     }
 
     @Override

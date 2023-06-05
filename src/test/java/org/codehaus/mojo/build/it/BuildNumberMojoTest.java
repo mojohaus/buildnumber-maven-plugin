@@ -204,6 +204,7 @@ public class BuildNumberMojoTest
     }
 
     @Test
+    @Ignore("svn.codehaus.org does not exist anymore")
     public void failLocalChangeItTest()
         throws Exception
     {
@@ -305,6 +306,7 @@ public class BuildNumberMojoTest
     }
 
     @Test
+    @Ignore("svn.codehaus.org does not exist anymore")
     public void mojo1372Test()
         throws Exception
     {
@@ -316,6 +318,7 @@ public class BuildNumberMojoTest
     }
 
     @Test
+    @Ignore("svn.codehaus.org does not exist anymore")
     public void Mojo1668Test()
         throws Exception
     {
@@ -339,6 +342,7 @@ public class BuildNumberMojoTest
     }
 
     @Test
+    @Ignore("svn.codehaus.org does not exist anymore")
     public void noRevisionItTest()
         throws Exception
     {

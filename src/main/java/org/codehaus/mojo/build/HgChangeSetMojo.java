@@ -31,7 +31,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmResult;
-import org.apache.maven.scm.log.ScmLogDispatcher;
 import org.apache.maven.scm.provider.hg.HgUtils;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -52,8 +51,6 @@ public class HgChangeSetMojo
      */
     @Parameter( property = "maven.buildNumber.skip", defaultValue = "false" )
     private boolean skip;
-
-    private ScmLogDispatcher logger = new ScmLogDispatcher();
 
     /**
      * The maven project.
@@ -124,8 +121,8 @@ public class HgChangeSetMojo
     protected String getHgCommandOutput( String[] command )
         throws ScmException, MojoExecutionException
     {
-        HgOutputConsumer consumer = new HgOutputConsumer( logger );
-        ScmResult result = HgUtils.execute( consumer, logger, scmDirectory, command );
+        HgOutputConsumer consumer = new HgOutputConsumer( );
+        ScmResult result = HgUtils.execute( consumer, scmDirectory, command );
         checkResult( result );
         return consumer.getOutput();
     }
