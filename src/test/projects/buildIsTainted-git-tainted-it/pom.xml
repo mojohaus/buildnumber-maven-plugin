@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.codehaus.mojo.it</groupId>
+  <artifactId>buildnumber-maven-plugin-buildIsTainted-git-tainted-it</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <scm>
+    <developerConnection>scm:git:https://git.organization.example/example-project/example-repository.git</developerConnection>
+  </scm>
+
+  <!--
+    This comment has been added to POM but not committed into Git
+    in order to force the "tainted" value for the "buildIsTainted" property.
+    -->
+
+  <build>
+
+    <defaultGoal>package</defaultGoal>
+
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>${it-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doCheck>true</doCheck>
+          <failTheBuild>false</failTheBuild>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Build-Is-Tainted>${buildIsTainted}</Build-Is-Tainted>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+
+  </build>
+
+</project>
