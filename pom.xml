@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.codehaus.mojo</groupId>
     <artifactId>mojo-parent</artifactId>
-    <version>77</version>
+    <version>78</version>
   </parent>
 
   <artifactId>buildnumber-maven-plugin</artifactId>
@@ -288,7 +288,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
-            <version>3.4.1</version>
             <executions>
               <execution>
                 <id>enforce-versions</id>
