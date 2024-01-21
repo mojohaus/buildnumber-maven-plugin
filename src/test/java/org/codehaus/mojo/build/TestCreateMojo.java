@@ -85,9 +85,9 @@ public class TestCreateMojo
             mojo.execute();
 
             String rev = mojo.getRevision();
-
+            // https://bugs.openjdk.org/browse/JDK-8284840 from Java 20 date format changed
             assertTrue( "Revision '" + rev + "' has wrong format.",
-                        rev.matches( "^At (\\d{1,2}:?){3} (AM|PM) on \\w{3} \\d{1,2}, \\d{4}, there was a disturbance in the Force on planet 7." ) );
+                        rev.matches( "^At (\\d{1,2}:?){3}([  \\u202F])(AM|PM) on \\w{3} \\d{1,2}, \\d{4}, there was a disturbance in the Force on planet 7." ) );
 
         }
         finally
