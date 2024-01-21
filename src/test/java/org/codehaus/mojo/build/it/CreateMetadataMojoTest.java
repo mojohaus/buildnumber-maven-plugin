@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith( MavenJUnitTestRunner.class )
-@MavenVersions( { "3.5.4" } )
+@MavenVersions( { "3.6.3" } )
 public class CreateMetadataMojoTest
 {
     @Rule
