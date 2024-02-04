@@ -457,6 +457,9 @@ public class CreateMojo
         getLog().info( "Storing scmBranch: " + scmBranch );
         project.getProperties().put( scmBranchPropertyName, scmBranch );
 
+        getLog().info( "Storing buildIsTainted: " + taintedValue );
+        project.getProperties().put( buildTaintedPropertyName, taintedValue );
+
         // Add the revision and timestamp properties to each project in the reactor
         if ( getRevisionOnlyOnce && reactorProjects != null )
         {

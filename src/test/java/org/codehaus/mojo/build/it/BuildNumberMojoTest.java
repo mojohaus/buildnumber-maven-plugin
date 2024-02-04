@@ -94,6 +94,54 @@ public class BuildNumberMojoTest
     }
 
     @Test
+    public void buildIsTaintedGitPristineTest()
+        throws Exception
+    {
+        File projDir = resources.getBasedir( "buildIsTainted-git-pristine-it" );
+
+        MavenExecution mavenExec = maven.forProject( projDir );
+        MavenExecutionResult result = mavenExec.execute( "clean" );
+        result.assertErrorFreeLog();
+        File testDir = result.getBasedir();
+        FileUtils.copyDirectoryStructure( new File( testDir, "dotGitDir" ), new File( testDir, ".git" ) );
+        result = mavenExec.execute( "clean", "verify" );
+        result.assertLogText( "Storing buildNumber: 9ff09c02fdf660bcf33beb6a89bc91765e81b367" );
+        result.assertLogText( "Storing scmBranch: master" );
+        result.assertLogText( "Storing buildIsTainted: ok" );
+
+        File artifact = new File( testDir, "target/buildnumber-maven-plugin-buildIsTainted-git-pristine-it-1.0-SNAPSHOT.jar" );
+        JarFile jarFile = new JarFile( artifact );
+        Attributes manifest = jarFile.getManifest().getMainAttributes();
+        jarFile.close();
+        String scmRev = manifest.getValue( "Build-Is-Tainted" );
+        Assert.assertEquals( "ok", scmRev );
+    }
+
+    @Test
+    public void buildIsTaintedGitTaintedTest()
+        throws Exception
+    {
+        File projDir = resources.getBasedir( "buildIsTainted-git-tainted-it" );
+
+        MavenExecution mavenExec = maven.forProject( projDir );
+        MavenExecutionResult result = mavenExec.execute( "clean" );
+        result.assertErrorFreeLog();
+        File testDir = result.getBasedir();
+        FileUtils.copyDirectoryStructure( new File( testDir, "dotGitDir" ), new File( testDir, ".git" ) );
+        result = mavenExec.execute( "clean", "verify" );
+        result.assertLogText( "Storing buildNumber: 1049d0dc796ae4c1e2cfc343555ad8667bfc64bb" );
+        result.assertLogText( "Storing scmBranch: master" );
+        result.assertLogText( "Storing buildIsTainted: tainted" );
+
+        File artifact = new File( testDir, "target/buildnumber-maven-plugin-buildIsTainted-git-tainted-it-1.0-SNAPSHOT.jar" );
+        JarFile jarFile = new JarFile( artifact );
+        Attributes manifest = jarFile.getManifest().getMainAttributes();
+        jarFile.close();
+        String scmRev = manifest.getValue( "Build-Is-Tainted" );
+        Assert.assertEquals( "tainted", scmRev );
+    }
+
+    @Test
     public void basicItClearcaseScmTest()
         throws Exception
     {
