@@ -20,24 +20,18 @@ package org.codehaus.mojo.build;
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Properties;
 
-public class PropertiesOutputFormat
-    extends OutputFormat
-{
+public class PropertiesOutputFormat extends OutputFormat {
     @Override
-    public boolean handles( String fileName )
-    {
-        return fileName.endsWith( ".properties" );
+    public boolean handles(String fileName) {
+        return fileName.endsWith(".properties");
     }
 
     @Override
-    public void write( Properties props, OutputStream out )
-        throws IOException
-    {
-        props.store( out, "Created by build system. Do not modify" );
+    public void write(Properties props, OutputStream out) throws IOException {
+        props.store(out, "Created by build system. Do not modify");
     }
 }

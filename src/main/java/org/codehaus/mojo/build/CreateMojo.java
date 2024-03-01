@@ -20,10 +20,6 @@ package org.codehaus.mojo.build;
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.Integer.parseInt;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -64,6 +60,9 @@ import org.apache.maven.scm.provider.hg.HgUtils;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.StringUtils;
 
+import static java.lang.Boolean.parseBoolean;
+import static java.lang.Integer.parseInt;
+
 /**
  * This mojo is designed to give you a build number. So when you might make 100 builds of version 1.0-SNAPSHOT, you can
  * differentiate between them all.
@@ -86,10 +85,8 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @author <a href="mailto:woodj@ucalgary.ca">Julian Wood</a>
  */
-@Mojo( name = "create", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true )
-public class CreateMojo
-    extends AbstractScmMojo
-{
+@Mojo(name = "create", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true)
+public class CreateMojo extends AbstractScmMojo {
     private static final String DEFAULT_BRANCH_NAME = "UNKNOWN_BRANCH";
 
     /**
@@ -97,7 +94,7 @@ public class CreateMojo
      *
      * @since 1.0-beta-1
      */
-    @Parameter( property = "maven.buildNumber.buildNumberPropertyName", defaultValue = "buildNumber" )
+    @Parameter(property = "maven.buildNumber.buildNumberPropertyName", defaultValue = "buildNumber")
     private String buildNumberPropertyName;
 
     /**
@@ -105,7 +102,7 @@ public class CreateMojo
      *
      * @since 1.0-beta-1
      */
-    @Parameter( property = "maven.buildNumber.timestampPropertyName", defaultValue = "timestamp" )
+    @Parameter(property = "maven.buildNumber.timestampPropertyName", defaultValue = "timestamp")
     private String timestampPropertyName;
 
     /**
@@ -115,23 +112,23 @@ public class CreateMojo
      *
      * @since 1.0-beta-1
      */
-    @Parameter( property = "maven.buildNumber.doCheck", defaultValue = "false" )
+    @Parameter(property = "maven.buildNumber.doCheck", defaultValue = "false")
     private boolean doCheck;
 
     /**
      * This will fail the build in cases where doCheck is set to true.
-     * 
+     *
      * @since 3.0.0
      */
-    @Parameter( property = "maven.buildNumber.failTheBuild", defaultValue = "true" )
+    @Parameter(property = "maven.buildNumber.failTheBuild", defaultValue = "true")
     private boolean failTheBuild;
 
     /**
      * In cases where the doCheck shows that there are changes in the current working copy
-     * this property will be set with the value <code>tainted</code> otherwise it will be 
+     * this property will be set with the value <code>tainted</code> otherwise it will be
      * <code>ok</code>.
      */
-    @Parameter( property = "maven.buildNumber.buildTaintedPropertyName", defaultValue = "buildIsTainted" )
+    @Parameter(property = "maven.buildNumber.buildTaintedPropertyName", defaultValue = "buildIsTainted")
     private String buildTaintedPropertyName;
 
     /**
@@ -141,7 +138,7 @@ public class CreateMojo
      *
      * @since 1.0-beta-1
      */
-    @Parameter( property = "maven.buildNumber.doUpdate", defaultValue = "false" )
+    @Parameter(property = "maven.buildNumber.doUpdate", defaultValue = "false")
     private boolean doUpdate;
 
     /**
@@ -149,7 +146,7 @@ public class CreateMojo
      *
      * @since 1.0-beta-1
      */
-    @Parameter( property = "maven.buildNumber.format" )
+    @Parameter(property = "maven.buildNumber.format")
     private String format;
 
     /**
@@ -157,7 +154,7 @@ public class CreateMojo
      *
      * @since 1.0-beta-2
      */
-    @Parameter( defaultValue = "${basedir}/buildNumber.properties" )
+    @Parameter(defaultValue = "${basedir}/buildNumber.properties")
     private File buildNumberPropertiesFileLocation;
 
     /**
@@ -176,7 +173,7 @@ public class CreateMojo
      *
      * @since 1.0-beta-2
      */
-    @Parameter( property = "maven.buildNumber.locale" )
+    @Parameter(property = "maven.buildNumber.locale")
     private String locale;
 
     /**
@@ -184,15 +181,15 @@ public class CreateMojo
      *
      * @since 1.0-beta-2
      */
-    @Parameter( property = "maven.buildNumber.timestampFormat" )
+    @Parameter(property = "maven.buildNumber.timestampFormat")
     private String timestampFormat;
 
     /**
      * The timezone of the generated timestamp. If blank will default to {@link TimeZone#getDefault()}
-     * 
+     *
      * @since 3.0.0
      */
-    @Parameter( property = "maven.buildNumber.timestampTimeZone", defaultValue = "" )
+    @Parameter(property = "maven.buildNumber.timestampTimeZone", defaultValue = "")
     private String timezone;
 
     /**
@@ -211,7 +208,7 @@ public class CreateMojo
      *
      * @since 1.0-beta-3
      */
-    @Parameter( property = "maven.buildNumber.getRevisionOnlyOnce", defaultValue = "false" )
+    @Parameter(property = "maven.buildNumber.getRevisionOnlyOnce", defaultValue = "false")
     private boolean getRevisionOnlyOnce;
 
     /**
@@ -219,7 +216,7 @@ public class CreateMojo
      *
      * @since 1.0-beta-4
      */
-    @Parameter( property = "maven.buildNumber.scmBranchPropertyName", defaultValue = "scmBranch" )
+    @Parameter(property = "maven.buildNumber.scmBranchPropertyName", defaultValue = "scmBranch")
     private String scmBranchPropertyName;
 
     // ////////////////////////////////////// internal maven components ///////////////////////////////////
@@ -229,10 +226,10 @@ public class CreateMojo
      *
      * @since 1.0-beta-3
      */
-    @Parameter( defaultValue = "${reactorProjects}", readonly = true, required = true )
+    @Parameter(defaultValue = "${reactorProjects}", readonly = true, required = true)
     private List<MavenProject> reactorProjects;
 
-    @Parameter( defaultValue = "${session}", readonly = true, required = true )
+    @Parameter(defaultValue = "${session}", readonly = true, required = true)
     private MavenSession session;
 
     // ////////////////////////////////////// internal variables ///////////////////////////////////
@@ -241,249 +238,187 @@ public class CreateMojo
 
     private boolean useScm;
 
-    public void execute()
-        throws MojoExecutionException, MojoFailureException
-    {
+    public void execute() throws MojoExecutionException, MojoFailureException {
         String buildIsTainted = "ok";
-        
-        if ( skip )
-        {
-            getLog().info( "Skipping execution." );
+
+        if (skip) {
+            getLog().info("Skipping execution.");
             return;
         }
 
-        if ( providerImplementations != null )
-        {
+        if (providerImplementations != null) {
             changeProviderImplementation();
         }
         Date now = Calendar.getInstance().getTime();
-        if ( format != null )
-        {
-            if ( items == null )
-            {
-                throw new MojoExecutionException( " if you set a format, you must provide at least one item, "
-                    + "please check documentation " );
+        if (format != null) {
+            if (items == null) {
+                throw new MojoExecutionException(
+                        " if you set a format, you must provide at least one item, " + "please check documentation ");
             }
-            Object[] itemAry = handleItems( now );
+            Object[] itemAry = handleItems(now);
 
-            revision = format( itemAry );
-        }
-        else
-        {
+            revision = format(itemAry);
+        } else {
             // Check if the plugin has already run.
-            revision = project.getProperties().getProperty( this.buildNumberPropertyName );
-            if ( this.getRevisionOnlyOnce && revision != null )
-            {
-                getLog().debug( "Revision available from previous execution" );
+            revision = project.getProperties().getProperty(this.buildNumberPropertyName);
+            if (this.getRevisionOnlyOnce && revision != null) {
+                getLog().debug("Revision available from previous execution");
                 return;
             }
 
-            if ( doCheck )
-            {
+            if (doCheck) {
                 StringBuilder message = new StringBuilder();
-                if ( doLocalModificationExist( message ) )
-                {
+                if (doLocalModificationExist(message)) {
                     buildIsTainted = "tainted";
-                    if ( failTheBuild )
-                    {
-                        throw new MojoExecutionException( "Cannot create the build number because you have local modifications : \n"
-                            + message );
-
+                    if (failTheBuild) {
+                        throw new MojoExecutionException(
+                                "Cannot create the build number because you have local modifications : \n" + message);
                     }
                 }
-            }
-            else
-            {
-                getLog().debug( "Checking for local modifications: skipped." );
+            } else {
+                getLog().debug("Checking for local modifications: skipped.");
             }
 
-            if ( session.getSettings().isOffline() )
-            {
-                getLog().info( "maven is executed in offline mode, Updating project files from SCM: skipped." );
-            }
-            else
-            {
-                if ( doUpdate )
-                {
+            if (session.getSettings().isOffline()) {
+                getLog().info("maven is executed in offline mode, Updating project files from SCM: skipped.");
+            } else {
+                if (doUpdate) {
                     // we update your local repo
                     // even after you commit, your revision stays the same until you update, thus this
                     // action
                     List<ScmFile> changedFiles = update();
-                    for ( ScmFile file : changedFiles )
-                    {
-                        getLog().debug( "Updated: " + file );
+                    for (ScmFile file : changedFiles) {
+                        getLog().debug("Updated: " + file);
                     }
-                    if ( changedFiles.size() == 0 )
-                    {
-                        getLog().debug( "No files needed updating." );
+                    if (changedFiles.size() == 0) {
+                        getLog().debug("No files needed updating.");
                     }
-                }
-                else
-                {
-                    getLog().debug( "Updating project files from SCM: skipped." );
+                } else {
+                    getLog().debug("Updating project files from SCM: skipped.");
                 }
             }
             revision = getRevision();
         }
 
-        if ( project != null )
-        {
-            buildNumberAndTimeStampForReactorProjects( now, buildIsTainted );
+        if (project != null) {
+            buildNumberAndTimeStampForReactorProjects(now, buildIsTainted);
         }
     }
 
-    private Object[] handleItems( Date now )
-        throws MojoExecutionException
-    {
+    private Object[] handleItems(Date now) throws MojoExecutionException {
         // needs to be an array
         // look for special values
         Object[] itemAry = new Object[items.size()];
-        for ( int i = 0; i < items.size(); i++ )
-        {
-            Object item = items.get( i );
-            if ( item instanceof String )
-            {
+        for (int i = 0; i < items.size(); i++) {
+            Object item = items.get(i);
+            if (item instanceof String) {
                 String s = (String) item;
-                if ( s.equals( "timestamp" ) )
-                {
+                if (s.equals("timestamp")) {
                     itemAry[i] = now;
-                }
-                else if ( s.startsWith( "scmVersion" ) )
-                {
+                } else if (s.startsWith("scmVersion")) {
                     useScm = true;
                     itemAry[i] = getRevision();
-                }
-                else if ( s.startsWith( "buildNumber" ) )
-                {
+                } else if (s.startsWith("buildNumber")) {
                     // check for properties file
                     File propertiesFile = this.buildNumberPropertiesFileLocation;
 
-                    createPropertiesFileIfNotExists( propertiesFile );
+                    createPropertiesFileIfNotExists(propertiesFile);
 
                     Properties properties = new Properties();
                     String buildNumberString = null;
-                    try (FileInputStream inputStream = new FileInputStream( propertiesFile ))
-                    {
+                    try (FileInputStream inputStream = new FileInputStream(propertiesFile)) {
                         // get the number for the buildNumber specified
-                        properties.load( inputStream );
-                        buildNumberString = properties.getProperty( s );
-                        if ( buildNumberString == null )
-                        {
+                        properties.load(inputStream);
+                        buildNumberString = properties.getProperty(s);
+                        if (buildNumberString == null) {
                             buildNumberString = "0";
                         }
-                        int buildNumber = parseInt( buildNumberString );
+                        int buildNumber = parseInt(buildNumberString);
 
                         // store the increment
-                        properties.setProperty( s, String.valueOf( ++buildNumber ) );
-                        try (FileOutputStream outputStream = new FileOutputStream( propertiesFile )) {
+                        properties.setProperty(s, String.valueOf(++buildNumber));
+                        try (FileOutputStream outputStream = new FileOutputStream(propertiesFile)) {
                             properties.store(outputStream, "maven.buildNumber.plugin properties file");
                         }
 
                         // use in the message (format)
                         itemAry[i] = buildNumber;
+                    } catch (NumberFormatException e) {
+                        throw new MojoExecutionException(
+                                "Couldn't parse buildNumber in properties file to an Integer: " + buildNumberString);
+                    } catch (IOException e) {
+                        throw new MojoExecutionException("Couldn't load properties file: " + propertiesFile, e);
                     }
-                    catch ( NumberFormatException e )
-                    {
-                        throw new MojoExecutionException( "Couldn't parse buildNumber in properties file to an Integer: "
-                            + buildNumberString );
-                    }
-                    catch ( IOException e )
-                    {
-                        throw new MojoExecutionException( "Couldn't load properties file: " + propertiesFile, e );
-                    }
-                }
-                else
-                {
+                } else {
                     itemAry[i] = item;
                 }
-            }
-            else
-            {
+            } else {
                 itemAry[i] = item;
             }
         }
         return itemAry;
     }
 
-    private void createPropertiesFileIfNotExists( File propertiesFile )
-        throws MojoExecutionException
-    {
+    private void createPropertiesFileIfNotExists(File propertiesFile) throws MojoExecutionException {
         // create if not exists
-        if ( !propertiesFile.exists() )
-        {
-            try
-            {
-                if ( !propertiesFile.getParentFile().exists() )
-                {
+        if (!propertiesFile.exists()) {
+            try {
+                if (!propertiesFile.getParentFile().exists()) {
                     propertiesFile.getParentFile().mkdirs();
                 }
                 propertiesFile.createNewFile();
-            }
-            catch ( IOException e )
-            {
-                throw new MojoExecutionException( "Couldn't create properties file: " + propertiesFile, e );
+            } catch (IOException e) {
+                throw new MojoExecutionException("Couldn't create properties file: " + propertiesFile, e);
             }
         }
     }
 
-    private void buildNumberAndTimeStampForReactorProjects( Date now, String taintedValue )
-        throws MojoExecutionException
-    {
-        String timestamp = String.valueOf( now.getTime() );
-        if ( timestampFormat != null )
-        {
-            if ( timestampFormat.matches( "\\{0,date,[^\\}]+\\}" ) )
-            {
-                getLog().warn( "The timestampFormat parameter now uses java.text.SimpleDateFormat." );
-                getLog().warn( "Please update your POM as support for java.text.MessageFormat may be removed." );
-                timestamp = Utils.createTimestamp( timestampFormat.replaceFirst( "\\{0,date,([^\\}]+)\\}", "$1" ),
-                                                   timezone, now );
-            }
-            else
-            {
-                timestamp = Utils.createTimestamp( timestampFormat, timezone, now );
+    private void buildNumberAndTimeStampForReactorProjects(Date now, String taintedValue)
+            throws MojoExecutionException {
+        String timestamp = String.valueOf(now.getTime());
+        if (timestampFormat != null) {
+            if (timestampFormat.matches("\\{0,date,[^\\}]+\\}")) {
+                getLog().warn("The timestampFormat parameter now uses java.text.SimpleDateFormat.");
+                getLog().warn("Please update your POM as support for java.text.MessageFormat may be removed.");
+                timestamp = Utils.createTimestamp(
+                        timestampFormat.replaceFirst("\\{0,date,([^\\}]+)\\}", "$1"), timezone, now);
+            } else {
+                timestamp = Utils.createTimestamp(timestampFormat, timezone, now);
             }
         }
 
-        getLog().info( MessageFormat.format( "Storing buildNumber: {0} at timestamp: {1}",
-                revision, timestamp) );
-        if ( revision != null )
-        {
-            project.getProperties().put( buildNumberPropertyName, revision );
+        getLog().info(MessageFormat.format("Storing buildNumber: {0} at timestamp: {1}", revision, timestamp));
+        if (revision != null) {
+            project.getProperties().put(buildNumberPropertyName, revision);
         }
-        project.getProperties().put( timestampPropertyName, timestamp );
+        project.getProperties().put(timestampPropertyName, timestamp);
 
         String scmBranch = getScmBranch();
-        getLog().info( "Storing scmBranch: " + scmBranch );
-        project.getProperties().put( scmBranchPropertyName, scmBranch );
+        getLog().info("Storing scmBranch: " + scmBranch);
+        project.getProperties().put(scmBranchPropertyName, scmBranch);
 
         // Add the revision and timestamp properties to each project in the reactor
-        if ( getRevisionOnlyOnce && reactorProjects != null )
-        {
+        if (getRevisionOnlyOnce && reactorProjects != null) {
             Iterator<MavenProject> projIter = reactorProjects.iterator();
-            while ( projIter.hasNext() )
-            {
+            while (projIter.hasNext()) {
                 MavenProject nextProj = projIter.next();
-                if ( revision != null )
-                {
-                    nextProj.getProperties().put( this.buildNumberPropertyName, revision );
+                if (revision != null) {
+                    nextProj.getProperties().put(this.buildNumberPropertyName, revision);
                 }
-                nextProj.getProperties().put( this.timestampPropertyName, timestamp );
-                nextProj.getProperties().put( this.scmBranchPropertyName, scmBranch );
-                nextProj.getProperties().put( this.buildTaintedPropertyName, taintedValue );
+                nextProj.getProperties().put(this.timestampPropertyName, timestamp);
+                nextProj.getProperties().put(this.scmBranchPropertyName, scmBranch);
+                nextProj.getProperties().put(this.buildTaintedPropertyName, taintedValue);
             }
         }
     }
 
-    private void changeProviderImplementation()
-    {
-        for ( Entry<String, String> entry : providerImplementations.entrySet() )
-        {
+    private void changeProviderImplementation() {
+        for (Entry<String, String> entry : providerImplementations.entrySet()) {
             String providerType = entry.getKey();
             String providerImplementation = entry.getValue();
-            getLog().info( "Change the default '" + providerType + "' provider implementation to '"
-                + providerImplementation + "'." );
-            scmManager.setScmProviderImplementation( providerType, providerImplementation );
+            getLog().info("Change the default '" + providerType + "' provider implementation to '"
+                    + providerImplementation + "'.");
+            scmManager.setScmProviderImplementation(providerType, providerImplementation);
         }
     }
 
@@ -492,54 +427,40 @@ public class CreateMojo
      *
      * @param arguments arguments to be formatted @ @return formatted result
      */
-    private String format( Object[] arguments )
-    {
+    private String format(Object[] arguments) {
         Locale l = Locale.getDefault();
-        if ( locale != null )
-        {
-            String[] parts = locale.split( "_", 3 );
-            if ( parts.length <= 1 )
-            {
-                l = new Locale( locale );
-            }
-            else if ( parts.length == 2 )
-            {
-                l = new Locale( parts[0], parts[1] );
-            }
-            else
-            {
-                l = new Locale( parts[0], parts[1], parts[2] );
+        if (locale != null) {
+            String[] parts = locale.split("_", 3);
+            if (parts.length <= 1) {
+                l = new Locale(locale);
+            } else if (parts.length == 2) {
+                l = new Locale(parts[0], parts[1]);
+            } else {
+                l = new Locale(parts[0], parts[1], parts[2]);
             }
         }
 
-        return new MessageFormat( format, l ).format( arguments );
+        return new MessageFormat(format, l).format(arguments);
     }
 
-    private boolean doLocalModificationExist( StringBuilder message )
-        throws MojoExecutionException
-    {
+    private boolean doLocalModificationExist(StringBuilder message) throws MojoExecutionException {
         boolean result = false;
 
-        getLog().debug( "Verifying there are no local modifications ..." );
+        getLog().debug("Verifying there are no local modifications ...");
 
         List<ScmFile> changedFiles;
 
-        try
-        {
+        try {
             changedFiles = getStatus();
-        }
-        catch ( ScmException e )
-        {
-            throw new MojoExecutionException( "An error has occurred while checking scm status.", e );
+        } catch (ScmException e) {
+            throw new MojoExecutionException("An error has occurred while checking scm status.", e);
         }
 
-        if ( !changedFiles.isEmpty() )
-        {
-            for ( ScmFile file : changedFiles )
-            {
-                message.append( file.toString() );
+        if (!changedFiles.isEmpty()) {
+            for (ScmFile file : changedFiles) {
+                message.append(file.toString());
 
-                message.append( System.lineSeparator() );
+                message.append(System.lineSeparator());
             }
 
             result = true;
@@ -548,59 +469,47 @@ public class CreateMojo
         return result;
     }
 
-    public List<ScmFile> update()
-        throws MojoExecutionException
-    {
-        try
-        {
+    public List<ScmFile> update() throws MojoExecutionException {
+        try {
             ScmRepository repository = getScmRepository();
 
-            ScmProvider scmProvider = scmManager.getProviderByRepository( repository );
+            ScmProvider scmProvider = scmManager.getProviderByRepository(repository);
 
-            UpdateScmResult result = scmProvider.update( repository, new ScmFileSet( scmDirectory ) );
+            UpdateScmResult result = scmProvider.update(repository, new ScmFileSet(scmDirectory));
 
-            if ( result == null )
-            {
+            if (result == null) {
                 return Collections.emptyList();
             }
 
-            checkResult( result );
+            checkResult(result);
 
-            if ( result instanceof UpdateScmResultWithRevision )
-            {
-                String revision = ( (UpdateScmResultWithRevision) result ).getRevision();
-                getLog().info( "Got a revision during update: " + revision );
+            if (result instanceof UpdateScmResultWithRevision) {
+                String revision = ((UpdateScmResultWithRevision) result).getRevision();
+                getLog().info("Got a revision during update: " + revision);
                 this.revision = revision;
             }
 
             return result.getUpdatedFiles();
+        } catch (ScmException e) {
+            throw new MojoExecutionException("Couldn't update project. " + e.getMessage(), e);
         }
-        catch ( ScmException e )
-        {
-            throw new MojoExecutionException( "Couldn't update project. " + e.getMessage(), e );
-        }
-
     }
 
-    public List<ScmFile> getStatus()
-        throws ScmException
-    {
+    public List<ScmFile> getStatus() throws ScmException {
 
         ScmRepository repository = getScmRepository();
 
-        ScmProvider scmProvider = scmManager.getProviderByRepository( repository );
+        ScmProvider scmProvider = scmManager.getProviderByRepository(repository);
 
-        StatusScmResult result = scmProvider.status( repository, new ScmFileSet( scmDirectory ) );
+        StatusScmResult result = scmProvider.status(repository, new ScmFileSet(scmDirectory));
 
-        if ( result == null )
-        {
+        if (result == null) {
             return Collections.emptyList();
         }
 
-        checkResult( result );
+        checkResult(result);
 
         return result.getChangedFiles();
-
     }
 
     /**
@@ -610,100 +519,77 @@ public class CreateMojo
      * @throws MojoExecutionException
      * @throws MojoExecutionException
      */
-    public String getScmBranch()
-        throws MojoExecutionException
-    {
-        try
-        {
+    public String getScmBranch() throws MojoExecutionException {
+        try {
             ScmRepository repository = getScmRepository();
-            ScmProvider provider = scmManager.getProviderByRepository( repository );
+            ScmProvider provider = scmManager.getProviderByRepository(repository);
             /* git branch can be obtained directly by a command */
-            if ( GitScmProviderRepository.PROTOCOL_GIT.equals( provider.getScmType() ) )
-            {
-                ScmFileSet fileSet = new ScmFileSet( scmDirectory );
-                return GitBranchCommand.getCurrentBranch( (GitScmProviderRepository) repository.getProviderRepository(),
-                                                          fileSet );
-            }
-            else if ( provider instanceof HgScmProvider )
-            {
+            if (GitScmProviderRepository.PROTOCOL_GIT.equals(provider.getScmType())) {
+                ScmFileSet fileSet = new ScmFileSet(scmDirectory);
+                return GitBranchCommand.getCurrentBranch(
+                        (GitScmProviderRepository) repository.getProviderRepository(), fileSet);
+            } else if (provider instanceof HgScmProvider) {
                 /* hg branch can be obtained directly by a command */
-                HgOutputConsumer consumer = new HgOutputConsumer( );
-                ScmResult result = HgUtils.execute( consumer, scmDirectory, new String[] { "id", "-b" } );
-                checkResult( result );
-                if ( StringUtils.isNotEmpty( consumer.getOutput() ) )
-                {
+                HgOutputConsumer consumer = new HgOutputConsumer();
+                ScmResult result = HgUtils.execute(consumer, scmDirectory, new String[] {"id", "-b"});
+                checkResult(result);
+                if (StringUtils.isNotEmpty(consumer.getOutput())) {
                     return consumer.getOutput();
                 }
             }
-        }
-        catch ( ScmException e )
-        {
-            getLog().warn( "Cannot get the branch information from the git repository: \n" + e.getLocalizedMessage() );
+        } catch (ScmException e) {
+            getLog().warn("Cannot get the branch information from the git repository: \n" + e.getLocalizedMessage());
         }
 
         return getScmBranchFromUrl();
     }
 
-    private String getScmBranchFromUrl()
-        throws MojoExecutionException
-    {
+    private String getScmBranchFromUrl() throws MojoExecutionException {
         String scmUrl = null;
-        try
-        {
+        try {
             ScmRepository repository = getScmRepository();
-            InfoScmResult scmResult = info( repository, new ScmFileSet( scmDirectory ) );
-            if ( scmResult == null || !scmResult.isSuccess() )
-            {
-                getLog().debug( "Cannot get the branch information from the scm repository : "
-                    + ( scmResult == null ? "" : scmResult.getCommandOutput() ) );
+            InfoScmResult scmResult = info(repository, new ScmFileSet(scmDirectory));
+            if (scmResult == null || !scmResult.isSuccess()) {
+                getLog().debug("Cannot get the branch information from the scm repository : "
+                        + (scmResult == null ? "" : scmResult.getCommandOutput()));
                 return DEFAULT_BRANCH_NAME;
             }
-            if ( scmResult.getInfoItems().isEmpty() )
-            {
-                if ( !StringUtils.isEmpty( revisionOnScmFailure ) )
-                {
-                    setDoCheck( false );
-                    setDoUpdate( false );
+            if (scmResult.getInfoItems().isEmpty()) {
+                if (!StringUtils.isEmpty(revisionOnScmFailure)) {
+                    setDoCheck(false);
+                    setDoUpdate(false);
 
                     return DEFAULT_BRANCH_NAME;
                 }
             }
-            if ( !scmResult.getInfoItems().isEmpty() )
-            {
-                InfoItem info = scmResult.getInfoItems().get( 0 );
+            if (!scmResult.getInfoItems().isEmpty()) {
+                InfoItem info = scmResult.getInfoItems().get(0);
                 scmUrl = info.getURL();
             }
-        }
-        catch ( ScmException e )
-        {
-            if ( !StringUtils.isEmpty( revisionOnScmFailure ) )
-            {
-                getLog().warn( "Cannot get the branch information from the scm repository, proceeding with "
-                    + DEFAULT_BRANCH_NAME + " : \n" + e.getLocalizedMessage() );
+        } catch (ScmException e) {
+            if (!StringUtils.isEmpty(revisionOnScmFailure)) {
+                getLog().warn("Cannot get the branch information from the scm repository, proceeding with "
+                        + DEFAULT_BRANCH_NAME + " : \n" + e.getLocalizedMessage());
 
-                setDoCheck( false );
-                setDoUpdate( false );
+                setDoCheck(false);
+                setDoUpdate(false);
 
                 return DEFAULT_BRANCH_NAME;
             }
-            throw new MojoExecutionException( "Cannot get the branch information from the scm repository : \n"
-                + e.getLocalizedMessage(), e );
+            throw new MojoExecutionException(
+                    "Cannot get the branch information from the scm repository : \n" + e.getLocalizedMessage(), e);
         }
 
-        return filterBranchFromScmUrl( scmUrl );
+        return filterBranchFromScmUrl(scmUrl);
     }
 
-    protected String filterBranchFromScmUrl( String scmUrl )
-    {
+    protected String filterBranchFromScmUrl(String scmUrl) {
         String scmBranch = "UNKNOWN";
 
-        if ( StringUtils.contains( scmUrl, "/trunk" ) )
-        {
+        if (StringUtils.contains(scmUrl, "/trunk")) {
             scmBranch = "trunk";
-        }
-        else if ( StringUtils.contains( scmUrl, "/branches" ) || StringUtils.contains( scmUrl, "/tags" ) )
-        {
-            scmBranch = scmUrl.replaceFirst( ".*((branches|tags)/[^/]*).*", "$1" );
+        } else if (StringUtils.contains(scmUrl, "/branches") || StringUtils.contains(scmUrl, "/tags")) {
+            scmBranch = scmUrl.replaceFirst(".*((branches|tags)/[^/]*).*", "$1");
         }
         return scmBranch;
     }
@@ -714,118 +600,91 @@ public class CreateMojo
      * @return
      * @throws MojoExecutionException
      */
-    public String getRevision()
-        throws MojoExecutionException
-    {
+    public String getRevision() throws MojoExecutionException {
 
-        if ( format != null && !useScm )
-        {
+        if (format != null && !useScm) {
             return revision;
         }
         useScm = false;
 
-        try
-        {
+        try {
             return this.getScmRevision();
-        }
-        catch ( ScmException e )
-        {
-            if ( !StringUtils.isEmpty( revisionOnScmFailure ) )
-            {
-                getLog().warn( "Cannot get the revision information from the scm repository, proceeding with "
-                    + "revision of " + revisionOnScmFailure + " : \n" + e.getLocalizedMessage() );
+        } catch (ScmException e) {
+            if (!StringUtils.isEmpty(revisionOnScmFailure)) {
+                getLog().warn("Cannot get the revision information from the scm repository, proceeding with "
+                        + "revision of " + revisionOnScmFailure + " : \n" + e.getLocalizedMessage());
 
-                setDoCheck( false );
-                setDoUpdate( false );
+                setDoCheck(false);
+                setDoUpdate(false);
 
                 return revisionOnScmFailure;
             }
 
-            throw new MojoExecutionException( "Cannot get the revision information from the scm repository : \n"
-                + e.getLocalizedMessage(), e );
-
+            throw new MojoExecutionException(
+                    "Cannot get the revision information from the scm repository : \n" + e.getLocalizedMessage(), e);
         }
-
     }
 
     // ////////////////////////////////////////////////////////////////////////////////////////////
     // setters to help with test
-    public void setScmManager( ScmManager scmManager )
-    {
+    public void setScmManager(ScmManager scmManager) {
         this.scmManager = scmManager;
     }
 
-    public void setUrlScm( String urlScm )
-    {
+    public void setUrlScm(String urlScm) {
         this.scmConnectionUrl = urlScm;
     }
 
-    public void setUsername( String username )
-    {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public void setPassword( String password )
-    {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setDoCheck( boolean doCheck )
-    {
-        this.doCheck = getBooleanProperty( "maven.buildNumber.doCheck", doCheck );
+    public void setDoCheck(boolean doCheck) {
+        this.doCheck = getBooleanProperty("maven.buildNumber.doCheck", doCheck);
     }
 
-    public void setDoUpdate( boolean doUpdate )
-    {
-        this.doUpdate = getBooleanProperty( "maven.buildNumber.doUpdate", doUpdate );
+    public void setDoUpdate(boolean doUpdate) {
+        this.doUpdate = getBooleanProperty("maven.buildNumber.doUpdate", doUpdate);
     }
 
-    private boolean getBooleanProperty( String key, boolean defaultValue )
-    {
-        String systemProperty = System.getProperty( key );
-        if ( systemProperty == null )
-        {
+    private boolean getBooleanProperty(String key, boolean defaultValue) {
+        String systemProperty = System.getProperty(key);
+        if (systemProperty == null) {
             return defaultValue;
-        }
-        else
-        {
-            return parseBoolean( systemProperty );
+        } else {
+            return parseBoolean(systemProperty);
         }
     }
 
-    void setFormat( String format )
-    {
+    void setFormat(String format) {
         this.format = format;
     }
 
-    void setLocale( String locale )
-    {
+    void setLocale(String locale) {
         this.locale = locale;
     }
 
-    void setItems( List<?> items )
-    {
+    void setItems(List<?> items) {
         this.items = items;
     }
 
-    public void setBuildNumberPropertiesFileLocation( File buildNumberPropertiesFileLocation )
-    {
+    public void setBuildNumberPropertiesFileLocation(File buildNumberPropertiesFileLocation) {
         this.buildNumberPropertiesFileLocation = buildNumberPropertiesFileLocation;
     }
 
-    public void setScmDirectory( File scmDirectory )
-    {
+    public void setScmDirectory(File scmDirectory) {
         this.scmDirectory = scmDirectory;
     }
 
-    public void setRevisionOnScmFailure( String revisionOnScmFailure )
-    {
+    public void setRevisionOnScmFailure(String revisionOnScmFailure) {
         this.revisionOnScmFailure = revisionOnScmFailure;
     }
 
-    public void setShortRevisionLength( int shortRevision )
-    {
+    public void setShortRevisionLength(int shortRevision) {
         this.shortRevisionLength = shortRevision;
     }
-
 }

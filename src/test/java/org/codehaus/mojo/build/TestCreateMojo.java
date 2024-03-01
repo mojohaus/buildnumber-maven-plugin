@@ -20,7 +20,6 @@ package org.codehaus.mojo.build;
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -64,35 +63,31 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class TestCreateMojo
-{
+public class TestCreateMojo {
     @Rule
     public final TemporaryFolder folder = new TemporaryFolder();
 
     @Test
-    public void testMessageFormat()
-        throws Exception
-    {
+    public void testMessageFormat() throws Exception {
         CreateMojo mojo = new CreateMojo();
-        mojo.setFormat( "At {1,time} on {1,date}, there was {2} on planet {0,number,integer}." );
-        mojo.setItems( asList( 7, "timestamp", "a disturbance in the Force" ) );
+        mojo.setFormat("At {1,time} on {1,date}, there was {2} on planet {0,number,integer}.");
+        mojo.setItems(asList(7, "timestamp", "a disturbance in the Force"));
 
         Locale currentLocale = Locale.getDefault();
-        try
-        {
-            Locale.setDefault( Locale.US );
+        try {
+            Locale.setDefault(Locale.US);
 
             mojo.execute();
 
             String rev = mojo.getRevision();
             // https://bugs.openjdk.org/browse/JDK-8284840 from Java 20 date format changed
-            assertTrue( "Revision '" + rev + "' has wrong format.",
-                        rev.matches( "^At (\\d{1,2}:?){3}([  \\u202F])(AM|PM) on \\w{3} \\d{1,2}, \\d{4}, there was a disturbance in the Force on planet 7." ) );
+            assertTrue(
+                    "Revision '" + rev + "' has wrong format.",
+                    rev.matches(
+                            "^At (\\d{1,2}:?){3}([  \\u202F])(AM|PM) on \\w{3} \\d{1,2}, \\d{4}, there was a disturbance in the Force on planet 7."));
 
-        }
-        finally
-        {
-            Locale.setDefault( currentLocale );
+        } finally {
+            Locale.setDefault(currentLocale);
         }
     }
 
@@ -100,390 +95,306 @@ public class TestCreateMojo
      * Test that dates are correctly formatted for different locales.
      */
     @Test
-    public void testLocale()
-        throws Exception
-    {
-        Date date = new Date( 0 ); // the epoch
+    public void testLocale() throws Exception {
+        Date date = new Date(0); // the epoch
         CreateMojo mojo = new CreateMojo();
 
-        mojo.setFormat( "{0,date}" );
-        mojo.setItems( asList( date ) );
+        mojo.setFormat("{0,date}");
+        mojo.setItems(asList(date));
 
         mojo.execute();
-        assertEquals( DateFormat.getDateInstance( DateFormat.DEFAULT ).format( date ), mojo.getRevision() );
+        assertEquals(DateFormat.getDateInstance(DateFormat.DEFAULT).format(date), mojo.getRevision());
 
-        mojo.setLocale( "en" );
+        mojo.setLocale("en");
         mojo.execute();
-        SimpleDateFormat dateFormat = new SimpleDateFormat( "MMM dd, yyyy", new Locale( "en ") );
-        dateFormat.parse( mojo.getRevision() );
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", new Locale("en "));
+        dateFormat.parse(mojo.getRevision());
         // assertEquals( "Jan 1, 1970", mojo.getRevision() );
 
-        mojo.setLocale( "fi" );
+        mojo.setLocale("fi");
         mojo.execute();
-        dateFormat = new SimpleDateFormat( "dd.mm.yyyy" );
-        dateFormat.parse( mojo.getRevision() );
+        dateFormat = new SimpleDateFormat("dd.mm.yyyy");
+        dateFormat.parse(mojo.getRevision());
         // assertEquals( "1.1.1970", mojo.getRevision() );
 
-        mojo.setLocale( "de" );
+        mojo.setLocale("de");
         mojo.execute();
-        dateFormat = new SimpleDateFormat( "dd.mm.yyyy" );
-        dateFormat.parse( mojo.getRevision() );
+        dateFormat = new SimpleDateFormat("dd.mm.yyyy");
+        dateFormat.parse(mojo.getRevision());
         // assertEquals( "01.01.1970", mojo.getRevision() );
     }
 
     @Test
-    public void testSequenceFormat()
-        throws Exception
-    {
+    public void testSequenceFormat() throws Exception {
         CreateMojo mojo = new CreateMojo();
-        mojo.setBuildNumberPropertiesFileLocation( new File( folder.getRoot(), "target/buildNumber.properties" ) );
-        mojo.setFormat( "{0,number}.{1,number}.{2,number}" );
-        mojo.setItems( asList( "buildNumber0", "buildNumber1", "buildNumber2" ) );
+        mojo.setBuildNumberPropertiesFileLocation(new File(folder.getRoot(), "target/buildNumber.properties"));
+        mojo.setFormat("{0,number}.{1,number}.{2,number}");
+        mojo.setItems(asList("buildNumber0", "buildNumber1", "buildNumber2"));
 
-        File file = new File( folder.getRoot(), "target/buildNumber.properties" );
+        File file = new File(folder.getRoot(), "target/buildNumber.properties");
         file.delete();
 
         mojo.execute();
 
         String rev = mojo.getRevision();
 
-        assertTrue( "Revision '" + rev + "' has wrong format.", rev.matches( "(\\d+\\.?){3}" ) );
+        assertTrue("Revision '" + rev + "' has wrong format.", rev.matches("(\\d+\\.?){3}"));
 
-        assertTrue( file.exists() );
+        assertTrue(file.exists());
     }
 
     @Test
-    public void testFilterBranchFromScmUrl()
-    {
+    public void testFilterBranchFromScmUrl() {
         CreateMojo mojo = new CreateMojo();
         String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/trunk";
-        assertEquals( "trunk", mojo.filterBranchFromScmUrl( scmUrlTrunk ) );
+        assertEquals("trunk", mojo.filterBranchFromScmUrl(scmUrlTrunk));
         String scmUrlBranch = "https://mifos.dev.java.net/svn/mifos/branches/v1.2.x";
-        assertEquals( "branches/v1.2.x", mojo.filterBranchFromScmUrl( scmUrlBranch ) );
+        assertEquals("branches/v1.2.x", mojo.filterBranchFromScmUrl(scmUrlBranch));
         String scmUrlTag = "https://mifos.dev.java.net/svn/mifos/tags/v1.2.1";
-        assertEquals( "tags/v1.2.1", mojo.filterBranchFromScmUrl( scmUrlTag ) );
+        assertEquals("tags/v1.2.1", mojo.filterBranchFromScmUrl(scmUrlTag));
     }
 
     @Test
-    public void testFilterBranchFromScmUrlWithSubFolder()
-    {
+    public void testFilterBranchFromScmUrlWithSubFolder() {
         CreateMojo mojo = new CreateMojo();
         String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/trunk/subfolder";
-        assertEquals( "trunk", mojo.filterBranchFromScmUrl( scmUrlTrunk ) );
+        assertEquals("trunk", mojo.filterBranchFromScmUrl(scmUrlTrunk));
         String scmUrlBranch = "https://mifos.dev.java.net/svn/mifos/branches/v1.2.x/subfolder";
-        assertEquals( "branches/v1.2.x", mojo.filterBranchFromScmUrl( scmUrlBranch ) );
+        assertEquals("branches/v1.2.x", mojo.filterBranchFromScmUrl(scmUrlBranch));
         String scmUrlTag = "https://mifos.dev.java.net/svn/mifos/tags/v1.2.1/subfolder";
-        assertEquals( "tags/v1.2.1", mojo.filterBranchFromScmUrl( scmUrlTag ) );
+        assertEquals("tags/v1.2.1", mojo.filterBranchFromScmUrl(scmUrlTag));
     }
 
     @Test
-    public void testSpecialItemScmVersion()
-        throws Exception
-    {
+    public void testSpecialItemScmVersion() throws Exception {
         CreateMojo mojo = new CreateMojo();
-        mojo.setBuildNumberPropertiesFileLocation( new File( folder.getRoot(), "target/buildNumber.properties" ) );
-        mojo.setFormat( "{0}-{1}-{2}" );
-        mojo.setItems( asList( "buildNumber0", "scmVersion", "buildNumber0" ) );
-        File file = new File( folder.getRoot(), "target/buildNumber.properties" );
+        mojo.setBuildNumberPropertiesFileLocation(new File(folder.getRoot(), "target/buildNumber.properties"));
+        mojo.setFormat("{0}-{1}-{2}");
+        mojo.setItems(asList("buildNumber0", "scmVersion", "buildNumber0"));
+        File file = new File(folder.getRoot(), "target/buildNumber.properties");
         file.delete();
-        mojo.setRevisionOnScmFailure( "scmrevision" );
-        mojo.setScmManager( new ScmManager()
-        {
+        mojo.setRevisionOnScmFailure("scmrevision");
+        mojo.setScmManager(new ScmManager() {
 
-            public ScmRepository makeScmRepository( String string )
-                throws ScmRepositoryException, NoSuchScmProviderException
-            {
-                throw new ScmRepositoryException( "No SCM for testing." );
+            public ScmRepository makeScmRepository(String string)
+                    throws ScmRepositoryException, NoSuchScmProviderException {
+                throw new ScmRepositoryException("No SCM for testing.");
             }
 
-            public ScmRepository makeProviderScmRepository( String string, File file )
-                throws ScmRepositoryException, UnknownRepositoryStructure, NoSuchScmProviderException
-            {
-                throw new ScmRepositoryException( "No SCM for testing." );
+            public ScmRepository makeProviderScmRepository(String string, File file)
+                    throws ScmRepositoryException, UnknownRepositoryStructure, NoSuchScmProviderException {
+                throw new ScmRepositoryException("No SCM for testing.");
             }
 
-            public List<String> validateScmRepository( String string )
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public List<String> validateScmRepository(String string) {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public ScmProvider getProviderByUrl( String string )
-                throws ScmRepositoryException, NoSuchScmProviderException
-            {
-                throw new ScmRepositoryException( "No SCM for testing." );
+            public ScmProvider getProviderByUrl(String string)
+                    throws ScmRepositoryException, NoSuchScmProviderException {
+                throw new ScmRepositoryException("No SCM for testing.");
             }
 
-            public ScmProvider getProviderByType( String string )
-                throws NoSuchScmProviderException
-            {
-                throw new NoSuchScmProviderException( "No SCM for testing." );
+            public ScmProvider getProviderByType(String string) throws NoSuchScmProviderException {
+                throw new NoSuchScmProviderException("No SCM for testing.");
             }
 
-            public ScmProvider getProviderByRepository( ScmRepository sr )
-                throws NoSuchScmProviderException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public ScmProvider getProviderByRepository(ScmRepository sr) throws NoSuchScmProviderException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public void setScmProvider( String string, ScmProvider sp )
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public void setScmProvider(String string, ScmProvider sp) {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public void setScmProviderImplementation( String string, String string1 )
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public void setScmProviderImplementation(String string, String string1) {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public AddScmResult add( ScmRepository sr, ScmFileSet sfs )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public AddScmResult add(ScmRepository sr, ScmFileSet sfs) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public AddScmResult add( ScmRepository sr, ScmFileSet sfs, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public AddScmResult add(ScmRepository sr, ScmFileSet sfs, String string) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public BranchScmResult branch( ScmRepository sr, ScmFileSet sfs, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public BranchScmResult branch(ScmRepository sr, ScmFileSet sfs, String string) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public BranchScmResult branch( ScmRepository sr, ScmFileSet sfs, String string, String string1 )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public BranchScmResult branch(ScmRepository sr, ScmFileSet sfs, String string, String string1)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public ChangeLogScmResult changeLog( ScmRepository sr, ScmFileSet sfs, Date date, Date date1, int i,
-                                                 ScmBranch sb )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public ChangeLogScmResult changeLog(
+                    ScmRepository sr, ScmFileSet sfs, Date date, Date date1, int i, ScmBranch sb) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public ChangeLogScmResult changeLog( ScmRepository sr, ScmFileSet sfs, Date date, Date date1, int i,
-                                                 ScmBranch sb, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public ChangeLogScmResult changeLog(
+                    ScmRepository sr, ScmFileSet sfs, Date date, Date date1, int i, ScmBranch sb, String string)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public ChangeLogScmResult changeLog( ChangeLogScmRequest changeLogScmRequest )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public ChangeLogScmResult changeLog(ChangeLogScmRequest changeLogScmRequest) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public ChangeLogScmResult changeLog( ScmRepository sr, ScmFileSet sfs, ScmVersion sv, ScmVersion sv1 )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public ChangeLogScmResult changeLog(ScmRepository sr, ScmFileSet sfs, ScmVersion sv, ScmVersion sv1)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public ChangeLogScmResult changeLog( ScmRepository sr, ScmFileSet sfs, ScmVersion sv, ScmVersion sv1,
-                                                 String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public ChangeLogScmResult changeLog(
+                    ScmRepository sr, ScmFileSet sfs, ScmVersion sv, ScmVersion sv1, String string)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public CheckInScmResult checkIn( ScmRepository sr, ScmFileSet sfs, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public CheckInScmResult checkIn(ScmRepository sr, ScmFileSet sfs, String string) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public CheckInScmResult checkIn( ScmRepository sr, ScmFileSet sfs, ScmVersion sv, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public CheckInScmResult checkIn(ScmRepository sr, ScmFileSet sfs, ScmVersion sv, String string)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public CheckOutScmResult checkOut( ScmRepository sr, ScmFileSet sfs )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public CheckOutScmResult checkOut(ScmRepository sr, ScmFileSet sfs) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public CheckOutScmResult checkOut( ScmRepository sr, ScmFileSet sfs, ScmVersion sv )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public CheckOutScmResult checkOut(ScmRepository sr, ScmFileSet sfs, ScmVersion sv) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public CheckOutScmResult checkOut( ScmRepository sr, ScmFileSet sfs, boolean bln )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public CheckOutScmResult checkOut(ScmRepository sr, ScmFileSet sfs, boolean bln) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public CheckOutScmResult checkOut( ScmRepository sr, ScmFileSet sfs, ScmVersion sv, boolean bln )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public CheckOutScmResult checkOut(ScmRepository sr, ScmFileSet sfs, ScmVersion sv, boolean bln)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public DiffScmResult diff( ScmRepository sr, ScmFileSet sfs, ScmVersion sv, ScmVersion sv1 )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public DiffScmResult diff(ScmRepository sr, ScmFileSet sfs, ScmVersion sv, ScmVersion sv1)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public EditScmResult edit( ScmRepository sr, ScmFileSet sfs )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public EditScmResult edit(ScmRepository sr, ScmFileSet sfs) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public ExportScmResult export( ScmRepository sr, ScmFileSet sfs )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public ExportScmResult export(ScmRepository sr, ScmFileSet sfs) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public ExportScmResult export( ScmRepository sr, ScmFileSet sfs, ScmVersion sv )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public ExportScmResult export(ScmRepository sr, ScmFileSet sfs, ScmVersion sv) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public ExportScmResult export( ScmRepository sr, ScmFileSet sfs, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public ExportScmResult export(ScmRepository sr, ScmFileSet sfs, String string) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public ExportScmResult export( ScmRepository sr, ScmFileSet sfs, ScmVersion sv, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public ExportScmResult export(ScmRepository sr, ScmFileSet sfs, ScmVersion sv, String string)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public ListScmResult list( ScmRepository sr, ScmFileSet sfs, boolean bln, ScmVersion sv )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public ListScmResult list(ScmRepository sr, ScmFileSet sfs, boolean bln, ScmVersion sv)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public MkdirScmResult mkdir( ScmRepository sr, ScmFileSet sfs, String string, boolean bln )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public MkdirScmResult mkdir(ScmRepository sr, ScmFileSet sfs, String string, boolean bln)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public RemoveScmResult remove( ScmRepository sr, ScmFileSet sfs, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public RemoveScmResult remove(ScmRepository sr, ScmFileSet sfs, String string) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public StatusScmResult status( ScmRepository sr, ScmFileSet sfs )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public StatusScmResult status(ScmRepository sr, ScmFileSet sfs) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public TagScmResult tag( ScmRepository sr, ScmFileSet sfs, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public TagScmResult tag(ScmRepository sr, ScmFileSet sfs, String string) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public TagScmResult tag( ScmRepository sr, ScmFileSet sfs, String string, String string1 )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public TagScmResult tag(ScmRepository sr, ScmFileSet sfs, String string, String string1)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public UnEditScmResult unedit( ScmRepository sr, ScmFileSet sfs )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public UnEditScmResult unedit(ScmRepository sr, ScmFileSet sfs) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public UpdateScmResult update( ScmRepository sr, ScmFileSet sfs )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public UpdateScmResult update(ScmRepository sr, ScmFileSet sfs) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public UpdateScmResult update( ScmRepository sr, ScmFileSet sfs, ScmVersion sv )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public UpdateScmResult update(ScmRepository sr, ScmFileSet sfs, ScmVersion sv) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public UpdateScmResult update( ScmRepository sr, ScmFileSet sfs, boolean bln )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public UpdateScmResult update(ScmRepository sr, ScmFileSet sfs, boolean bln) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public UpdateScmResult update( ScmRepository sr, ScmFileSet sfs, ScmVersion sv, boolean bln )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public UpdateScmResult update(ScmRepository sr, ScmFileSet sfs, ScmVersion sv, boolean bln)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public UpdateScmResult update( ScmRepository sr, ScmFileSet sfs, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public UpdateScmResult update(ScmRepository sr, ScmFileSet sfs, String string) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public UpdateScmResult update( ScmRepository sr, ScmFileSet sfs, ScmVersion sv, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public UpdateScmResult update(ScmRepository sr, ScmFileSet sfs, ScmVersion sv, String string)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public UpdateScmResult update( ScmRepository sr, ScmFileSet sfs, Date date )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public UpdateScmResult update(ScmRepository sr, ScmFileSet sfs, Date date) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public UpdateScmResult update( ScmRepository sr, ScmFileSet sfs, ScmVersion sv, Date date )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public UpdateScmResult update(ScmRepository sr, ScmFileSet sfs, ScmVersion sv, Date date)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public UpdateScmResult update( ScmRepository sr, ScmFileSet sfs, Date date, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public UpdateScmResult update(ScmRepository sr, ScmFileSet sfs, Date date, String string)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public UpdateScmResult update( ScmRepository sr, ScmFileSet sfs, ScmVersion sv, Date date, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public UpdateScmResult update(ScmRepository sr, ScmFileSet sfs, ScmVersion sv, Date date, String string)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public BlameScmResult blame( ScmRepository sr, ScmFileSet sfs, String string )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public BlameScmResult blame(ScmRepository sr, ScmFileSet sfs, String string) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public BlameScmResult blame( BlameScmRequest blameScmRequest )
-                throws ScmException
-            {
-                throw new UnsupportedOperationException( "Not supported yet." );
+            public BlameScmResult blame(BlameScmRequest blameScmRequest) throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
-
-        } );
-        mojo.setUrlScm( "http://nonexistent" );
+        });
+        mojo.setUrlScm("http://nonexistent");
 
         mojo.execute();
         String rev = mojo.getRevision();
 
-        assertEquals( "1-scmrevision-2", rev );
+        assertEquals("1-scmrevision-2", rev);
     }
 }

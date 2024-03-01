@@ -1,13 +1,13 @@
 package org.codehaus.mojo.build;
 
-import com.google.gson.Gson;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
+
+import com.google.gson.Gson;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -15,8 +15,7 @@ import static org.junit.Assert.*;
 /**
  * Created by conni on 11/10/16.
  */
-public class JsonOutputFormatTest
-{
+public class JsonOutputFormatTest {
 
     private OutputFormat outputFormat = new JsonOutputFormat();
 
@@ -25,41 +24,34 @@ public class JsonOutputFormatTest
     private Gson gson = new Gson();
 
     @Before
-    public void before()
-    {
-        properties.put( "key0", "value0" );
-        properties.put( "key1", "value1" );
+    public void before() {
+        properties.put("key0", "value0");
+        properties.put("key1", "value1");
     }
 
     @Test
-    public void handlesDotJson()
-    {
-        assertTrue( outputFormat.handles( "file.json" ) );
+    public void handlesDotJson() {
+        assertTrue(outputFormat.handles("file.json"));
     }
 
     @Test
-    public void doesNotHandleNonJson()
-    {
-        assertFalse( outputFormat.handles( "file.other" ) );
+    public void doesNotHandleNonJson() {
+        assertFalse(outputFormat.handles("file.other"));
     }
 
     @Test
-    public void writesJson()
-        throws IOException
-    {
+    public void writesJson() throws IOException {
         String s = writePropertiesToString();
 
-        Map<String, Object> map = gson.fromJson( s, Map.class );
-        assertThat( map.size(), is( 2 ) );
-        assertThat( map.get( "key0" ), is( (Object) "value0" ) );
-        assertThat( map.get( "key1" ), is( (Object) "value1" ) );
+        Map<String, Object> map = gson.fromJson(s, Map.class);
+        assertThat(map.size(), is(2));
+        assertThat(map.get("key0"), is((Object) "value0"));
+        assertThat(map.get("key1"), is((Object) "value1"));
     }
 
-    private String writePropertiesToString()
-        throws IOException
-    {
+    private String writePropertiesToString() throws IOException {
         ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-        outputFormat.write( properties, bytesOut );
-        return new String( bytesOut.toByteArray(), "UTF-8" );
+        outputFormat.write(properties, bytesOut);
+        return new String(bytesOut.toByteArray(), "UTF-8");
     }
 }

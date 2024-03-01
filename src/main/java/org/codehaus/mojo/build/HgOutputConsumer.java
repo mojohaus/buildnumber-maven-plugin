@@ -2,27 +2,21 @@ package org.codehaus.mojo.build;
 
 import org.apache.maven.scm.ScmFileStatus;
 import org.apache.maven.scm.provider.hg.command.HgConsumer;
-import org.slf4j.Logger;
 
-class HgOutputConsumer
-    extends HgConsumer
-{
+class HgOutputConsumer extends HgConsumer {
 
     private String output;
 
-    HgOutputConsumer( )
-    {
-        super( );
+    HgOutputConsumer() {
+        super();
     }
 
     @Override
-    public void doConsume( ScmFileStatus status, String line )
-    {
+    public void doConsume(ScmFileStatus status, String line) {
         output = line;
     }
 
-    String getOutput()
-    {
+    String getOutput() {
         return output;
     }
 }
