@@ -13,10 +13,8 @@
   <packaging>maven-plugin</packaging>
 
   <name>Build Number Maven Plugin</name>
-  <description>
-     This plugin is designed to give you a build number. So when you might make 100 builds of version
-     1.0-SNAPSHOT, you can differentiate between them all.
-  </description>
+  <description>This plugin is designed to give you a build number. So when you might make 100 builds of version
+     1.0-SNAPSHOT, you can differentiate between them all.</description>
 
   <url>https://www.mojohaus.org/buildnumber-maven-plugin/</url>
   <inceptionYear>2007</inceptionYear>
@@ -73,8 +71,8 @@
   <scm>
     <connection>scm:git:https://github.com/mojohaus/buildnumber-maven-plugin.git</connection>
     <developerConnection>scm:git:https://github.com/mojohaus/buildnumber-maven-plugin.git</developerConnection>
-    <url>https://github.com/mojohaus/buildnumber-maven-plugin/tree/master</url>
     <tag>HEAD</tag>
+    <url>https://github.com/mojohaus/buildnumber-maven-plugin/tree/master</url>
   </scm>
 
   <issueManagement>
@@ -266,10 +264,10 @@
             <executions>
               <execution>
                 <id>unpack</id>
-                <phase>generate-test-resources</phase>
                 <goals>
                   <goal>unpack</goal>
                 </goals>
+                <phase>generate-test-resources</phase>
                 <configuration>
                   <outputDirectory>${project.build.directory}/maven-installation</outputDirectory>
                   <artifactItems>
@@ -288,6 +286,13 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>extra-enforcer-rules</artifactId>
+                <version>1.7.0</version>
+              </dependency>
+            </dependencies>
             <executions>
               <execution>
                 <id>enforce-versions</id>
@@ -307,13 +312,6 @@
                 </configuration>
               </execution>
             </executions>
-            <dependencies>
-              <dependency>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>extra-enforcer-rules</artifactId>
-                <version>1.7.0</version>
-              </dependency>
-            </dependencies>
           </plugin>
 
           <plugin>
@@ -324,10 +322,10 @@
             <executions>
               <execution>
                 <id>testProperties</id>
-                <phase>process-test-resources</phase>
                 <goals>
                   <goal>testProperties</goal>
                 </goals>
+                <phase>process-test-resources</phase>
               </execution>
             </executions>
           </plugin>
@@ -346,10 +344,10 @@
             <executions>
               <execution>
                 <id>useLastCommittedRevision</id>
-                <phase>compile</phase>
                 <goals>
                   <goal>create</goal>
                 </goals>
+                <phase>compile</phase>
                 <configuration>
                   <providerImplementations>
                     <svn>javasvn</svn>
@@ -360,10 +358,10 @@
               </execution>
               <execution>
                 <id>timestampFormat</id>
-                <phase>test</phase>
                 <goals>
                   <goal>create</goal>
                 </goals>
+                <phase>test</phase>
                 <configuration>
                   <providerImplementations>
                     <svn>javasvn</svn>

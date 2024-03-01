@@ -20,7 +20,6 @@ package org.codehaus.mojo.build;
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 import java.util.TimeZone;
 
 import org.apache.maven.execution.MavenSession;
@@ -39,79 +38,72 @@ import org.apache.maven.project.MavenProject;
  * @author pgier
  * @since 1.0-beta-5
  */
-@Mojo( name = "create-timestamp", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true )
-public class CreateTimestampMojo
-    extends AbstractMojo
-{
+@Mojo(name = "create-timestamp", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true)
+public class CreateTimestampMojo extends AbstractMojo {
     /**
      * Whether to skip this execution.
      *
      * @since 1.3
      */
-    @Parameter( property = "maven.buildNumber.skip", defaultValue = "false" )
+    @Parameter(property = "maven.buildNumber.skip", defaultValue = "false")
     private boolean skip;
 
     /**
      * The maven session.
      */
-    @Parameter( defaultValue = "${session}", required = true, readonly = true )
+    @Parameter(defaultValue = "${session}", required = true, readonly = true)
     private MavenSession session;
 
     /**
      * You can rename the timestamp property name to another property name if desired.
      */
-    @Parameter( property = "maven.buildNumber.timestampPropertyName", defaultValue = "timestamp" )
+    @Parameter(property = "maven.buildNumber.timestampPropertyName", defaultValue = "timestamp")
     private String timestampPropertyName;
 
     /**
      * Apply this java.text.SimpleDateFormat to the timestamp. By default, no formatting is done but the raw number
      * value (milliseconds since January 1, 1970, 00:00:00 GMT) is used.
      */
-    @Parameter( property = "maven.buildNumber.timestampFormat", defaultValue = "" )
+    @Parameter(property = "maven.buildNumber.timestampFormat", defaultValue = "")
     private String timestampFormat;
 
     /**
      * The timezone of the generated timestamp. If blank will default to {@link TimeZone#getDefault()}
      */
-    @Parameter( property = "maven.buildNumber.timestampTimeZone", defaultValue = "" )
+    @Parameter(property = "maven.buildNumber.timestampTimeZone", defaultValue = "")
     private String timezone;
 
     /**
      * Execute this only once in root project of a multi module build.
      */
-    @Parameter( defaultValue = "false" )
+    @Parameter(defaultValue = "false")
     private boolean executeRootOnly;
 
-    public void execute()
-    {
-        if ( skip )
-        {
-            getLog().info( "Skipping execution." );
+    public void execute() {
+        if (skip) {
+            getLog().info("Skipping execution.");
             return;
         }
 
-        if ( session.getCurrentProject().isExecutionRoot() && !executeRootOnly )
-        {
-            getLog().info( "Skipping because we are not in root module." );
+        if (session.getCurrentProject().isExecutionRoot() && !executeRootOnly) {
+            getLog().info("Skipping because we are not in root module.");
         }
 
-        String timestampString = session.getTopLevelProject().getProperties().getProperty( timestampPropertyName );
+        String timestampString = session.getTopLevelProject().getProperties().getProperty(timestampPropertyName);
 
         // Check if the plugin has already run in the current build.
-        if ( timestampString != null )
-        {
-            getLog().debug( "Using previously created timestamp." );
+        if (timestampString != null) {
+            getLog().debug("Using previously created timestamp.");
             return;
         }
 
-        timestampString = Utils.createTimestamp( timestampFormat, timezone );
+        timestampString = Utils.createTimestamp(timestampFormat, timezone);
 
-        getLog().debug( "Storing timestamp property: " + timestampPropertyName + " " + timestampString );
+        getLog().debug("Storing timestamp property: " + timestampPropertyName + " " + timestampString);
 
-        for ( MavenProject project : session.getProjectDependencyGraph().getSortedProjects() )
-        {
-            getLog().debug( "Storing timestamp property in project " + project.getId() );
-            project.getProperties().setProperty( timestampPropertyName, timestampString );
+        for (MavenProject project : session.getProjectDependencyGraph().getSortedProjects()) {
+            getLog().debug("Storing timestamp property in project " + project.getId());
+            project.getProperties().setProperty(timestampPropertyName, timestampString);
         }
     }
 }

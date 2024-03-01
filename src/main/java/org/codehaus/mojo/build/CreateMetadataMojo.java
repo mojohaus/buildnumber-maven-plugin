@@ -20,7 +20,6 @@ package org.codehaus.mojo.build;
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -48,17 +47,19 @@ import org.codehaus.plexus.util.StringUtils;
  * or more java property files together with a set of user provided properties. It also has option to add the output
  * file to resource classpath for jar packaging.
  */
-@Mojo( name = "create-metadata", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresProject = true, threadSafe = true)
-public class CreateMetadataMojo
-    extends AbstractScmMojo
-{
+@Mojo(
+        name = "create-metadata",
+        defaultPhase = LifecyclePhase.GENERATE_RESOURCES,
+        requiresProject = true,
+        threadSafe = true)
+public class CreateMetadataMojo extends AbstractScmMojo {
 
     /**
      * Application name
      *
      * @since 1.4
      */
-    @Parameter( defaultValue = "${project.name}" )
+    @Parameter(defaultValue = "${project.name}")
     private String applicationName;
 
     /**
@@ -66,7 +67,7 @@ public class CreateMetadataMojo
      *
      * @since 1.4
      */
-    @Parameter( defaultValue = "name" )
+    @Parameter(defaultValue = "name")
     private String applicationPropertyName;
 
     /**
@@ -74,7 +75,7 @@ public class CreateMetadataMojo
      *
      * @since 1.4
      */
-    @Parameter( defaultValue = "version" )
+    @Parameter(defaultValue = "version")
     private String versionPropertyName;
 
     /**
@@ -82,7 +83,7 @@ public class CreateMetadataMojo
      *
      * @since 1.4
      */
-    @Parameter( defaultValue = "${project.version}" )
+    @Parameter(defaultValue = "${project.version}")
     private String version;
 
     /**
@@ -90,7 +91,7 @@ public class CreateMetadataMojo
      *
      * @since 1.4
      */
-    @Parameter( defaultValue = "revision" )
+    @Parameter(defaultValue = "revision")
     private String revisionPropertyName;
 
     /**
@@ -98,7 +99,7 @@ public class CreateMetadataMojo
      *
      * @since 1.4
      */
-    @Parameter( defaultValue = "timestamp" )
+    @Parameter(defaultValue = "timestamp")
     private String timestampPropertyName;
 
     /**
@@ -106,13 +107,13 @@ public class CreateMetadataMojo
      *
      * @since 1.4
      */
-    @Parameter( property = "maven.build.timestamp.format" )
+    @Parameter(property = "maven.build.timestamp.format")
     private String timestampFormat;
 
     /**
      * The timezone of the generated timestamp. If blank will default to {@link TimeZone#getDefault()}
      */
-    @Parameter( property = "maven.buildNumber.timestampTimeZone", defaultValue = "" )
+    @Parameter(property = "maven.buildNumber.timestampTimeZone", defaultValue = "")
     private String timezone;
 
     /**
@@ -120,7 +121,7 @@ public class CreateMetadataMojo
      *
      * @since 1.4
      */
-    @Parameter( defaultValue = "${project.build.directory}/generated/build-metadata", required = true )
+    @Parameter(defaultValue = "${project.build.directory}/generated/build-metadata", required = true)
     private File outputDirectory;
 
     /**
@@ -128,7 +129,7 @@ public class CreateMetadataMojo
      *
      * @since 1.4
      */
-    @Parameter( defaultValue = "build.properties", required = true )
+    @Parameter(defaultValue = "build.properties", required = true)
     private String outputName;
 
     /**
@@ -137,7 +138,7 @@ public class CreateMetadataMojo
      *
      * @since 1.4
      */
-    @Parameter( defaultValue = "false" )
+    @Parameter(defaultValue = "false")
     private boolean addOutputDirectoryToResources;
 
     /**
@@ -145,7 +146,7 @@ public class CreateMetadataMojo
      *
      * @since 1.4
      */
-    @Parameter( defaultValue = "false" )
+    @Parameter(defaultValue = "false")
     private boolean attach;
 
     /**
@@ -153,7 +154,7 @@ public class CreateMetadataMojo
      *
      * @since 3.0
      */
-    @Parameter( defaultValue = "build" )
+    @Parameter(defaultValue = "build")
     private String classifier;
 
     /**
@@ -177,7 +178,7 @@ public class CreateMetadataMojo
      *
      * @since 3.0
      */
-    @Parameter( defaultValue = "false" )
+    @Parameter(defaultValue = "false")
     private boolean autoDetectOutputFormat;
 
     /**
@@ -186,97 +187,72 @@ public class CreateMetadataMojo
     @Component
     private MavenProjectHelper projectHelper;
 
-    public void execute()
-        throws MojoExecutionException, MojoFailureException
-    {
+    public void execute() throws MojoExecutionException, MojoFailureException {
 
-        if ( skip )
-        {
-            getLog().info( "Skipping execution." );
+        if (skip) {
+            getLog().info("Skipping execution.");
             return;
         }
 
         Properties props = new Properties();
-        props.put( this.applicationPropertyName, applicationName );
-        props.put( this.versionPropertyName, version );
-        props.put( this.timestampPropertyName, Utils.createTimestamp( this.timestampFormat, timezone ) );
-        props.put( this.revisionPropertyName, this.getRevision() );
+        props.put(this.applicationPropertyName, applicationName);
+        props.put(this.versionPropertyName, version);
+        props.put(this.timestampPropertyName, Utils.createTimestamp(this.timestampFormat, timezone));
+        props.put(this.revisionPropertyName, this.getRevision());
         properties.entrySet().forEach(entry -> props.put(entry.getKey(), entry.getValue()));
 
-        File outputFile = new File( outputDirectory, outputName );
-        outputFiles.add( outputFile );
+        File outputFile = new File(outputDirectory, outputName);
+        outputFiles.add(outputFile);
 
-        for ( File file : outputFiles )
-        {
+        for (File file : outputFiles) {
             file.getParentFile().mkdirs();
-            writeToFile( props, file );
+            writeToFile(props, file);
         }
 
-        if ( attach )
-        {
-            projectHelper.attachArtifact( this.project, "properties", this.classifier, outputFile );
+        if (attach) {
+            projectHelper.attachArtifact(this.project, "properties", this.classifier, outputFile);
         }
 
-        if ( this.addOutputDirectoryToResources )
-        {
+        if (this.addOutputDirectoryToResources) {
             Resource resource = new Resource();
-            resource.setDirectory( outputDirectory.getAbsolutePath() );
+            resource.setDirectory(outputDirectory.getAbsolutePath());
 
-            project.addResource( resource );
+            project.addResource(resource);
         }
     }
 
-    private void writeToFile( Properties props, File file )
-        throws MojoFailureException
-    {
-        try
-        {
-            if ( this.autoDetectOutputFormat )
-            {
-                OutputFormat outputFormat = OutputFormat.getOutputFormatFor( file.getName() );
-                writeToFile( props, file, outputFormat );
+    private void writeToFile(Properties props, File file) throws MojoFailureException {
+        try {
+            if (this.autoDetectOutputFormat) {
+                OutputFormat outputFormat = OutputFormat.getOutputFormatFor(file.getName());
+                writeToFile(props, file, outputFormat);
+            } else {
+                writeToFile(props, file, OutputFormat.DEFAULT_FORMAT);
             }
-            else
-            {
-                writeToFile( props, file, OutputFormat.DEFAULT_FORMAT );
-            }
-        }
-        catch ( IOException e )
-        {
-            throw new MojoFailureException( "Unable to store output to " + file, e );
+        } catch (IOException e) {
+            throw new MojoFailureException("Unable to store output to " + file, e);
         }
     }
 
-    private void writeToFile( Properties props, File file, OutputFormat outputFormat )
-        throws IOException
-    {
-        try (OutputStream out = new FileOutputStream( file ))
-        {
-            outputFormat.write( props, out );
+    private void writeToFile(Properties props, File file, OutputFormat outputFormat) throws IOException {
+        try (OutputStream out = new FileOutputStream(file)) {
+            outputFormat.write(props, out);
         }
     }
 
-    public String getRevision()
-        throws MojoExecutionException
-    {
-        try
-        {
+    public String getRevision() throws MojoExecutionException {
+        try {
             return this.getScmRevision();
-        }
-        catch ( ScmException e )
-        {
-            if ( !StringUtils.isEmpty( revisionOnScmFailure ) )
-            {
-                getLog().warn( "Cannot get the revision information from the scm repository, proceeding with "
-                    + "revision of " + revisionOnScmFailure + " : \n" + e.getLocalizedMessage() );
+        } catch (ScmException e) {
+            if (!StringUtils.isEmpty(revisionOnScmFailure)) {
+                getLog().warn("Cannot get the revision information from the scm repository, proceeding with "
+                        + "revision of " + revisionOnScmFailure + " : \n" + e.getLocalizedMessage());
 
                 return revisionOnScmFailure;
             }
 
-            throw new MojoExecutionException( "Cannot get the revision information from the scm repository : \n"
-                + e.getLocalizedMessage(), e );
-
+            throw new MojoExecutionException(
+                    "Cannot get the revision information from the scm repository : \n" + e.getLocalizedMessage(), e);
         }
     }
-
 }

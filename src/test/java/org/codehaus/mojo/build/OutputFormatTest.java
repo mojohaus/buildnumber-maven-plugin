@@ -7,30 +7,26 @@ import static org.junit.Assert.*;
 /**
  * Created by conni on 11/10/16.
  */
-public class OutputFormatTest
-{
+public class OutputFormatTest {
 
     @Test
-    public void defaultIsPropertiesFormat()
-    {
-        OutputFormat outputFormat = OutputFormat.getOutputFormatFor( "illegal" );
+    public void defaultIsPropertiesFormat() {
+        OutputFormat outputFormat = OutputFormat.getOutputFormatFor("illegal");
 
-        assertTrue( outputFormat instanceof PropertiesOutputFormat );
+        assertTrue(outputFormat instanceof PropertiesOutputFormat);
     }
 
     @Test
-    public void jsonForForDotJson()
-    {
-        OutputFormat outputFormat = OutputFormat.getOutputFormatFor( "file.json" );
+    public void jsonForForDotJson() {
+        OutputFormat outputFormat = OutputFormat.getOutputFormatFor("file.json");
 
-        assertTrue( outputFormat instanceof JsonOutputFormat );
+        assertTrue(outputFormat instanceof JsonOutputFormat);
     }
 
     @Test
-    public void propertiesForForDotProperties()
-    {
-        OutputFormat outputFormat = OutputFormat.getOutputFormatFor( "file.properties" );
+    public void propertiesForForDotProperties() {
+        OutputFormat outputFormat = OutputFormat.getOutputFormatFor("file.properties");
 
-        assertTrue( outputFormat instanceof PropertiesOutputFormat );
+        assertTrue(outputFormat instanceof PropertiesOutputFormat);
     }
 }

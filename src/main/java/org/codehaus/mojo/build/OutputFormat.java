@@ -20,24 +20,19 @@ package org.codehaus.mojo.build;
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Properties;
 
-public abstract class OutputFormat
-{
+public abstract class OutputFormat {
     static final OutputFormat DEFAULT_FORMAT = new PropertiesOutputFormat();
 
     private static final OutputFormat[] FORMATS =
-        new OutputFormat[] { new JsonOutputFormat(), OutputFormat.DEFAULT_FORMAT };
+            new OutputFormat[] {new JsonOutputFormat(), OutputFormat.DEFAULT_FORMAT};
 
-    public static OutputFormat getOutputFormatFor( String fileName )
-    {
-        for ( OutputFormat outputFormat : OutputFormat.FORMATS )
-        {
-            if ( outputFormat.handles( fileName ) )
-            {
+    public static OutputFormat getOutputFormatFor(String fileName) {
+        for (OutputFormat outputFormat : OutputFormat.FORMATS) {
+            if (outputFormat.handles(fileName)) {
                 return outputFormat;
             }
         }
@@ -45,8 +40,7 @@ public abstract class OutputFormat
         return OutputFormat.DEFAULT_FORMAT;
     }
 
-    public abstract boolean handles( String fileName );
+    public abstract boolean handles(String fileName);
 
-    public abstract void write( Properties props, OutputStream out )
-        throws IOException;
+    public abstract void write(Properties props, OutputStream out) throws IOException;
 }

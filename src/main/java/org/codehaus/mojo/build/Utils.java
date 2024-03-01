@@ -20,7 +20,6 @@ package org.codehaus.mojo.build;
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,40 +27,29 @@ import java.util.TimeZone;
 
 import org.apache.commons.lang.StringUtils;
 
-public class Utils
-{
-    private Utils()
-    {
+public class Utils {
+    private Utils() {}
+
+    public static String createTimestamp(String timestampFormat, String timeZoneId) {
+        return createTimestamp(timestampFormat, timeZoneId, null);
     }
 
-    public static String createTimestamp( String timestampFormat, String timeZoneId )
-    {
-        return createTimestamp( timestampFormat, timeZoneId, null );
-    }
+    public static String createTimestamp(String timestampFormat, String timeZoneId, Date now) {
+        if (null == now) now = Calendar.getInstance().getTime();
 
-    public static String createTimestamp( String timestampFormat, String timeZoneId, Date now )
-    {
-        if ( null == now )
-            now = Calendar.getInstance().getTime();
-
-        if ( StringUtils.isBlank( timestampFormat ) )
-        {
-            return String.valueOf( now.getTime() );
-        }
-        else
-        {
-            SimpleDateFormat dateFormat = new SimpleDateFormat( timestampFormat );
-            dateFormat.setTimeZone( getTimeZone( timeZoneId ) );
-            return dateFormat.format( now );
+        if (StringUtils.isBlank(timestampFormat)) {
+            return String.valueOf(now.getTime());
+        } else {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(timestampFormat);
+            dateFormat.setTimeZone(getTimeZone(timeZoneId));
+            return dateFormat.format(now);
         }
     }
 
-    private static TimeZone getTimeZone( String timeZoneId )
-    {
+    private static TimeZone getTimeZone(String timeZoneId) {
         TimeZone timeZone = TimeZone.getDefault();
-        if ( StringUtils.isNotBlank( timeZoneId ) )
-        {
-            timeZone = TimeZone.getTimeZone( timeZoneId );
+        if (StringUtils.isNotBlank(timeZoneId)) {
+            timeZone = TimeZone.getTimeZone(timeZoneId);
         }
         return timeZone;
     }

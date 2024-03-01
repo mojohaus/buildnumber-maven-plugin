@@ -20,7 +20,6 @@ package org.codehaus.mojo.build;
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 import java.io.File;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -40,22 +39,20 @@ import org.codehaus.plexus.util.StringUtils;
  * @author Tomas Pollak
  * @since 1.0-beta-4
  */
-@Mojo( name = "hgchangeset", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true )
-public class HgChangeSetMojo
-    extends AbstractMojo
-{
+@Mojo(name = "hgchangeset", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true)
+public class HgChangeSetMojo extends AbstractMojo {
     /**
      * Whether to skip this execution.
      *
      * @since 1.3
      */
-    @Parameter( property = "maven.buildNumber.skip", defaultValue = "false" )
+    @Parameter(property = "maven.buildNumber.skip", defaultValue = "false")
     private boolean skip;
 
     /**
      * The maven project.
      */
-    @Parameter( defaultValue = "${project}", required = true, readonly = true )
+    @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject project;
 
     /**
@@ -63,7 +60,7 @@ public class HgChangeSetMojo
      *
      * @since 1.0
      */
-    @Parameter( property = "maven.changeSet.scmDirectory", defaultValue = "${basedir}" )
+    @Parameter(property = "maven.changeSet.scmDirectory", defaultValue = "${basedir}")
     private File scmDirectory;
 
     /**
@@ -72,108 +69,86 @@ public class HgChangeSetMojo
      *
      * @since 1.5
      */
-    @Parameter( property = "maven.buildNumber.useLastChangeSetInDirectory", defaultValue = "false" )
+    @Parameter(property = "maven.buildNumber.useLastChangeSetInDirectory", defaultValue = "false")
     private Boolean useLastChangeSetInDirectory;
 
-    private void checkResult( ScmResult result )
-        throws MojoExecutionException
-    {
-        if ( !result.isSuccess() )
-        {
-            getLog().debug( "Provider message:" );
-            getLog().debug( result.getProviderMessage() == null ? "" : result.getProviderMessage() );
-            getLog().debug( "Command output:" );
-            getLog().debug( result.getCommandOutput() == null ? "" : result.getCommandOutput() );
-            throw new MojoExecutionException( "Command failed."
-                + StringUtils.defaultString( result.getProviderMessage() ) );
+    private void checkResult(ScmResult result) throws MojoExecutionException {
+        if (!result.isSuccess()) {
+            getLog().debug("Provider message:");
+            getLog().debug(result.getProviderMessage() == null ? "" : result.getProviderMessage());
+            getLog().debug("Command output:");
+            getLog().debug(result.getCommandOutput() == null ? "" : result.getCommandOutput());
+            throw new MojoExecutionException(
+                    "Command failed." + StringUtils.defaultString(result.getProviderMessage()));
         }
     }
 
-    public void execute()
-        throws MojoExecutionException
-    {
-        if ( skip )
-        {
-            getLog().info( "Skipping execution." );
+    public void execute() throws MojoExecutionException {
+        if (skip) {
+            getLog().info("Skipping execution.");
             return;
         }
 
-        try
-        {
+        try {
             String previousChangeSet = getChangeSetProperty();
             String previousChangeSetDate = getChangeSetDateProperty();
-            if ( previousChangeSet == null || previousChangeSetDate == null )
-            {
+            if (previousChangeSet == null || previousChangeSetDate == null) {
                 String changeSet = getChangeSet();
                 String changeSetDate = getChangeSetDate();
-                getLog().info( "Setting Mercurial Changeset: " + changeSet );
-                getLog().info( "Setting Mercurial Changeset Date: " + changeSetDate );
-                setChangeSetProperty( changeSet );
-                setChangeSetDateProperty( changeSetDate );
+                getLog().info("Setting Mercurial Changeset: " + changeSet);
+                getLog().info("Setting Mercurial Changeset Date: " + changeSetDate);
+                setChangeSetProperty(changeSet);
+                setChangeSetDateProperty(changeSetDate);
             }
-        }
-        catch ( ScmException e )
-        {
-            throw new MojoExecutionException( "SCM Exception", e );
+        } catch (ScmException e) {
+            throw new MojoExecutionException("SCM Exception", e);
         }
     }
 
-    protected String getHgCommandOutput( String[] command )
-        throws ScmException, MojoExecutionException
-    {
-        HgOutputConsumer consumer = new HgOutputConsumer( );
-        ScmResult result = HgUtils.execute( consumer, scmDirectory, command );
-        checkResult( result );
+    protected String getHgCommandOutput(String[] command) throws ScmException, MojoExecutionException {
+        HgOutputConsumer consumer = new HgOutputConsumer();
+        ScmResult result = HgUtils.execute(consumer, scmDirectory, command);
+        checkResult(result);
         return consumer.getOutput();
     }
 
-    protected String getChangeSet()
-        throws ScmException, MojoExecutionException
-    {
-        return getHgCommandOutput( useLastChangeSetInDirectory
-                        ? new String[] { "log", "-l1", "--template", "\"{node|short}\"", "." }
-                        : new String[] { "id", "-i" } );
+    protected String getChangeSet() throws ScmException, MojoExecutionException {
+        return getHgCommandOutput(
+                useLastChangeSetInDirectory
+                        ? new String[] {"log", "-l1", "--template", "\"{node|short}\"", "."}
+                        : new String[] {"id", "-i"});
     }
 
-    protected String getChangeSetDate()
-        throws ScmException, MojoExecutionException
-    {
-        return getHgCommandOutput( useLastChangeSetInDirectory
-                        ? new String[] { "log", "-l1", "--template", "\"{date|isodate}\"", "." }
-                        : new String[] { "log", "-r", ".", "--template", "\"{date|isodate}\"" } );
+    protected String getChangeSetDate() throws ScmException, MojoExecutionException {
+        return getHgCommandOutput(
+                useLastChangeSetInDirectory
+                        ? new String[] {"log", "-l1", "--template", "\"{date|isodate}\"", "."}
+                        : new String[] {"log", "-r", ".", "--template", "\"{date|isodate}\""});
     }
 
-    protected String getChangeSetDateProperty()
-    {
-        return getProperty( "changeSetDate" );
+    protected String getChangeSetDateProperty() {
+        return getProperty("changeSetDate");
     }
 
-    protected String getChangeSetProperty()
-    {
-        return getProperty( "changeSet" );
+    protected String getChangeSetProperty() {
+        return getProperty("changeSet");
     }
 
-    protected String getProperty( String property )
-    {
-        return project.getProperties().getProperty( property );
+    protected String getProperty(String property) {
+        return project.getProperties().getProperty(property);
     }
 
-    private void setChangeSetDateProperty( String changeSetDate )
-    {
-        setProperty( "changeSetDate", changeSetDate );
+    private void setChangeSetDateProperty(String changeSetDate) {
+        setProperty("changeSetDate", changeSetDate);
     }
 
-    private void setChangeSetProperty( String changeSet )
-    {
-        setProperty( "changeSet", changeSet );
+    private void setChangeSetProperty(String changeSet) {
+        setProperty("changeSet", changeSet);
     }
 
-    private void setProperty( String property, String value )
-    {
-        if ( value != null )
-        {
-            project.getProperties().put( property, value );
+    private void setProperty(String property, String value) {
+        if (value != null) {
+            project.getProperties().put(property, value);
         }
     }
-
 }
