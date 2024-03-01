@@ -84,7 +84,7 @@
     <maven.scm.version>2.0.1</maven.scm.version>
     <mojo.java.target>8</mojo.java.target>
     <maven.it.version>${mavenVersion}</maven.it.version>
-    <takari.plugin.testing.version>3.0.0</takari.plugin.testing.version>
+    <takari.plugin.testing.version>3.0.2</takari.plugin.testing.version>
     <takari-lifecycle-plugin.version>2.0.8</takari-lifecycle-plugin.version>
     <test.excludes>**/it/**</test.excludes>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
