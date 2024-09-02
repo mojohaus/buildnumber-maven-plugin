@@ -25,6 +25,8 @@ under the License.
       <answer>
         <p>Yes, set the plugin parameter </p> <source> &lt;revisionOnScmFailure&gt;</source> <p>to prevent 
         the plugin from throwing an exception if SCM information is not found.</p>
+        <p>The other option is to use <source>-Dmaven.buildNumber.ignoreEmptyScmUrl=true -Dmaven.buildNumber.scmProvider=git/svn/</source>
+        Default is git</p>
       </answer>
     </faq>
 
