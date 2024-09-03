@@ -55,4 +55,19 @@ public class CreateMetadataMojoTest {
         Assert.assertTrue(new File(testDir, "target/generated/build-metadata/build.properties").exists());
         Assert.assertTrue(new File(testDir, "target/classes/build.properties").exists());
     }
+
+    @Test
+    public void testBasicConfigurationNoScm() throws Exception {
+        File projDir = resources.getBasedir("create-metadata-it-no-scm");
+
+        MavenExecution mavenExec = maven.forProject(projDir);
+        MavenExecutionResult result = mavenExec.withCliOption("-e").execute("clean", "test");
+        result.assertErrorFreeLog();
+
+        File testDir = result.getBasedir();
+        Assert.assertTrue(new File(testDir, "target/file1.properties").exists());
+        Assert.assertTrue(new File(testDir, "target/xxx/file1.properties").exists());
+        Assert.assertTrue(new File(testDir, "target/generated/build-metadata/build.properties").exists());
+        Assert.assertTrue(new File(testDir, "target/classes/build.properties").exists());
+    }
 }

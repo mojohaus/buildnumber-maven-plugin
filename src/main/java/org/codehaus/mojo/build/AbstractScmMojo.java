@@ -136,6 +136,20 @@ public abstract class AbstractScmMojo extends AbstractMojo {
     protected ScmManager scmManager;
 
     /**
+     * Ignore error when scm url from pom is empty and replace by scm:scmProvider {@link #scmProvider}
+     * @since 3.2.1
+     */
+    @Parameter(property = "maven.buildNumber.ignoreEmptyScmUrl", defaultValue = "false")
+    private boolean ignoreEmptyScmUrl;
+
+    /**
+     * When scm url is empty, scm provider is needed {@link #ignoreEmptyScmUrl}
+     * @since 3.2.1
+     */
+    @Parameter(property = "maven.buildNumber.scmProvider", defaultValue = "git")
+    private String scmProvider;
+
+    /**
      * Maven Security Dispatcher
      *
      * @since 1.4
@@ -176,8 +190,9 @@ public abstract class AbstractScmMojo extends AbstractMojo {
     }
 
     protected ScmRepository getScmRepository() throws ScmException {
+        String repoUrl = !StringUtils.isBlank(this.scmConnectionUrl) ? scmConnectionUrl : scmDeveloperConnectionUrl;
         ScmRepository repository = scmManager.makeScmRepository(
-                !StringUtils.isBlank(this.scmConnectionUrl) ? scmConnectionUrl : scmDeveloperConnectionUrl);
+                StringUtils.isBlank(repoUrl) ? (ignoreEmptyScmUrl ? "scm:" + scmProvider + ":" : "") : repoUrl);
 
         ScmProviderRepository scmRepo = repository.getProviderRepository();
 
