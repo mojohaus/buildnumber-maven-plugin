@@ -318,6 +318,9 @@ public class CreateMojo extends AbstractScmMojo {
                 } else if (s.startsWith("scmVersion")) {
                     useScm = true;
                     itemAry[i] = getRevision();
+                } else if (s.startsWith("scmBranch")) {
+                    useScm = true;
+                    itemAry[i] = getScmBranch();
                 } else if (s.startsWith("buildNumber")) {
                     // check for properties file
                     File propertiesFile = this.buildNumberPropertiesFileLocation;
