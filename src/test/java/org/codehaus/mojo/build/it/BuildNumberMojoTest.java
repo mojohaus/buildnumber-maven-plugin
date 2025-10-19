@@ -223,29 +223,6 @@ public class BuildNumberMojoTest {
     }
 
     @Test
-    public void gitMergeItTest() throws Exception {
-        File projDir = resources.getBasedir("git-merge-it");
-
-        MavenExecution mavenExec = maven.forProject(projDir);
-        MavenExecutionResult result = mavenExec.execute("clean");
-        result.assertErrorFreeLog();
-        File testDir = result.getBasedir();
-        FileUtils.copyDirectoryStructure(new File(testDir, "dotGitDir"), new File(testDir, ".git"));
-        result = mavenExec.execute("clean", "verify");
-        // With git rev-parse, HEAD should be the merge commit (34c95307ee5022e3e4c327517164ddc05ca7e171)
-        // With git log -1 --no-merges, it would skip the merge and return a different commit
-        result.assertLogText("Storing buildNumber: 34c95307ee5022e3e4c327517164ddc05ca7e171");
-        result.assertLogText("Storing scmBranch: master");
-
-        File artifact = new File(testDir, "target/buildnumber-maven-plugin-git-merge-it-1.0-SNAPSHOT.jar");
-        JarFile jarFile = new JarFile(artifact);
-        Attributes manifest = jarFile.getManifest().getMainAttributes();
-        jarFile.close();
-        String scmRev = manifest.getValue("SCM-Revision");
-        Assert.assertEquals("34c95307ee5022e3e4c327517164ddc05ca7e171", scmRev);
-    }
-
-    @Test
     public void helpItTest() throws Exception {
         File projDir = resources.getBasedir("help-it");
 

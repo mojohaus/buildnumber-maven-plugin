@@ -26,7 +26,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
+import org.apache.maven.scm.CommandParameters;
 import org.apache.maven.scm.ScmBranch;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFileSet;
@@ -186,6 +188,10 @@ public class TestCreateMojo {
                 throw new ScmRepositoryException("No SCM for testing.");
             }
 
+            public Optional<ScmRepository> makeProviderScmRepository(File file) {
+                return Optional.empty();
+            }
+
             public List<String> validateScmRepository(String string) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
@@ -259,6 +265,11 @@ public class TestCreateMojo {
             }
 
             public CheckInScmResult checkIn(ScmRepository sr, ScmFileSet sfs, ScmVersion sv, String string)
+                    throws ScmException {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            public CheckInScmResult checkIn(ScmRepository sr, ScmFileSet sfs, CommandParameters commandParameters)
                     throws ScmException {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
