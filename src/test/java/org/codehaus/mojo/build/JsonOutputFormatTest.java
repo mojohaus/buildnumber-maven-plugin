@@ -6,16 +6,18 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.google.gson.Gson;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by conni on 11/10/16.
  */
-public class JsonOutputFormatTest {
+class JsonOutputFormatTest {
 
     private OutputFormat outputFormat = new JsonOutputFormat();
 
@@ -23,24 +25,24 @@ public class JsonOutputFormatTest {
 
     private Gson gson = new Gson();
 
-    @Before
-    public void before() {
+    @BeforeEach
+    void before() {
         properties.put("key0", "value0");
         properties.put("key1", "value1");
     }
 
     @Test
-    public void handlesDotJson() {
+    void handlesDotJson() {
         assertTrue(outputFormat.handles("file.json"));
     }
 
     @Test
-    public void doesNotHandleNonJson() {
+    void doesNotHandleNonJson() {
         assertFalse(outputFormat.handles("file.other"));
     }
 
     @Test
-    public void writesJson() throws IOException {
+    void writesJson() throws Exception {
         String s = writePropertiesToString();
 
         Map<String, Object> map = gson.fromJson(s, Map.class);

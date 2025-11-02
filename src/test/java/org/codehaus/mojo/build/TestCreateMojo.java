@@ -57,20 +57,19 @@ import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.apache.maven.scm.repository.ScmRepositoryException;
 import org.apache.maven.scm.repository.UnknownRepositoryStructure;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestCreateMojo {
-    @Rule
-    public final TemporaryFolder folder = new TemporaryFolder();
+    @TempDir
+    public File folder;
 
     @Test
-    public void testMessageFormat() throws Exception {
+    void messageFormat() throws Exception {
         CreateMojo mojo = new CreateMojo();
         mojo.setFormat("At {1,time} on {1,date}, there was {2} on planet {0,number,integer}.");
         mojo.setItems(asList(7, "timestamp", "a disturbance in the Force"));
@@ -84,9 +83,9 @@ public class TestCreateMojo {
             String rev = mojo.getRevision();
             // https://bugs.openjdk.org/browse/JDK-8284840 from Java 20 date format changed
             assertTrue(
-                    "Revision '" + rev + "' has wrong format.",
                     rev.matches(
-                            "^At (\\d{1,2}:?){3}([  \\u202F])(AM|PM) on \\w{3} \\d{1,2}, \\d{4}, there was a disturbance in the Force on planet 7."));
+                            "^At (\\d{1,2}:?){3}([  \\u202F])(AM|PM) on \\w{3} \\d{1,2}, \\d{4}, there was a disturbance in the Force on planet 7."),
+                    "Revision '" + rev + "' has wrong format.");
 
         } finally {
             Locale.setDefault(currentLocale);
@@ -97,7 +96,7 @@ public class TestCreateMojo {
      * Test that dates are correctly formatted for different locales.
      */
     @Test
-    public void testLocale() throws Exception {
+    void locale() throws Exception {
         Date date = new Date(0); // the epoch
         CreateMojo mojo = new CreateMojo();
 
@@ -127,26 +126,26 @@ public class TestCreateMojo {
     }
 
     @Test
-    public void testSequenceFormat() throws Exception {
+    void sequenceFormat() throws Exception {
         CreateMojo mojo = new CreateMojo();
-        mojo.setBuildNumberPropertiesFileLocation(new File(folder.getRoot(), "target/buildNumber.properties"));
+        mojo.setBuildNumberPropertiesFileLocation(new File(folder, "target/buildNumber.properties"));
         mojo.setFormat("{0,number}.{1,number}.{2,number}");
         mojo.setItems(asList("buildNumber0", "buildNumber1", "buildNumber2"));
 
-        File file = new File(folder.getRoot(), "target/buildNumber.properties");
+        File file = new File(folder, "target/buildNumber.properties");
         file.delete();
 
         mojo.execute();
 
         String rev = mojo.getRevision();
 
-        assertTrue("Revision '" + rev + "' has wrong format.", rev.matches("(\\d+\\.?){3}"));
+        assertTrue(rev.matches("(\\d+\\.?){3}"), "Revision '" + rev + "' has wrong format.");
 
         assertTrue(file.exists());
     }
 
     @Test
-    public void testFilterBranchFromScmUrl() {
+    void filterBranchFromScmUrl() {
         CreateMojo mojo = new CreateMojo();
         String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/trunk";
         assertEquals("trunk", mojo.filterBranchFromScmUrl(scmUrlTrunk));
@@ -157,7 +156,7 @@ public class TestCreateMojo {
     }
 
     @Test
-    public void testFilterBranchFromScmUrlWithSubFolder() {
+    void filterBranchFromScmUrlWithSubFolder() {
         CreateMojo mojo = new CreateMojo();
         String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/trunk/subfolder";
         assertEquals("trunk", mojo.filterBranchFromScmUrl(scmUrlTrunk));
@@ -168,12 +167,12 @@ public class TestCreateMojo {
     }
 
     @Test
-    public void testSpecialItemScmVersion() throws Exception {
+    void specialItemScmVersion() throws Exception {
         CreateMojo mojo = new CreateMojo();
-        mojo.setBuildNumberPropertiesFileLocation(new File(folder.getRoot(), "target/buildNumber.properties"));
+        mojo.setBuildNumberPropertiesFileLocation(new File(folder, "target/buildNumber.properties"));
         mojo.setFormat("{0}-{1}-{2}");
         mojo.setItems(asList("buildNumber0", "scmVersion", "buildNumber0"));
-        File file = new File(folder.getRoot(), "target/buildNumber.properties");
+        File file = new File(folder, "target/buildNumber.properties");
         file.delete();
         mojo.setRevisionOnScmFailure("scmrevision");
         mojo.setScmManager(new ScmManager() {

@@ -20,12 +20,13 @@ import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
 import org.codehaus.plexus.util.cli.CommandLineUtils.StringStreamConsumer;
 import org.codehaus.plexus.util.cli.Commandline;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Ignore;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(MavenJUnitTestRunner.class)
 @MavenVersions({"3.6.3"})
@@ -42,8 +43,8 @@ public class BuildNumberMojoTest {
     }
 
     @Test
-    public void basicItTest() throws Exception {
-        Assume.assumeTrue(isSvn18());
+    void basicItTest() throws Exception {
+        Assumptions.assumeTrue(isSvn18());
 
         File projDir = resources.getBasedir("basic-it");
 
@@ -61,11 +62,11 @@ public class BuildNumberMojoTest {
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String scmRev = manifest.getValue("SCM-Revision");
-        Assert.assertEquals("14069", scmRev);
+        assertEquals("14069", scmRev);
     }
 
     @Test
-    public void basicItGitTest() throws Exception {
+    void basicItGitTest() throws Exception {
         File projDir = resources.getBasedir("basic-it-git");
 
         MavenExecution mavenExec = maven.forProject(projDir);
@@ -82,11 +83,11 @@ public class BuildNumberMojoTest {
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String scmRev = manifest.getValue("SCM-Revision");
-        Assert.assertEquals("6d36c746e82f00c5913954f9178f40224497b2f3", scmRev);
+        assertEquals("6d36c746e82f00c5913954f9178f40224497b2f3", scmRev);
     }
 
     @Test
-    public void basicItClearcaseScmTest() throws Exception {
+    void basicItClearcaseScmTest() throws Exception {
         File projDir = resources.getBasedir("basic-it-clearcase-scm");
 
         MavenExecution mavenExec = maven.forProject(projDir);
@@ -100,12 +101,12 @@ public class BuildNumberMojoTest {
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String scmRev = manifest.getValue("SCM-Revision");
-        Assert.assertEquals("foo", scmRev);
+        assertEquals("foo", scmRev);
     }
 
     @Test
-    public void basicItNoDevScmTest() throws Exception {
-        Assume.assumeTrue(isSvn18());
+    void basicItNoDevScmTest() throws Exception {
+        Assumptions.assumeTrue(isSvn18());
 
         File projDir = resources.getBasedir("basic-it-no-devscm");
 
@@ -123,12 +124,12 @@ public class BuildNumberMojoTest {
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String scmRev = manifest.getValue("SCM-Revision");
-        Assert.assertEquals("14069", scmRev);
+        assertEquals("14069", scmRev);
     }
 
     @Test
-    public void basicItSvnJavaTest() throws Exception {
-        Assume.assumeTrue(isSvn18());
+    void basicItSvnJavaTest() throws Exception {
+        Assumptions.assumeTrue(isSvn18());
 
         File projDir = resources.getBasedir("basic-it-svnjava");
 
@@ -146,11 +147,11 @@ public class BuildNumberMojoTest {
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String scmRev = manifest.getValue("SCM-Revision");
-        Assert.assertEquals("19665", scmRev);
+        assertEquals("19665", scmRev);
     }
 
     @Test
-    public void createTimestampItTest() throws Exception {
+    void createTimestampItTest() throws Exception {
         File projDir = resources.getBasedir("create-timestamp-it");
 
         MavenExecution mavenExec = maven.forProject(projDir);
@@ -162,11 +163,11 @@ public class BuildNumberMojoTest {
         jarFile.close();
         String timestamp = manifest.getValue("Build-Time");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Assert.assertNotNull(format.parse(timestamp));
+        assertNotNull(format.parse(timestamp));
     }
 
     @Test
-    public void legacyTimestampItTest() throws Exception {
+    void legacyTimestampItTest() throws Exception {
         File projDir = resources.getBasedir("legacy-timestamp-it");
 
         MavenExecution mavenExec = maven.forProject(projDir);
@@ -180,12 +181,12 @@ public class BuildNumberMojoTest {
         jarFile.close();
         String timestamp = manifest.getValue("Build-Time");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Assert.assertNotNull(format.parse(timestamp));
+        assertNotNull(format.parse(timestamp));
     }
 
     @Test
-    @Ignore("svn.codehaus.org does not exist anymore")
-    public void failLocalChangeItTest() throws Exception {
+    @Disabled("svn.codehaus.org does not exist anymore")
+    void failLocalChangeItTest() throws Exception {
         File projDir = resources.getBasedir("failed-local-change");
 
         MavenExecution mavenExec = maven.forProject(projDir);
@@ -201,7 +202,7 @@ public class BuildNumberMojoTest {
     }
 
     @Test
-    public void gitBasicItMBUILDNUM66Test() throws Exception {
+    void gitBasicItMBUILDNUM66Test() throws Exception {
         File projDir = resources.getBasedir("git-basic-it-MBUILDNUM-66");
 
         MavenExecution mavenExec = maven.forProject(projDir);
@@ -219,11 +220,11 @@ public class BuildNumberMojoTest {
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String scmRev = manifest.getValue("SCM-Revision");
-        Assert.assertEquals("ee58acb27b6636a497c1185f80cd15f76134113f", scmRev);
+        assertEquals("ee58acb27b6636a497c1185f80cd15f76134113f", scmRev);
     }
 
     @Test
-    public void helpItTest() throws Exception {
+    void helpItTest() throws Exception {
         File projDir = resources.getBasedir("help-it");
 
         MavenExecution mavenExec = maven.forProject(projDir);
@@ -235,10 +236,10 @@ public class BuildNumberMojoTest {
         result.assertLogText("buildnumber:create-timestamp");
     }
 
-    @Test
-    @Ignore
     // this project needs a dotSvnDir
-    public void mBuildNum5Test() throws Exception {
+    @Test
+    @Disabled
+    void mBuildNum5Test() throws Exception {
         File projDir = resources.getBasedir("MBUILDNUM-5");
 
         MavenExecution mavenExec = maven.forProject(projDir);
@@ -247,7 +248,7 @@ public class BuildNumberMojoTest {
     }
 
     @Test
-    public void mBuildNum83Test() throws Exception {
+    void mBuildNum83Test() throws Exception {
         File projDir = resources.getBasedir("MBUILDNUM-83");
 
         MavenExecution mavenExec = maven.forProject(projDir);
@@ -260,11 +261,11 @@ public class BuildNumberMojoTest {
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String scmRev = manifest.getValue("SCM-Revision");
-        Assert.assertEquals("booom", scmRev); // ??? biim?
+        assertEquals("booom", scmRev); // ??? biim?
     }
 
     @Test
-    public void mBuildNum85Test() throws Exception {
+    void mBuildNum85Test() throws Exception {
         File projDir = resources.getBasedir("MBUILDNUM-85");
 
         MavenExecution mavenExec = maven.forProject(projDir);
@@ -273,8 +274,8 @@ public class BuildNumberMojoTest {
     }
 
     @Test
-    @Ignore("svn.codehaus.org does not exist anymore")
-    public void mojo1372Test() throws Exception {
+    @Disabled("svn.codehaus.org does not exist anymore")
+    void mojo1372Test() throws Exception {
         File projDir = resources.getBasedir("MOJO-1372");
 
         MavenExecution mavenExec = maven.forProject(projDir);
@@ -283,9 +284,9 @@ public class BuildNumberMojoTest {
     }
 
     @Test
-    @Ignore("svn.codehaus.org does not exist anymore")
-    public void Mojo1668Test() throws Exception {
-        Assume.assumeTrue(isSvn18());
+    @Disabled("svn.codehaus.org does not exist anymore")
+    void Mojo1668Test() throws Exception {
+        Assumptions.assumeTrue(isSvn18());
 
         File projDir = resources.getBasedir("MOJO-1668");
 
@@ -301,12 +302,12 @@ public class BuildNumberMojoTest {
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String buildDate = manifest.getValue("Build-Date");
-        Assert.assertTrue(buildDate.length() > 0);
+        assertTrue(buildDate.length() > 0);
     }
 
     @Test
-    @Ignore("svn.codehaus.org does not exist anymore")
-    public void noRevisionItTest() throws Exception {
+    @Disabled("svn.codehaus.org does not exist anymore")
+    void noRevisionItTest() throws Exception {
         File projDir = resources.getBasedir("norevision-it");
 
         MavenExecution mavenExec = maven.forProject(projDir);
@@ -319,11 +320,11 @@ public class BuildNumberMojoTest {
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String scmRev = manifest.getValue("SCM-Revision");
-        Assert.assertTrue(StringUtils.isBlank(scmRev));
+        assertTrue(StringUtils.isBlank(scmRev));
     }
 
     @Test
-    public void skipItTest() throws Exception {
+    void skipItTest() throws Exception {
         File projDir = resources.getBasedir("skip-it");
 
         MavenExecution mavenExec = maven.forProject(projDir);
@@ -336,7 +337,7 @@ public class BuildNumberMojoTest {
         Attributes manifest = jarFile.getManifest().getMainAttributes();
         jarFile.close();
         String buildDate = manifest.getValue("Build-Date");
-        Assert.assertTrue(StringUtils.isBlank(buildDate));
+        assertTrue(StringUtils.isBlank(buildDate));
     }
 
     private static boolean isSvn18() {
