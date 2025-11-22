@@ -34,6 +34,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -610,18 +611,22 @@ public class CreateMojo extends AbstractScmMojo {
         try {
             return this.getScmRevision();
         } catch (ScmException e) {
+            String warnMessage = "Cannot get the revision information from the scm repository";
             if (!StringUtils.isEmpty(revisionOnScmFailure)) {
-                getLog().warn("Cannot get the revision information from the scm repository, proceeding with "
-                        + "revision of " + revisionOnScmFailure + " : \n" + e.getLocalizedMessage());
+                getLog().warn(warnMessage + ", proceeding with " + "revision of " + revisionOnScmFailure + " : \n"
+                        + e.getLocalizedMessage());
 
                 setDoCheck(false);
                 setDoUpdate(false);
 
                 return revisionOnScmFailure;
             }
+            if (!failTheBuild) {
+                getLog().warn(warnMessage, e);
+                return "";
+            }
 
-            throw new MojoExecutionException(
-                    "Cannot get the revision information from the scm repository : \n" + e.getLocalizedMessage(), e);
+            throw new MojoExecutionException(warnMessage + " : \n" + e.getLocalizedMessage(), e);
         }
     }
 
@@ -686,5 +691,9 @@ public class CreateMojo extends AbstractScmMojo {
 
     public void setShortRevisionLength(int shortRevision) {
         this.shortRevisionLength = shortRevision;
+    }
+
+    public void setFailTheBuild(boolean failTheBuild) {
+        this.failTheBuild = failTheBuild;
     }
 }
