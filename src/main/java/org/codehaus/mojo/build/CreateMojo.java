@@ -547,6 +547,7 @@ public class CreateMojo extends AbstractScmMojo {
 
     private String getScmBranchFromUrl() throws MojoExecutionException {
         String scmUrl = null;
+        String scmRepositoryRoot = null;
         try {
             ScmRepository repository = getScmRepository();
             InfoScmResult scmResult = info(repository, new ScmFileSet(scmDirectory));
@@ -565,6 +566,7 @@ public class CreateMojo extends AbstractScmMojo {
             }
             if (!scmResult.getInfoItems().isEmpty()) {
                 InfoItem info = scmResult.getInfoItems().get(0);
+                scmRepositoryRoot = info.getRepositoryRoot();
                 scmUrl = info.getURL();
             }
         } catch (ScmException e) {
@@ -581,16 +583,29 @@ public class CreateMojo extends AbstractScmMojo {
                     "Cannot get the branch information from the scm repository : \n" + e.getLocalizedMessage(), e);
         }
 
-        return filterBranchFromScmUrl(scmUrl);
+        return filterBranchFromScmUrl(scmRepositoryRoot, scmUrl);
     }
 
-    protected String filterBranchFromScmUrl(String scmUrl) {
+    protected String filterBranchFromScmUrl(String scmRepositoryRoot, String scmUrl) {
         String scmBranch = "UNKNOWN";
-
-        if (StringUtils.contains(scmUrl, "/trunk")) {
+        if (!scmUrl.endsWith("/")) {
+            scmUrl += "/";
+        }
+        if (StringUtils.contains(scmUrl, "/trunk/")) {
             scmBranch = "trunk";
-        } else if (StringUtils.contains(scmUrl, "/branches") || StringUtils.contains(scmUrl, "/tags")) {
+        } else if (StringUtils.contains(scmUrl, "/branches/") || StringUtils.contains(scmUrl, "/tags/")) {
             scmBranch = scmUrl.replaceFirst(".*((branches|tags)/[^/]*).*", "$1");
+        } else if (StringUtils.isNotBlank(scmRepositoryRoot)
+                && StringUtils.isNotBlank(scmUrl)
+                && scmUrl.startsWith(scmRepositoryRoot)) {
+            String relativeURL = scmUrl.substring(scmRepositoryRoot.length());
+            if (relativeURL.startsWith("/")) {
+                relativeURL = relativeURL.substring(1);
+            }
+            scmBranch = relativeURL;
+        }
+        if (scmBranch.endsWith("/")) {
+            scmBranch = scmBranch.substring(0, scmBranch.length() - 1);
         }
         return scmBranch;
     }
