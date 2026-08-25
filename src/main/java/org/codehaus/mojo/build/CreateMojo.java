@@ -550,7 +550,6 @@ public class CreateMojo extends AbstractScmMojo {
 
     private String getScmBranchFromUrl() throws MojoExecutionException {
         String scmUrl = null;
-        String scmRepositoryRoot = null;
         try {
             ScmRepository repository = getScmRepository();
             InfoScmResult scmResult = info(repository, new ScmFileSet(scmDirectory));
@@ -569,7 +568,6 @@ public class CreateMojo extends AbstractScmMojo {
             }
             if (!scmResult.getInfoItems().isEmpty()) {
                 InfoItem info = scmResult.getInfoItems().get(0);
-                scmRepositoryRoot = info.getRepositoryRoot();
                 scmUrl = info.getURL();
             }
         } catch (ScmException e) {
@@ -586,10 +584,10 @@ public class CreateMojo extends AbstractScmMojo {
                     "Cannot get the branch information from the scm repository : \n" + e.getLocalizedMessage(), e);
         }
 
-        return filterBranchFromScmUrl(scmRepositoryRoot, scmUrl);
+        return filterBranchFromScmUrl(scmUrl);
     }
 
-    protected String filterBranchFromScmUrl(String scmRepositoryRoot, String scmUrl) {
+    protected String filterBranchFromScmUrl(String scmUrl) {
         String scmBranch = "UNKNOWN";
         if (!scmUrl.endsWith("/")) {
             scmUrl += "/";
@@ -707,5 +705,9 @@ public class CreateMojo extends AbstractScmMojo {
 
     public void setFailTheBuild(boolean failTheBuild) {
         this.failTheBuild = failTheBuild;
+    }
+
+    public void setScmBranchNamePattern(String scmBranchNamePattern) {
+        this.scmBranchNamePattern = scmBranchNamePattern;
     }
 }
