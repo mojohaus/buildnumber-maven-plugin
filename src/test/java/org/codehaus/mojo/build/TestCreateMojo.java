@@ -149,46 +149,50 @@ public class TestCreateMojo {
     public void testFilterBranchFromScmUrl() {
         CreateMojo mojo = new CreateMojo();
         String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/trunk";
-        assertEquals("trunk", mojo.filterBranchFromScmUrl(null, scmUrlTrunk));
+        assertEquals("trunk", mojo.filterBranchFromScmUrl(scmUrlTrunk));
         String scmUrlBranch = "https://mifos.dev.java.net/svn/mifos/branches/v1.2.x";
-        assertEquals("branches/v1.2.x", mojo.filterBranchFromScmUrl(null, scmUrlBranch));
+        assertEquals("branches/v1.2.x", mojo.filterBranchFromScmUrl(scmUrlBranch));
         String scmUrlTag = "https://mifos.dev.java.net/svn/mifos/tags/v1.2.1";
-        assertEquals("tags/v1.2.1", mojo.filterBranchFromScmUrl(null, scmUrlTag));
+        assertEquals("tags/v1.2.1", mojo.filterBranchFromScmUrl(scmUrlTag));
     }
 
     @Test
     public void testFilterBranchFromScmUrlWithSubFolder() {
         CreateMojo mojo = new CreateMojo();
         String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/trunk/subfolder";
-        assertEquals("trunk", mojo.filterBranchFromScmUrl(null, scmUrlTrunk));
+        assertEquals("trunk", mojo.filterBranchFromScmUrl(scmUrlTrunk));
         String scmUrlBranch = "https://mifos.dev.java.net/svn/mifos/branches/v1.2.x/subfolder";
-        assertEquals("branches/v1.2.x", mojo.filterBranchFromScmUrl(null, scmUrlBranch));
+        assertEquals("branches/v1.2.x", mojo.filterBranchFromScmUrl(scmUrlBranch));
         String scmUrlTag = "https://mifos.dev.java.net/svn/mifos/tags/v1.2.1/subfolder";
-        assertEquals("tags/v1.2.1", mojo.filterBranchFromScmUrl(null, scmUrlTag));
+        assertEquals("tags/v1.2.1", mojo.filterBranchFromScmUrl(scmUrlTag));
     }
 
     @Test
     public void testFilterNoneStdBranchFromScmUrl() {
         CreateMojo mojo = new CreateMojo();
-        String rootUrl = "https://mifos.dev.java.net/svn/mifos";
+        mojo.setScmBranchNamePattern(".*((dev-trunk)[^/]*).*");
         String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/dev-trunk";
-        assertEquals("dev-trunk", mojo.filterBranchFromScmUrl(rootUrl, scmUrlTrunk));
+        assertEquals("dev-trunk", mojo.filterBranchFromScmUrl(scmUrlTrunk));
+        mojo.setScmBranchNamePattern(".*((dev-branches)/[^/]*).*");
         String scmUrlBranch = "https://mifos.dev.java.net/svn/mifos/dev-branches/v1.2.x";
-        assertEquals("dev-branches/v1.2.x", mojo.filterBranchFromScmUrl(rootUrl, scmUrlBranch));
+        assertEquals("dev-branches/v1.2.x", mojo.filterBranchFromScmUrl(scmUrlBranch));
+        mojo.setScmBranchNamePattern(".*((dev-tags)/[^/]*).*");
         String scmUrlTag = "https://mifos.dev.java.net/svn/mifos/dev-tags/v1.2.1";
-        assertEquals("dev-tags/v1.2.1", mojo.filterBranchFromScmUrl(rootUrl, scmUrlTag));
+        assertEquals("dev-tags/v1.2.1", mojo.filterBranchFromScmUrl(scmUrlTag));
     }
 
     @Test
     public void testFilterNoneStdBranchFromScmUrlWithSubFolder() {
         CreateMojo mojo = new CreateMojo();
-        String rootUrl = "https://mifos.dev.java.net/svn/mifos";
+        mojo.setScmBranchNamePattern(".*((dev-trunk)[^/]*).*");
         String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/dev-trunk/subfolder";
-        assertEquals("dev-trunk/subfolder", mojo.filterBranchFromScmUrl(rootUrl, scmUrlTrunk));
+        assertEquals("dev-trunk", mojo.filterBranchFromScmUrl(scmUrlTrunk));
+        mojo.setScmBranchNamePattern(".*((dev-branches)/[^/]*).*");
         String scmUrlBranch = "https://mifos.dev.java.net/svn/mifos/dev-branches/v1.2.x/subfolder";
-        assertEquals("dev-branches/v1.2.x/subfolder", mojo.filterBranchFromScmUrl(rootUrl, scmUrlBranch));
+        assertEquals("dev-branches/v1.2.x", mojo.filterBranchFromScmUrl(scmUrlBranch));
+        mojo.setScmBranchNamePattern(".*((dev-tags)/[^/]*).*");
         String scmUrlTag = "https://mifos.dev.java.net/svn/mifos/dev-tags/v1.2.1/subfolder";
-        assertEquals("dev-tags/v1.2.1/subfolder", mojo.filterBranchFromScmUrl(rootUrl, scmUrlTag));
+        assertEquals("dev-tags/v1.2.1", mojo.filterBranchFromScmUrl(scmUrlTag));
     }
 
     @Test
