@@ -220,6 +220,9 @@ public class CreateMojo extends AbstractScmMojo {
     @Parameter(property = "maven.buildNumber.scmBranchPropertyName", defaultValue = "scmBranch")
     private String scmBranchPropertyName;
 
+    @Parameter(property = "maven.buildNumber.scmBranchNamePattern")
+    protected String scmBranchNamePattern;
+
     // ////////////////////////////////////// internal maven components ///////////////////////////////////
 
     /**
@@ -595,14 +598,8 @@ public class CreateMojo extends AbstractScmMojo {
             scmBranch = "trunk";
         } else if (StringUtils.contains(scmUrl, "/branches/") || StringUtils.contains(scmUrl, "/tags/")) {
             scmBranch = scmUrl.replaceFirst(".*((branches|tags)/[^/]*).*", "$1");
-        } else if (StringUtils.isNotBlank(scmRepositoryRoot)
-                && StringUtils.isNotBlank(scmUrl)
-                && scmUrl.startsWith(scmRepositoryRoot)) {
-            String relativeURL = scmUrl.substring(scmRepositoryRoot.length());
-            if (relativeURL.startsWith("/")) {
-                relativeURL = relativeURL.substring(1);
-            }
-            scmBranch = relativeURL;
+        } else if (StringUtils.isNotBlank(scmBranchNamePattern)) {
+            scmBranch = scmUrl.replaceFirst(scmBranchNamePattern, "$1");
         }
         if (scmBranch.endsWith("/")) {
             scmBranch = scmBranch.substring(0, scmBranch.length() - 1);
