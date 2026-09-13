@@ -168,6 +168,34 @@ public class TestCreateMojo {
     }
 
     @Test
+    public void testFilterNoneStdBranchFromScmUrl() {
+        CreateMojo mojo = new CreateMojo();
+        mojo.setScmBranchNamePattern(".*((dev-trunk)[^/]*).*");
+        String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/dev-trunk";
+        assertEquals("dev-trunk", mojo.filterBranchFromScmUrl(scmUrlTrunk));
+        mojo.setScmBranchNamePattern(".*((dev-branches)/[^/]*).*");
+        String scmUrlBranch = "https://mifos.dev.java.net/svn/mifos/dev-branches/v1.2.x";
+        assertEquals("dev-branches/v1.2.x", mojo.filterBranchFromScmUrl(scmUrlBranch));
+        mojo.setScmBranchNamePattern(".*((dev-tags)/[^/]*).*");
+        String scmUrlTag = "https://mifos.dev.java.net/svn/mifos/dev-tags/v1.2.1";
+        assertEquals("dev-tags/v1.2.1", mojo.filterBranchFromScmUrl(scmUrlTag));
+    }
+
+    @Test
+    public void testFilterNoneStdBranchFromScmUrlWithSubFolder() {
+        CreateMojo mojo = new CreateMojo();
+        mojo.setScmBranchNamePattern(".*((dev-trunk)[^/]*).*");
+        String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/dev-trunk/subfolder";
+        assertEquals("dev-trunk", mojo.filterBranchFromScmUrl(scmUrlTrunk));
+        mojo.setScmBranchNamePattern(".*((dev-branches)/[^/]*).*");
+        String scmUrlBranch = "https://mifos.dev.java.net/svn/mifos/dev-branches/v1.2.x/subfolder";
+        assertEquals("dev-branches/v1.2.x", mojo.filterBranchFromScmUrl(scmUrlBranch));
+        mojo.setScmBranchNamePattern(".*((dev-tags)/[^/]*).*");
+        String scmUrlTag = "https://mifos.dev.java.net/svn/mifos/dev-tags/v1.2.1/subfolder";
+        assertEquals("dev-tags/v1.2.1", mojo.filterBranchFromScmUrl(scmUrlTag));
+    }
+
+    @Test
     public void testSpecialItemScmVersion() throws Exception {
         CreateMojo mojo = new CreateMojo();
         mojo.setBuildNumberPropertiesFileLocation(new File(folder.getRoot(), "target/buildNumber.properties"));
