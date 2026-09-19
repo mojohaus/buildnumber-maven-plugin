@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 /**
@@ -44,9 +43,9 @@ public class JsonOutputFormatTest {
         String s = writePropertiesToString();
 
         Map<String, Object> map = gson.fromJson(s, Map.class);
-        assertThat(map.size(), is(2));
-        assertThat(map.get("key0"), is((Object) "value0"));
-        assertThat(map.get("key1"), is((Object) "value1"));
+        assertEquals(2, map.size());
+        assertEquals("value0", map.get("key0"));
+        assertEquals("value1", map.get("key1"));
     }
 
     private String writePropertiesToString() throws IOException {
