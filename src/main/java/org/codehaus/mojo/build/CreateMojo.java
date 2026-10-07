@@ -160,7 +160,7 @@ public class CreateMojo extends AbstractScmMojo {
 
     /**
      * Specify the corresponding items for the format message, as specified by java.text.MessageFormat. Special item
-     * values are "scmVersion", "timestamp" and "buildNumber[digits]", where [digits] are optional digits added to the
+     * values are "scmVersion", "scmBranch", "timestamp" and "buildNumber[digits]", where [digits] are optional digits added to the
      * end of the number to select a property.
      *
      * @since 1.0-beta-1
@@ -319,6 +319,9 @@ public class CreateMojo extends AbstractScmMojo {
                 } else if (s.startsWith("scmVersion")) {
                     useScm = true;
                     itemAry[i] = getRevision();
+                } else if (s.startsWith("scmBranch")) {
+                    useScm = true;
+                    itemAry[i] = getScmBranch();
                 } else if (s.startsWith("buildNumber")) {
                     // check for properties file
                     File propertiesFile = this.buildNumberPropertiesFileLocation;
