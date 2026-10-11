@@ -1,30 +1,30 @@
 package org.codehaus.mojo.build;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by conni on 11/10/16.
  */
-public class OutputFormatTest {
+class OutputFormatTest {
 
     @Test
-    public void defaultIsPropertiesFormat() {
+    void defaultIsPropertiesFormat() {
         OutputFormat outputFormat = OutputFormat.getOutputFormatFor("illegal");
 
         assertTrue(outputFormat instanceof PropertiesOutputFormat);
     }
 
     @Test
-    public void jsonForForDotJson() {
+    void jsonForForDotJson() {
         OutputFormat outputFormat = OutputFormat.getOutputFormatFor("file.json");
 
         assertTrue(outputFormat instanceof JsonOutputFormat);
     }
 
     @Test
-    public void propertiesForForDotProperties() {
+    void propertiesForForDotProperties() {
         OutputFormat outputFormat = OutputFormat.getOutputFormatFor("file.properties");
 
         assertTrue(outputFormat instanceof PropertiesOutputFormat);

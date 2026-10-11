@@ -5,40 +5,40 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by conni on 11/10/16.
  */
-public class PropertiesOutputFormatTest {
+class PropertiesOutputFormatTest {
 
     private OutputFormat outputFormat = new PropertiesOutputFormat();
 
     private Properties properties = new Properties();
 
-    @Before
-    public void before() {
+    @BeforeEach
+    void before() {
         properties.put("key0", "value0");
         properties.put("key1", "value1");
     }
 
     @Test
-    public void handlesDotProperties() {
+    void handlesDotProperties() {
         assertTrue(outputFormat.handles("file.properties"));
     }
 
     @Test
-    public void doesNotHandleNonProperties() {
+    void doesNotHandleNonProperties() {
         assertFalse(outputFormat.handles("file.other"));
     }
 
     @Test
-    public void writesProperties() throws IOException {
+    void writesProperties() throws IOException {
         byte[] serialized = writeProperties();
 
         Properties deserializedProperties = new Properties();
