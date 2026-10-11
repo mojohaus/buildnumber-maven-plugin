@@ -28,7 +28,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(MavenJUnitTestRunner.class)
-@MavenVersions({"3.6.3"})
+@MavenVersions({"3.9.16"})
 public class BuildNumberMojoTest {
     private static final Pattern SVN_VERSION_PATTERN = Pattern.compile("svn, version (\\d+)\\.(\\d+)\\.");
 

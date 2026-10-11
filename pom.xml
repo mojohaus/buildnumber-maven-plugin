@@ -65,7 +65,7 @@
   </developers>
 
   <prerequisites>
-    <maven>${mavenVersion}</maven>
+    <maven>3.9.0</maven>
   </prerequisites>
 
   <scm>
@@ -81,6 +81,8 @@
   </issueManagement>
 
   <properties>
+    <mavenVersion>3.9.16</mavenVersion>
+    <minimalMavenBuildVersion>3.9.0</minimalMavenBuildVersion>
     <maven.scm.version>2.2.1</maven.scm.version>
     <mojo.java.target>8</mojo.java.target>
     <maven.it.version>3.9.16</maven.it.version>
