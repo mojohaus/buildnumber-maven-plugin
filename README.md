@@ -6,6 +6,8 @@ This is the [buildnumber-maven-plugin](http://www.mojohaus.org/buildnumber-maven
 [![Maven Central](https://img.shields.io/maven-central/v/org.codehaus.mojo/buildnumber-maven-plugin.svg?label=Maven%20Central)](https://search.maven.org/artifact/org.codehaus.mojo/buildnumber-maven-plugin)
 [![Build Status](https://github.com/mojohaus/buildnumber-maven-plugin/workflows/GitHub%20CI/badge.svg?branch=master)](https://github.com/mojohaus/buildnumber-maven-plugin/actions/workflows/maven.yml?query=branch%3Amaster)
 
+Contributor and agent notes are in [AGENTS.md](AGENTS.md).
+
 ## Releasing
 
 * Make sure `gpg-agent` is running.
