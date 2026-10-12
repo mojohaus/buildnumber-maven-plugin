@@ -41,7 +41,7 @@ class JsonOutputFormatTest {
     }
 
     @Test
-    void writesJson() throws IOException {
+    void writesJson() throws Exception {
         String s = writePropertiesToString();
 
         Map<String, Object> map = gson.fromJson(s, Map.class);
