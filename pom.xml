@@ -201,6 +201,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>io.takari.maven.plugins</groupId>
       <artifactId>takari-plugin-testing</artifactId>
       <version>${takari.plugin.testing.version}</version>
@@ -232,6 +238,9 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <configuration>
             <trimStackTrace>false</trimStackTrace>
+            <systemPropertyVariables>
+              <maven.it.version>${maven.it.version}</maven.it.version>
+            </systemPropertyVariables>
             <excludes>
               <exclude>${test.excludes}</exclude>
             </excludes>
