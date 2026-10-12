@@ -38,7 +38,7 @@ class PropertiesOutputFormatTest {
     }
 
     @Test
-    void writesProperties() throws IOException {
+    void writesProperties() throws Exception {
         byte[] serialized = writeProperties();
 
         Properties deserializedProperties = new Properties();

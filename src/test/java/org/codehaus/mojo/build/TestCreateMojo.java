@@ -69,7 +69,7 @@ class TestCreateMojo {
     File folder;
 
     @Test
-    void testMessageFormat() throws Exception {
+    void messageFormat() throws Exception {
         CreateMojo mojo = new CreateMojo();
         mojo.setFormat("At {1,time} on {1,date}, there was {2} on planet {0,number,integer}.");
         mojo.setItems(asList(7, "timestamp", "a disturbance in the Force"));
@@ -96,7 +96,7 @@ class TestCreateMojo {
      * Test that dates are correctly formatted for different locales.
      */
     @Test
-    void testLocale() throws Exception {
+    void locale() throws Exception {
         Date date = new Date(0); // the epoch
         CreateMojo mojo = new CreateMojo();
 
@@ -126,7 +126,7 @@ class TestCreateMojo {
     }
 
     @Test
-    void testSequenceFormat() throws Exception {
+    void sequenceFormat() throws Exception {
         CreateMojo mojo = new CreateMojo();
         mojo.setBuildNumberPropertiesFileLocation(new File(folder, "target/buildNumber.properties"));
         mojo.setFormat("{0,number}.{1,number}.{2,number}");
@@ -145,7 +145,7 @@ class TestCreateMojo {
     }
 
     @Test
-    void testFilterBranchFromScmUrl() {
+    void filterBranchFromScmUrl() {
         CreateMojo mojo = new CreateMojo();
         String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/trunk";
         assertEquals("trunk", mojo.filterBranchFromScmUrl(scmUrlTrunk));
@@ -156,7 +156,7 @@ class TestCreateMojo {
     }
 
     @Test
-    void testFilterBranchFromScmUrlWithSubFolder() {
+    void filterBranchFromScmUrlWithSubFolder() {
         CreateMojo mojo = new CreateMojo();
         String scmUrlTrunk = "https://mifos.dev.java.net/svn/mifos/trunk/subfolder";
         assertEquals("trunk", mojo.filterBranchFromScmUrl(scmUrlTrunk));
@@ -167,7 +167,7 @@ class TestCreateMojo {
     }
 
     @Test
-    void testSpecialItemScmVersion() throws Exception {
+    void specialItemScmVersion() throws Exception {
         CreateMojo mojo = new CreateMojo();
         mojo.setBuildNumberPropertiesFileLocation(new File(folder, "target/buildNumber.properties"));
         mojo.setFormat("{0}-{1}-{2}");
