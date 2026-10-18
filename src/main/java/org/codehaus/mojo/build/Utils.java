@@ -21,6 +21,8 @@ package org.codehaus.mojo.build;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -43,6 +45,15 @@ public class Utils {
             SimpleDateFormat dateFormat = new SimpleDateFormat(timestampFormat);
             dateFormat.setTimeZone(getTimeZone(timeZoneId));
             return dateFormat.format(now);
+        }
+    }
+
+    public static String createTimestamp(String timestampFormat, OffsetDateTime dateTime) {
+        if (StringUtils.isBlank(timestampFormat)) {
+            return String.valueOf(dateTime);
+        } else {
+            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(timestampFormat);
+            return dateTime.format(dateFormat);
         }
     }
 

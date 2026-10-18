@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.OffsetDateTime;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -220,6 +221,25 @@ public class CreateMojo extends AbstractScmMojo {
     @Parameter(property = "maven.buildNumber.scmBranchPropertyName", defaultValue = "scmBranch")
     private String scmBranchPropertyName;
 
+    /**
+     * You can rename the revisionTimestamp property name to another property name if desired.
+     */
+    @Parameter(property = "maven.buildNumber.revisionTimestampPropertyName", defaultValue = "revisionTimestamp")
+    private String revisionTimestampPropertyName;
+
+    /**
+     * Apply this {@link java.time.format.DateTimeFormatter} to the revisionTimestamp.
+     */
+    @Parameter(property = "maven.buildNumber.revisionTimestampFormat")
+    private String revisionTimestampFormat;
+
+    /**
+     * If this is made true, then the plugin will attempt to get the timestamp from the last commited
+     * revision and store in the 'revisionTimestampPropertyName' property
+     */
+    @Parameter(property = "maven.buildNumber.getRevisionTimestamp", defaultValue = "false")
+    private boolean getRevisionTimestamp;
+
     // ////////////////////////////////////// internal maven components ///////////////////////////////////
 
     /**
@@ -238,6 +258,8 @@ public class CreateMojo extends AbstractScmMojo {
     private String revision;
 
     private boolean useScm;
+
+    private OffsetDateTime revisionTimestamp;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         String buildIsTainted = "ok";
@@ -299,6 +321,14 @@ public class CreateMojo extends AbstractScmMojo {
                 }
             }
             revision = getRevision();
+        }
+
+        if (getRevisionTimestamp) {
+            try {
+                revisionTimestamp = getScmLastChangedDateTime();
+            } catch (ScmException e) {
+                getLog().warn("Error getting SCM last changed datetime: " + e);
+            }
         }
 
         if (project != null) {
@@ -393,6 +423,15 @@ public class CreateMojo extends AbstractScmMojo {
             project.getProperties().put(buildNumberPropertyName, revision);
         }
         project.getProperties().put(timestampPropertyName, timestamp);
+
+        if (getRevisionTimestamp) {
+            String revisionTimestampStr = String.valueOf(revisionTimestamp);
+            if (revisionTimestampFormat != null) {
+                revisionTimestampStr = Utils.createTimestamp(revisionTimestampFormat, revisionTimestamp);
+            }
+            getLog().info(MessageFormat.format("Storing revisionTimestamp: {0}", revisionTimestampStr));
+            project.getProperties().put(revisionTimestampPropertyName, revisionTimestampStr);
+        }
 
         String scmBranch = getScmBranch();
         getLog().info("Storing scmBranch: " + scmBranch);
