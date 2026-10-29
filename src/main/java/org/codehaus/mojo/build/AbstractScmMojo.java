@@ -20,10 +20,12 @@ package org.codehaus.mojo.build;
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import java.io.File;
 
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.CommandParameter;
@@ -132,7 +134,7 @@ public abstract class AbstractScmMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     protected MavenProject project;
 
-    @Component
+    @Inject
     protected ScmManager scmManager;
 
     /**
@@ -154,7 +156,8 @@ public abstract class AbstractScmMojo extends AbstractMojo {
      *
      * @since 1.4
      */
-    @Component(hint = "mng-4384")
+    @Inject
+    @Named("mng-4384")
     private SecDispatcher securityDispatcher;
 
     /**
