@@ -84,10 +84,6 @@
     <mavenVersion>3.9.16</mavenVersion>
     <minimalMavenBuildVersion>3.9.0</minimalMavenBuildVersion>
     <maven.scm.version>2.2.1</maven.scm.version>
-    <maven.it.version>3.9.16</maven.it.version>
-    <takari.plugin.testing.version>3.0.0</takari.plugin.testing.version>
-    <takari-lifecycle-plugin.version>2.0.8</takari-lifecycle-plugin.version>
-    <test.excludes>**/it/**</test.excludes>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
     <project.build.outputTimestamp>2026-09-11T22:10:05Z</project.build.outputTimestamp>
   </properties>
@@ -229,21 +225,6 @@
     </dependency>
 
     <dependency>
-      <groupId>io.takari.maven.plugins</groupId>
-      <artifactId>takari-plugin-testing</artifactId>
-      <version>${takari.plugin.testing.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.takari.maven.plugins</groupId>
-      <artifactId>takari-plugin-integration-testing</artifactId>
-      <version>${takari.plugin.testing.version}</version>
-      <type>pom</type>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.14.0</version>
@@ -255,19 +236,6 @@
     <pluginManagement>
       <plugins>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-            <trimStackTrace>false</trimStackTrace>
-            <systemPropertyVariables>
-              <maven.it.version>${maven.it.version}</maven.it.version>
-            </systemPropertyVariables>
-            <excludes>
-              <exclude>${test.excludes}</exclude>
-            </excludes>
-          </configuration>
-        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
@@ -284,38 +252,12 @@
     <profile>
       <id>run-its</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <file>
+          <exists>src/it</exists>
+        </file>
       </activation>
-      <properties>
-        <test.excludes />
-      </properties>
       <build>
         <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <phase>generate-test-resources</phase>
-                <configuration>
-                  <outputDirectory>${project.build.directory}/maven-installation</outputDirectory>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.apache.maven</groupId>
-                      <artifactId>apache-maven</artifactId>
-                      <version>${maven.it.version}</version>
-                      <classifier>bin</classifier>
-                      <type>tar.gz</type>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
@@ -337,7 +279,6 @@
                     <enforceBytecodeVersion>
                       <maxJdkVersion>${mojo.java.target}</maxJdkVersion>
                       <excludes>
-                        <exclude>io.takari.*</exclude>
                         <exclude>org.codehaus.plexus:plexus-classworlds</exclude>
                       </excludes>
                     </enforceBytecodeVersion>
@@ -348,17 +289,25 @@
           </plugin>
 
           <plugin>
-            <groupId>io.takari.maven.plugins</groupId>
-            <artifactId>takari-lifecycle-plugin</artifactId>
-            <version>${takari-lifecycle-plugin.version}</version>
-            <extensions>true</extensions>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <configuration>
+              <projectsDirectory>src/it</projectsDirectory>
+              <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+              <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+              <settingsFile>src/it/settings.xml</settingsFile>
+              <pomIncludes>
+                <pomInclude>*/pom.xml</pomInclude>
+              </pomIncludes>
+              <postBuildHookScript>verify</postBuildHookScript>
+            </configuration>
             <executions>
               <execution>
-                <id>testProperties</id>
+                <id>integration-test</id>
                 <goals>
-                  <goal>testProperties</goal>
+                  <goal>install</goal>
+                  <goal>run</goal>
                 </goals>
-                <phase>process-test-resources</phase>
               </execution>
             </executions>
           </plugin>
