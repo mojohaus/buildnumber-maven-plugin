@@ -28,21 +28,25 @@ what the code and the POMs do not make obvious.
 
 - JUnit 5 only. The unit tests are `TestCreateMojo` and the output format tests in
   `src/test/java/org/codehaus/mojo/build`.
-- The integration tests are JUnit 5 classes in the `it` package (`BuildNumberMojoTest`,
-  `CreateMetadataMojoTest`) that extend `AbstractMavenIT`. They use Takari
-  `takari-plugin-integration-testing` to run a Maven installation that the build unpacks to
-  `target/maven-installation` (`maven.it.version`) against the fixture projects in
-  `src/test/projects`, with `src/test/projects/settings.xml` pointing at the local repository.
-- The `run-its` profile is active by default and sets up that Maven installation. Without it the
-  `**/it/**` classes are excluded:
+- The integration tests are maven-invoker-plugin projects in `src/it`, one directory per fixture with
+  an `invoker.properties` (goals), a `verify.groovy` (plain Groovy asserts on `build.log` and the
+  built jar or files) and, where needed, a `prebuild.groovy` or `selector.groovy`. Fixture POMs
+  take the plugin version as `@project.version@`. `src/it/settings.xml` points at the local
+  repository.
+- The `run-its` profile activates when `src/it` exists. It installs the plugin into
+  `target/local-repo` and runs the fixtures with the Maven that runs the build, so the Maven 4
+  CI job tests the plugin on Maven 4. Skip the ITs or run one:
 
   ```shell
   mvn -B -P '!run-its' test
-  mvn -B verify -Dtest=CreateMetadataMojoTest
+  mvn -B verify -Dinvoker.test=create-metadata-it
   ```
 - The SCM fixtures carry their repository metadata as `dotGitDir` and `dotSvnDir` directories, which
-  the tests copy to `.git` and `.svn` in the working copy, so the fixtures are not nested
-  repositories. `basicItTest` runs only when `svn` 1.8 or later is installed.
+  `prebuild.groovy` copies to `.git` and `.svn` in the cloned project under `target/it`, so the
+  fixtures are not nested repositories. `basic-it`, `basic-it-no-devscm` and `basic-it-svnjava`
+  have a `selector.groovy` that skips them unless `svn` 1.8 or later is installed.
+- `failed-local-change`, `MOJO-1372`, `MOJO-1668`, `norevision-it` (their svn server is gone) and
+  `MBUILDNUM-5` (needs a `dotSvnDir`) are disabled by a `selector.groovy` that returns `false`.
 - Add an integration test only for what needs a real Maven build, such as the lifecycle binding or
   the manifest entries; prefer a unit test otherwise.
 
