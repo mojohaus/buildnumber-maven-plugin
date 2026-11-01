@@ -81,7 +81,7 @@
   </issueManagement>
 
   <properties>
-    <mavenVersion>3.9.16</mavenVersion>
+    <mavenVersion>3.10.0</mavenVersion>
     <minimalMavenBuildVersion>3.9.0</minimalMavenBuildVersion>
     <maven.scm.version>2.2.1</maven.scm.version>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
@@ -227,7 +227,7 @@
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.14.0</version>
+      <version>2.15.0</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
