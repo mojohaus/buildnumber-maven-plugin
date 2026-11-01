@@ -18,6 +18,8 @@ updates:
         versions: [">= 3.10.0"]
       - dependency-name: "org.apache.maven:apache-maven"
         versions: [">= 3.10.0"]
+      - dependency-name: "org.apache.maven:maven-model"
+        versions: [">= 3.10.0"]
       # plexus-xml 4.x depends on the Maven 4 XML API
       - dependency-name: "org.codehaus.plexus:plexus-xml"
         versions: [">= 4.0.0"]
