@@ -1,3 +1,5 @@
+title: Frequently Asked Questions
+
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -7,7 +9,7 @@ to you under the Apache License, Version 2.0 (the
 "License"); you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
-  http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
@@ -16,19 +18,21 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<faqs id="FAQ" title="Frequently Asked Questions">
-  <part id="general">
-    <title>General</title>
 
-    <faq id="missing-scm">
-      <question>Can the plugin be used on a project without an SCM connection?</question>
-      <answer>
-        <p>Yes, set the plugin parameter </p> <source> &lt;revisionOnScmFailure&gt;</source> <p>to prevent 
-        the plugin from throwing an exception if SCM information is not found.</p>
-        <p>The other option is to use <source>-Dmaven.buildNumber.ignoreEmptyScmUrl=true -Dmaven.buildNumber.scmProvider=git/svn/</source>
-        Default is git</p>
-      </answer>
-    </faq>
+# Frequently Asked Questions
 
-  </part>
-</faqs>
+**General**
+
+1. [Can the plugin be used on a project without an SCM connection?](#missing-scm)
+
+## General
+
+<a id="missing-scm"></a>
+
+### Can the plugin be used on a project without an SCM connection?
+
+Yes, set the plugin parameter `<revisionOnScmFailure>` to prevent
+the plugin from throwing an exception if SCM information is not found.
+
+The other option is to use `-Dmaven.buildNumber.ignoreEmptyScmUrl=true -Dmaven.buildNumber.scmProvider=git/svn/`
+Default is git.

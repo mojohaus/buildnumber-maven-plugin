@@ -1,55 +1,40 @@
- ------
- Introduction
- ------
- Olivier Lamy
- ------
+title: Introduction
+author: Olivier Lamy
 
-Introduction
+# Introduction
 
- This mojo is designed to get a unique build number for each time you build your project. So while your
- version may remain constant at 1.0-SNAPSHOT for many iterations until release, you will have a build
- number that can uniquely identify each build during that time. The build number is obtained from
- scm. You can then place that build number in metadata, which
- can be accessed from your app, if desired.
+This mojo is designed to get a unique build number for each time you build your project. So while your
+version may remain constant at 1.0-SNAPSHOT for many iterations until release, you will have a build
+number that can uniquely identify each build during that time. The build number is obtained from
+scm. You can then place that build number in metadata, which
+can be accessed from your app, if desired.
 
- The mojo also has a couple of extra functions to ensure you get the proper build number. First, your
- local repository is checked to make sure it is up to date. Second, your local repository is
- automatically updated, so that you get the latest build number. Both these functions can be suppressed,
- if desired.
+The mojo also has a couple of extra functions to ensure you get the proper build number. First, your
+local repository is checked to make sure it is up to date. Second, your local repository is
+automatically updated, so that you get the latest build number. Both these functions can be suppressed,
+if desired.
 
- Optionally, you can configure this mojo to produce a revision based on a timestamp, or on a sequence,
- without requiring any interaction with an SCM system.
- <<Note that currently, supported SCMs are : subversion, git, mercurial, and perforce(using p4maven)>>
+Optionally, you can configure this mojo to produce a revision based on a timestamp, or on a sequence,
+without requiring any interaction with an SCM system.
+**Note that currently, supported SCMs are : subversion, git, mercurial, and perforce(using p4maven)**
 
+## Goals Overview
 
-* Goals Overview
+- [buildnumber:create](./create-mojo.html): Create a build number.
+- [buildnumber:create-timestamp](./create-timestamp-mojo.html): Create a timestamp.
+- [buildnumber:create-metadata](./create-metadata-mojo.html): Write build properties into file
+- [buildnumber:hgchangeset](./hgchangeset-mojo.html): Create properties for changeSet and changeSetDate from a Mercurial repository.
 
-  * {{{./create-mojo.html}buildnumber:create}}: Create a build number.
+## Usage
 
-  * {{{./create-timestamp-mojo.html}buildnumber:create-timestamp}}: Create a timestamp.
+Instructions on how to use the Build Number Maven Plugin can be found on the [usage page](./usage.html).
 
-  * {{{./create-metadata-mojo.html}buildnumber:create-metadata}}: Write build properties into file
+## Hint
 
-  * {{{./hgchangeset-mojo.html}buildnumber:hgchangeset}}: Create properties for changeSet and changeSetDate from a Mercurial repository.
+Starting with version 3.0.0 of the plugin the default behaviour has been changed.
+If you define **doCheck** with **true** the plugin will really only check for modifications
+and will set the property **buildIsTainted** with the value **tainted**. If there
+are no modification this property will be set to **ok**.
 
-  []
-
-
-* Usage
-
-  Instructions on how to use the Build Number Maven Plugin can be found on the {{{./usage.html}usage page}}.
-
-
-* Hint
-
-  Starting with version 3.0.0 of the plugin the default behaviour has been changed.
-  If you define <<doCheck>> with <<true>> the plugin will really only check for modifications
-  and will set the property <<buildIsTainted>> with the value <<tainted>>. If there
-  are no modification this property will be set to <<ok>>.
-  
-  If you like to fail the build as in previous versions you have to set the supplemental 
-  configuration <<failTheBuild>> to <<true>> and set <<doCheck>> to to <<true>>.
-   
-~~ * Examples
-
-
+If you like to fail the build as in previous versions you have to set the supplemental
+configuration **failTheBuild** to **true** and set **doCheck** to **true**.
