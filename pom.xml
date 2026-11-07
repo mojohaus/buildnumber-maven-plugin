@@ -295,6 +295,10 @@
               <projectsDirectory>src/it</projectsDirectory>
               <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
               <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+              <properties>
+                <!-- reuse the prefix file the main build cached instead of fetching it again in every fork -->
+                <aether.remoteRepositoryFilter.prefixes.basedir>${settings.localRepository}/.meta</aether.remoteRepositoryFilter.prefixes.basedir>
+              </properties>
               <settingsFile>src/it/settings.xml</settingsFile>
               <pomIncludes>
                 <pomInclude>*/pom.xml</pomInclude>
