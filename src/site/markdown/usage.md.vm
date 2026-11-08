@@ -219,7 +219,9 @@ Using svnjava provider
 If you need to execute the plugin on machine without any svn in the path you can configure
 the mojo to use the svnjava provider.
 
-NOTE the svnjava provider use the svnjava scm provider implementation [maven-scm-provider-svnjava](https://github.com/olamy/maven-scm-provider-svnjava) which rely on svnkit version.
+The plugin bundles the `svnexe` provider only. The svnjava provider,
+[maven-scm-provider-svnjava](https://github.com/olamy/maven-scm-provider-svnjava), relies on svnkit and is not
+bundled since 3.4.0, so add it, and the svnkit version it should use, to the dependencies of the plugin.
 
 ```xml
   <build>
@@ -228,6 +230,24 @@ NOTE the svnjava provider use the svnjava scm provider implementation [maven-scm
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
         <version>${project.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
+            <artifactId>maven-scm-provider-svnjava</artifactId>
+            <version>2.3.0</version>
+            <exclusions>
+              <exclusion>
+                <groupId>org.tmatesoft.svnkit</groupId>
+                <artifactId>svnkit</artifactId>
+              </exclusion>
+            </exclusions>
+          </dependency>
+          <dependency>
+            <groupId>org.tmatesoft.svnkit</groupId>
+            <artifactId>svnkit</artifactId>
+            <version>1.10.11</version>
+          </dependency>
+        </dependencies>
         <executions>
           <execution>
             <phase>validate</phase>
