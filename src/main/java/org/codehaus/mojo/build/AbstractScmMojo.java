@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import java.io.File;
+import java.time.OffsetDateTime;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -296,5 +297,21 @@ public abstract class AbstractScmMojo extends AbstractMojo {
         }
 
         return info.getRevision();
+    }
+
+    protected OffsetDateTime getScmLastChangedDateTime() throws ScmException {
+        ScmRepository repository = getScmRepository();
+
+        InfoScmResult scmResult = info(repository, new ScmFileSet(scmDirectory));
+
+        if (scmResult == null || scmResult.getInfoItems().isEmpty()) {
+            return null;
+        }
+
+        checkResult(scmResult);
+
+        InfoItem info = scmResult.getInfoItems().get(0);
+
+        return info.getLastChangedDateTime();
     }
 }
