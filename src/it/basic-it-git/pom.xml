@@ -45,6 +45,21 @@
               <timestampFormat>yyyy-MM-dd</timestampFormat>
             </configuration>
           </execution>
+
+          <execution>
+            <id>scmBranchItem</id>
+            <goals>
+              <goal>create</goal>
+            </goals>
+            <configuration>
+              <buildNumberPropertyName>branchBuildNumber</buildNumberPropertyName>
+              <format>{0}-{1}</format>
+              <items>
+                <item>scmBranch</item>
+                <item>scmVersion</item>
+              </items>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
 
