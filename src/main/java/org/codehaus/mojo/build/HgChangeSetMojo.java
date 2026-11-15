@@ -21,6 +21,7 @@ package org.codehaus.mojo.build;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 import java.io.File;
+import java.util.Objects;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -31,7 +32,6 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmResult;
 import org.apache.maven.scm.provider.hg.HgUtils;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Goal which sets project properties for changeSet and changeSetDate from the current Mercurial repository.
@@ -78,8 +78,7 @@ public class HgChangeSetMojo extends AbstractMojo {
             getLog().debug(result.getProviderMessage() == null ? "" : result.getProviderMessage());
             getLog().debug("Command output:");
             getLog().debug(result.getCommandOutput() == null ? "" : result.getCommandOutput());
-            throw new MojoExecutionException(
-                    "Command failed." + StringUtils.defaultString(result.getProviderMessage()));
+            throw new MojoExecutionException("Command failed." + Objects.toString(result.getProviderMessage(), ""));
         }
     }
 
