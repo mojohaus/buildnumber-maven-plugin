@@ -278,7 +278,7 @@ public abstract class AbstractScmMojo extends AbstractMojo {
         InfoScmResult scmResult = info(repository, new ScmFileSet(scmDirectory));
 
         if (scmResult == null || scmResult.getInfoItems().isEmpty()) {
-            return !StringUtils.isEmpty(revisionOnScmFailure) ? revisionOnScmFailure : null;
+            return StringUtils.isEmpty(revisionOnScmFailure) ? null : revisionOnScmFailure;
         }
 
         checkResult(scmResult);
