@@ -291,7 +291,7 @@ public class CreateMojo extends AbstractScmMojo {
                     for (ScmFile file : changedFiles) {
                         getLog().debug("Updated: " + file);
                     }
-                    if (changedFiles.size() == 0) {
+                    if (changedFiles.isEmpty()) {
                         getLog().debug("No files needed updating.");
                     }
                 } else {
@@ -314,7 +314,7 @@ public class CreateMojo extends AbstractScmMojo {
             Object item = items.get(i);
             if (item instanceof String) {
                 String s = (String) item;
-                if (s.equals("timestamp")) {
+                if ("timestamp".equals(s)) {
                     itemAry[i] = now;
                 } else if (s.startsWith("scmVersion")) {
                     useScm = true;

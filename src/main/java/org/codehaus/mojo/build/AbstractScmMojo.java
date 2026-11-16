@@ -96,7 +96,7 @@ public abstract class AbstractScmMojo extends AbstractMojo {
      * @since 1.1
      */
     @Parameter(property = "maven.buildNumber.shortRevisionLength", defaultValue = "0")
-    protected int shortRevisionLength = 0;
+    protected int shortRevisionLength;
 
     /**
      * Setting this value allows the build to continue even in the event of an SCM failure. The value set will be used
@@ -193,7 +193,7 @@ public abstract class AbstractScmMojo extends AbstractMojo {
     }
 
     protected ScmRepository getScmRepository() throws ScmException {
-        String repoUrl = !StringUtils.isBlank(this.scmConnectionUrl) ? scmConnectionUrl : scmDeveloperConnectionUrl;
+        String repoUrl = StringUtils.isBlank(this.scmConnectionUrl) ? scmDeveloperConnectionUrl : scmConnectionUrl;
         ScmRepository repository = scmManager.makeScmRepository(
                 StringUtils.isBlank(repoUrl) ? (ignoreEmptyScmUrl ? "scm:" + scmProvider + ":" : "") : repoUrl);
 
@@ -278,7 +278,7 @@ public abstract class AbstractScmMojo extends AbstractMojo {
         InfoScmResult scmResult = info(repository, new ScmFileSet(scmDirectory));
 
         if (scmResult == null || scmResult.getInfoItems().isEmpty()) {
-            return (!StringUtils.isEmpty(revisionOnScmFailure)) ? revisionOnScmFailure : null;
+            return !StringUtils.isEmpty(revisionOnScmFailure) ? revisionOnScmFailure : null;
         }
 
         checkResult(scmResult);
