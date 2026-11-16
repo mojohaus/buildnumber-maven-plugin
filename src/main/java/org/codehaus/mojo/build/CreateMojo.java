@@ -239,6 +239,7 @@ public class CreateMojo extends AbstractScmMojo {
 
     private boolean useScm;
 
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         String buildIsTainted = "ok";
 

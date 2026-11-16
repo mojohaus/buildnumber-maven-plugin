@@ -82,6 +82,7 @@ public class HgChangeSetMojo extends AbstractMojo {
         }
     }
 
+    @Override
     public void execute() throws MojoExecutionException {
         if (skip) {
             getLog().info("Skipping execution.");
