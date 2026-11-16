@@ -79,6 +79,7 @@ public class CreateTimestampMojo extends AbstractMojo {
     @Parameter(defaultValue = "false")
     private boolean executeRootOnly;
 
+    @Override
     public void execute() {
         if (skip) {
             getLog().info("Skipping execution.");

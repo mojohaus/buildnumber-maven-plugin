@@ -187,6 +187,7 @@ public class CreateMetadataMojo extends AbstractScmMojo {
     @Inject
     private MavenProjectHelper projectHelper;
 
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
 
         if (skip) {
