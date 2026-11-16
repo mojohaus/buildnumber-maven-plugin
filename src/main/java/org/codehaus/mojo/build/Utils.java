@@ -27,7 +27,7 @@ import java.util.TimeZone;
 
 import org.codehaus.plexus.util.StringUtils;
 
-public class Utils {
+public final class Utils {
     private Utils() {}
 
     public static String createTimestamp(String timestampFormat, String timeZoneId) {
@@ -35,7 +35,9 @@ public class Utils {
     }
 
     public static String createTimestamp(String timestampFormat, String timeZoneId, Date now) {
-        if (null == now) now = Calendar.getInstance().getTime();
+        if (null == now) {
+            now = Calendar.getInstance().getTime();
+        }
 
         if (StringUtils.isBlank(timestampFormat)) {
             return String.valueOf(now.getTime());
