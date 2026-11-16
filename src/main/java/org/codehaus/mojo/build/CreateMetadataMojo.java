@@ -41,7 +41,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProjectHelper;
 import org.apache.maven.scm.ScmException;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * This mojo discovers latest SCM revision, current timestamp, project version, and project name then write them to one
@@ -245,7 +244,7 @@ public class CreateMetadataMojo extends AbstractScmMojo {
         try {
             return this.getScmRevision();
         } catch (ScmException e) {
-            if (!StringUtils.isEmpty(revisionOnScmFailure)) {
+            if (!(revisionOnScmFailure == null || revisionOnScmFailure.isEmpty())) {
                 getLog().warn("Cannot get the revision information from the scm repository, proceeding with "
                         + "revision of " + revisionOnScmFailure + " : \n" + e.getLocalizedMessage());
 

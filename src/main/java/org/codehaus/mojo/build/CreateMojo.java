@@ -537,7 +537,7 @@ public class CreateMojo extends AbstractScmMojo {
                 HgOutputConsumer consumer = new HgOutputConsumer();
                 ScmResult result = HgUtils.execute(consumer, scmDirectory, new String[] {"id", "-b"});
                 checkResult(result);
-                if (StringUtils.isNotEmpty(consumer.getOutput())) {
+                if (consumer.getOutput() != null && !consumer.getOutput().isEmpty()) {
                     return consumer.getOutput();
                 }
             }
@@ -559,7 +559,7 @@ public class CreateMojo extends AbstractScmMojo {
                 return DEFAULT_BRANCH_NAME;
             }
             if (scmResult.getInfoItems().isEmpty()) {
-                if (!StringUtils.isEmpty(revisionOnScmFailure)) {
+                if (!(revisionOnScmFailure == null || revisionOnScmFailure.isEmpty())) {
                     setDoCheck(false);
                     setDoUpdate(false);
 
@@ -571,7 +571,7 @@ public class CreateMojo extends AbstractScmMojo {
                 scmUrl = info.getURL();
             }
         } catch (ScmException e) {
-            if (!StringUtils.isEmpty(revisionOnScmFailure)) {
+            if (!(revisionOnScmFailure == null || revisionOnScmFailure.isEmpty())) {
                 getLog().warn("Cannot get the branch information from the scm repository, proceeding with "
                         + DEFAULT_BRANCH_NAME + " : \n" + e.getLocalizedMessage());
 
@@ -615,7 +615,7 @@ public class CreateMojo extends AbstractScmMojo {
             return this.getScmRevision();
         } catch (ScmException e) {
             String warnMessage = "Cannot get the revision information from the scm repository";
-            if (!StringUtils.isEmpty(revisionOnScmFailure)) {
+            if (!(revisionOnScmFailure == null || revisionOnScmFailure.isEmpty())) {
                 getLog().warn(warnMessage + ", proceeding with " + "revision of " + revisionOnScmFailure + " : \n"
                         + e.getLocalizedMessage());
 

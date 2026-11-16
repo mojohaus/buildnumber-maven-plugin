@@ -211,13 +211,13 @@ public abstract class AbstractScmMojo extends AbstractMojo {
     }
 
     private void setPasswordIfNotEmpty(ScmProviderRepository repository, String password) {
-        if (!StringUtils.isEmpty(password)) {
+        if (!(password == null || password.isEmpty())) {
             repository.setPassword(password);
         }
     }
 
     private void setUserIfNotEmpty(ScmProviderRepository repository, String user) {
-        if (!StringUtils.isEmpty(user)) {
+        if (!(user == null || user.isEmpty())) {
             repository.setUser(user);
         }
     }
@@ -278,7 +278,7 @@ public abstract class AbstractScmMojo extends AbstractMojo {
         InfoScmResult scmResult = info(repository, new ScmFileSet(scmDirectory));
 
         if (scmResult == null || scmResult.getInfoItems().isEmpty()) {
-            return StringUtils.isEmpty(revisionOnScmFailure) ? null : revisionOnScmFailure;
+            return revisionOnScmFailure == null || revisionOnScmFailure.isEmpty() ? null : revisionOnScmFailure;
         }
 
         checkResult(scmResult);
