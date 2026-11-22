@@ -18,7 +18,7 @@ what the code and the POMs do not make obvious.
   build and checks it when the `CI` environment variable is set. It formats Java with
   palantir-java-format and also reformats Markdown, so run `mvn spotless:apply` after editing the
   README or this file.
-- The plugin compiles against Maven 3.9.16 (`mavenVersion`) and declares a literal
+- The plugin compiles against the latest Maven 3.9.x (`mavenVersion`) and declares a literal
   `<prerequisites><maven>3.9.0</maven>`; keep the two apart, so raising `mavenVersion` does not
   raise the prerequisite. Building the plugin itself needs Maven 3.9 (`minimalMavenBuildVersion`).
 - `.github/workflows/maven.yml` calls the MojoHaus `maven-verify.yml` workflow in `mojohaus/.github`.
@@ -55,6 +55,23 @@ what the code and the POMs do not make obvious.
 - Deliberate pins in `.github/dependabot.yml`: Maven artifacts stay below 3.10.0, the Maven 3.9.x
   line being the plugin baseline, and plexus-xml below 4.0.0 because 4.x depends on the Maven 4
   XML API.
+
+## Documentation updates
+
+A change that users or contributors can notice ships with the documentation it affects, in the
+same pull request. A refactor with no visible effect needs none.
+
+- A new goal, parameter or default: the mojo Javadoc, which becomes the goal page, and the goal
+  list in `src/site/markdown/index.md`.
+- New or changed usage: an example in `src/site/markdown/usage.md`; a recurring question goes in
+  `src/site/markdown/faq.md`. The site pages are plain Markdown, so write the plugin version in
+  examples as `<version><!-- latest release --></version>`, never as a number.
+- A page added, removed or renamed: the menu in `src/site/site.xml`. Never rename a published
+  page; its URL is linked from elsewhere.
+- The Maven or Java requirement, or how to build and release: `README.md`.
+- A new convention, build gate or test fixture: this file.
+
+Check the result with `mvn site` and open `target/site/index.html`.
 
 ## Pull requests
 

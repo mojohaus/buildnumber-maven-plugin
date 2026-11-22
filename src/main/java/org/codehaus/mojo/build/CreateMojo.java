@@ -213,7 +213,7 @@ public class CreateMojo extends AbstractScmMojo {
     private boolean getRevisionOnlyOnce;
 
     /**
-     * You can rename the buildScmBranch property name to another property name if desired.
+     * You can rename the scmBranch property name to another property name if desired.
      *
      * @since 1.0-beta-4
      */

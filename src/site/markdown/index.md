@@ -16,13 +16,17 @@ if desired.
 
 Optionally, you can configure this mojo to produce a revision based on a timestamp, or on a sequence,
 without requiring any interaction with an SCM system.
-**Note that currently, supported SCMs are : subversion, git, mercurial, and perforce(using p4maven)**
+**The supported SCMs are Subversion, Git, Mercurial and Perforce (using p4maven).**
+
+## Requirements
+
+The plugin requires Maven 3.9.0 or later and Java 8 or later.
 
 ## Goals Overview
 
 - [buildnumber:create](./create-mojo.html): Create a build number.
 - [buildnumber:create-timestamp](./create-timestamp-mojo.html): Create a timestamp.
-- [buildnumber:create-metadata](./create-metadata-mojo.html): Write build properties into file
+- [buildnumber:create-metadata](./create-metadata-mojo.html): Write the build properties into a file that can be attached to the artifact.
 - [buildnumber:hgchangeset](./hgchangeset-mojo.html): Create properties for changeSet and changeSetDate from a Mercurial repository.
 
 ## Usage
