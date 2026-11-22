@@ -49,18 +49,25 @@ import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
 
 public abstract class AbstractScmMojo extends AbstractMojo {
     /**
+     * The SCM connection URL of the project, from <code>scm/connection</code> in the POM.
+     *
      * @since 1.0-beta-5
      */
     @Parameter(defaultValue = "${project.scm.connection}", alias = "readUrlScm", readonly = true)
     protected String scmConnectionUrl;
 
     /**
+     * The SCM developer connection URL of the project, from <code>scm/developerConnection</code> in the POM. It is
+     * used when the connection URL is blank.
+     *
      * @since 1.0-beta-5
      */
     @Parameter(defaultValue = "${project.scm.developerConnection}", alias = "urlScm", readonly = true)
     protected String scmDeveloperConnectionUrl;
 
     /**
+     * The SCM tag of the project, from <code>scm/tag</code> in the POM.
+     *
      * @since 1.4
      */
     @Parameter(defaultValue = "${project.scm.tag}", readonly = true)
@@ -124,7 +131,7 @@ public abstract class AbstractScmMojo extends AbstractMojo {
     protected boolean skip;
 
     /**
-     * Maven Settings
+     * The Maven settings, used to look up the credentials of the SCM server.
      *
      * @since 1.4
      */

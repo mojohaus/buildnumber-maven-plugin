@@ -55,7 +55,7 @@ import org.apache.maven.scm.ScmException;
 public class CreateMetadataMojo extends AbstractScmMojo {
 
     /**
-     * Application name
+     * The application name written to the metadata file under <code>applicationPropertyName</code>.
      *
      * @since 1.4
      */
@@ -79,7 +79,7 @@ public class CreateMetadataMojo extends AbstractScmMojo {
     private String versionPropertyName;
 
     /**
-     * Version
+     * The application version written to the metadata file under <code>versionPropertyName</code>.
      *
      * @since 1.4
      */
@@ -117,7 +117,7 @@ public class CreateMetadataMojo extends AbstractScmMojo {
     private String timezone;
 
     /**
-     * Output directory
+     * The directory the metadata file is written to.
      *
      * @since 1.4
      */
@@ -125,7 +125,8 @@ public class CreateMetadataMojo extends AbstractScmMojo {
     private File outputDirectory;
 
     /**
-     * Output file name
+     * The name of the metadata file. A <code>.json</code> extension selects the JSON format when
+     * <code>autoDetectOutputFormat</code> is enabled; otherwise it is a Java properties file.
      *
      * @since 1.4
      */
@@ -158,7 +159,7 @@ public class CreateMetadataMojo extends AbstractScmMojo {
     private String classifier;
 
     /**
-     * Additional output files
+     * Additional files to write the same metadata to, besides <code>outputName</code> in <code>outputDirectory</code>.
      *
      * @since 1.4
      */
