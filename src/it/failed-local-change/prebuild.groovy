@@ -1,19 +1,15 @@
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
-
-// The fixture carries its repository metadata as dotSvnDir, so that it is not a nested repository.
-def source = new File(basedir, 'dotSvnDir').toPath()
-def target = new File(basedir, '.svn').toPath()
-Files.walk(source).withCloseable { paths ->
-    paths.each { path ->
-        def destination = target.resolve(source.relativize(path).toString())
-        if (Files.isDirectory(path)) {
-            Files.createDirectories(destination)
-        } else {
-            Files.copy(path, destination, StandardCopyOption.REPLACE_EXISTING)
-        }
-    }
+// Commit the project as it is, then modify one tracked file, so that the working copy has exactly one local modification.
+def git = { String... args ->
+    def command = ['git', '-c', 'user.name=IT', '-c', 'user.email=it@example.org', '-c', 'commit.gpgsign=false'] + args.toList()
+    def process = command.execute(null, basedir)
+    def output = new StringBuilder()
+    process.consumeProcessOutput(output, output)
+    assert process.waitFor() == 0 : "git ${args.join(' ')} failed: ${output}"
 }
 
-new File(basedir, "foo.txt").text = "hello"
+git('init', '-q')
+git('add', 'pom.xml', 'foo.txt')
+git('commit', '-q', '-m', 'Initial commit')
+
+new File(basedir, "foo.txt").text = "modified at " + System.nanoTime()
 true

@@ -8,7 +8,7 @@
   <version>1.0-SNAPSHOT</version>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/buildnumber-maven-plugin/src/it/basic-it</connection>
+    <connection>scm:git:https://github.com/mojohaus/buildnumber-maven-plugin/tree/master/src/it/basic-it-git.git</connection>
   </scm>
 
   <build>

@@ -43,10 +43,12 @@ what the code and the POMs do not make obvious.
   ```
 - The SCM fixtures carry their repository metadata as `dotGitDir` and `dotSvnDir` directories, which
   `prebuild.groovy` copies to `.git` and `.svn` in the cloned project under `target/it`, so the
-  fixtures are not nested repositories. `basic-it`, `basic-it-no-devscm` and `basic-it-svnjava`
-  have a `selector.groovy` that skips them unless `svn` 1.8 or later is installed.
-- `failed-local-change`, `MOJO-1372`, `MOJO-1668`, `norevision-it` (their svn server is gone) and
-  `MBUILDNUM-5` (needs a `dotSvnDir`) are disabled by a `selector.groovy` that returns `false`.
+  fixtures are not nested repositories. `failed-local-change` instead creates its repository in
+  `prebuild.groovy`, because the plugin's own filtering changes `pom.xml` and the committed copy would
+  differ from it.
+- `basic-it` needs a `svn` client 1.8 or later and has a `selector.groovy` that skips it without one.
+  The shared CI build installs no Subversion client, so it runs only on a machine that has one;
+  `basic-it-svnjava` reads the working copy with SVNKit and runs everywhere.
 - Add an integration test only for what needs a real Maven build, such as the lifecycle binding or
   the manifest entries; prefer a unit test otherwise.
 
