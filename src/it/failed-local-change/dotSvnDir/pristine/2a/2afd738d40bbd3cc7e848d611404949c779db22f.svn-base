@@ -1,3 +1,0 @@
-invoker.goals =  buildnumber:create
-#clean test
-invoker.buildResult = failure
